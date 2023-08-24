@@ -55,23 +55,7 @@ module "virtual_network" {
       subnet_type = "aks2" // The type of the subnet
       cidrs       = ["10.0.2.0/24"] // The CIDR block of the subnet
     }
-    
   }
-}
-
-// Define the network security rule for SSH
-resource "azurerm_network_security_rule" "ssh" {
-  name                        = "SSH" // The name of the rule
-  priority                    = 1001 // The priority of the rule
-  direction                   = "Inbound" // The direction of the rule
-  access                      = "Allow" // The access of the rule
-  protocol                    = "Tcp" // The protocol of the rule
-  source_port_range           = "*" // The source port range of the rule
-  destination_port_range      = "22" // The destination port range of the rule
-  source_address_prefix       = "*" // The source address prefix of the rule
-  destination_address_prefix  = "*" // The destination address prefix of the rule
-  resource_group_name         = module.resource_group.name // The name of the resource group
-  network_security_group_name = module.virtual_network.network_security_group_name // The name of the network security group
 }
 
 // Define the virtual machine module
@@ -113,6 +97,3 @@ module "virtual_machine" {
   admin_username       = "testuser" // The username of the admin
   admin_ssh_public_key = file("~/.ssh/id_rsa.pub") // The SSH public key of the admin
 }
-
-
-
