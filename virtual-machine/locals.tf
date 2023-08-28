@@ -3,7 +3,7 @@ locals {
 
   count = (var.machine_count != 0 ? var.machine_count : random_integer.count.result)
 
-  default_linux_name   = "vm-${var.names.project_name}-${var.names.environment}-${local.count}"
+  default_linux_name   = "vm-${var.names.environment}-${var.names.project_name}-${local.count}"
   linux_machine_name   = (var.linux_machine_name != "" ? var.linux_machine_name : local.default_linux_name)
   windows_machine_name = (var.windows_machine_name != "" ? var.windows_machine_name : random_string.windows_name.result)
 

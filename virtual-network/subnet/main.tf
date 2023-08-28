@@ -17,6 +17,7 @@ resource "azurerm_subnet" "subnet" {
         name    = delegation.value.name
         actions = delegation.value.actions
         
+        
       }
     }
   }
@@ -36,6 +37,22 @@ resource "azurerm_network_security_group" "nsg" {
   location            = var.location
   resource_group_name = var.resource_group_name
   tags                = merge(var.tags, {subnet_type = lookup(local.allowed_subnet_info, var.subnet_type, var.subnet_type)})
+}
+
+resource "azurerm_network_security_rule" "allow_ssh" {
+  count                       = ((var.create_network_security_group && var.configure_nsg_rules) ? 1 : 0)
+
+  name                        = "AllowSSH"
+  priority                    = 100
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_range      = "22"
+  source_address_prefix       = "*"
+  destination_address_prefix  = "*"
+  resource_group_name         = var.resource_group_name
+  network_security_group_name = azurerm_network_security_group.nsg.0.name
 }
 
 resource "azurerm_network_security_rule" "deny_all_inbound" {
