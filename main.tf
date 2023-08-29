@@ -45,15 +45,19 @@ module "virtual_network" {
     project     = "test" // The project tag
   }
   enforce_subnet_names = false // Whether to enforce subnet names
+  
   address_space        = ["10.0.0.0/16"] // The address space of the virtual network
   subnets = {
     subnet1 = {
       subnet_type = "subnet1" // The type of the subnet
       cidrs       = ["10.0.1.0/24"] // The CIDR block of the subnet
+      ssh_port_open = true
+      http_port_open = true
     }
     subnet2 = {
       subnet_type = "subnet2" // The type of the subnet
       cidrs       = ["10.0.2.0/24"] // The CIDR block of the subnet
+      https_port_open = true
     }
   }
 }
@@ -77,7 +81,7 @@ module "virtual_machine" {
   kernel_type = "linux"
 
   // Define the instance size of the virtual machine
-  virtual_machine_size = "Standard_B1s"
+  virtual_machine_size = "Standard_B1ls"
 
   // Define the custom data of the virtual machine
   // custom_data = base64encode(file("${path.module}/example-file.sh"))

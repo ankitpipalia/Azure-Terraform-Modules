@@ -40,8 +40,7 @@ resource "azurerm_network_security_group" "nsg" {
 }
 
 resource "azurerm_network_security_rule" "allow_ssh" {
-  count                       = ((var.create_network_security_group && var.configure_nsg_rules) ? 1 : 0)
-
+  count                       = ((var.ssh_port_open) ? 1 : 0)
   name                        = "AllowSSH"
   priority                    = 100
   direction                   = "Inbound"
@@ -49,6 +48,36 @@ resource "azurerm_network_security_rule" "allow_ssh" {
   protocol                    = "Tcp"
   source_port_range           = "*"
   destination_port_range      = "22"
+  source_address_prefix       = "*"
+  destination_address_prefix  = "*"
+  resource_group_name         = var.resource_group_name
+  network_security_group_name = azurerm_network_security_group.nsg.0.name
+}
+
+resource "azurerm_network_security_rule" "allow_http" {
+  count                       = ((var.http_port_open) ? 1 : 0)
+  name                        = "AllowHTTP"
+  priority                    = 101
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_range      = "80"
+  source_address_prefix       = "*"
+  destination_address_prefix  = "*"
+  resource_group_name         = var.resource_group_name
+  network_security_group_name = azurerm_network_security_group.nsg.0.name
+}
+
+resource "azurerm_network_security_rule" "allow_https" {
+  count                       = ((var.https_port_open) ? 1 : 0)
+  name                        = "AllowHTTPS"
+  priority                    = 102
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_range      = "443"
   source_address_prefix       = "*"
   destination_address_prefix  = "*"
   resource_group_name         = var.resource_group_name

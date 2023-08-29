@@ -90,6 +90,9 @@ variable "subnet_defaults" {
     allow_vnet_inbound            = bool # allow all inbound from virtual network (configure_nsg_rules must be set to true)
     allow_vnet_outbound           = bool # allow all outbound from virtual network (configure_nsg_rules must be set to true)
     route_table_association       = string
+    ssh_port_open                 = bool
+    http_port_open                = bool
+    https_port_open               = bool
   })
   default = {
     cidrs                                          = []
@@ -104,6 +107,9 @@ variable "subnet_defaults" {
     allow_vnet_inbound                             = false
     allow_vnet_outbound                            = false
     route_table_association                        = null
+    ssh_port_open                                  = false
+    http_port_open                                 = false
+    https_port_open                                = false
   }
 }
 

@@ -109,3 +109,21 @@ variable "delegations" {
                 }))
   default     = {}
 }
+
+variable "ssh_port_open" {
+  description = "Open SSH port"
+  type        = bool
+  default     = false
+}
+
+variable "http_port_open" {
+  description = "Open HTTP port"
+  type        = bool
+  default     = false
+}
+
+variable "https_port_open" {
+  description = "Open HTTPS port"
+  type        = bool
+  default     = false
+}
