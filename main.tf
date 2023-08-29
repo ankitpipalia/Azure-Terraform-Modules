@@ -11,7 +11,6 @@ terraform {
 // Define the Azure provider
 provider "azurerm" {
   features {} // Enable all features
-  subscription_id = "8c874251-19f3-4632-814a-10696094b7bf" // The subscription ID for Azure
 }
 
 // Define the resource group module
