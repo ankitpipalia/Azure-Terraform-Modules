@@ -1,15 +1,26 @@
-output "backend_pool_id" {
-  description = "The identifier of the backend pool."
-  value       = azurerm_lb_backend_address_pool.lb_backend.id
+outputs.tf
+
+output "load_balancer_id" {
+  description = "The ID of the Azure Load Balancer"
+  value       = azurerm_lb.load_balancer.id
 }
 
-output "frontend_ip_configs" {
-  description = "Map of IP addresses, one per each entry of `frontend_ips` input. Contains public IP address for the frontends that have it, private IP address otherwise."
-  # value       = local.output_ips
-  value = local.frontend_addresses
+output "frontend_ip_configuration_id" {
+  description = "The ID of the frontend IP configuration"
+  value       = azurerm_lb_frontend_ip_configuration.load_balancer_frontend_ip_configuration.id
 }
 
-output "health_probe" {
-  description = "The health probe object."
-  value       = azurerm_lb_probe.probe
+output "backend_address_pool_id" {
+  description = "The ID of the backend address pool"
+  value       = azurerm_lb_backend_address_pool.load_balancer_backend_address_pool.id
+}
+
+output "probe_id" {
+  description = "The ID of the probe"
+  value       = azurerm_lb_probe.load_balancer_probe.id
+}
+
+output "load_balancing_rule_id" {
+  description = "The ID of the load balancing rule"
+  value       = azurerm_lb_load_balancing_rule.load_balancer_load_balancing_rule.id
 }

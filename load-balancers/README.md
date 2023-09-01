@@ -1,69 +1,118 @@
-# Load Balancer Module for Azure
+# Azure Load Balancer Terraform Module
 
-A Terraform module for deploying a Load Balancer for VM-Series firewalls. Supports both standalone and scale set deployments. Supports either inbound or outbound configuration.
+This Terraform module deploys an Azure Load Balancer in Azure with production-level features.
 
-The module creates a single load balancer and a single backend for it, but it allows multiple frontends.
+## Prerequisites
+
+- Azure subscription
+- Terraform installed
 
 ## Usage
 
-For usage see any of the reference architecture examples.
+```hcl
+module "load_balancer" {
+  source                = "path/to/module"
+  load_balancer_name    = "my-load-balancer"
+  location              = "eastus"
+  resource_group_name   = "my-resource-group"
+  load_balancer_sku     = "Standard"
+  frontend_ip_configuration_name = "frontend-ip-config"
+  subnet_id             = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/my-resource-group/providers/Microsoft.Network/virtualNetworks/my-vnet/subnets/my-subnet"
+  private_ip_address_allocation = "Dynamic"
+  private_ip_address    = ""
+  backend_address_pool_name = "backend-pool"
+  probe_name            = "probe"
+  probe_protocol        = "Http"
+  probe_port            = 80
+  probe_interval        = 15
+  probe_number_of_probes = 2
+  probe_request_path    = "/"
+  probe_protocol_match  = "Any"
+  probe_ignore_https_server_name = false
+  probe_match_body      = ""
+  probe_match_status_codes = [200, 201, 202]
+  probe_min_servers     = 1
+  probe_max_servers     = 3
+  probe_healthy_http_response = ""
+  probe_unhealthy_http_response = ""
+  probe_healthy_http_response_win = ""
+  probe_unhealthy_http_response_win = ""
+  load_balancing_rule_name = "lb-rule"
+  load_balancing_rule_frontend_port = 80
+  load_balancing_rule_backend_port = 8080
+  load_balancing_rule_protocol = "Tcp"
+  tags = {
+    Environment = "Production"
+    Department  = "IT"
+  }
+}
 
-## Reference
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
-### Requirements
+output "load_balancer_id" {
+  value = module.load_balancer.load_balancer_id
+}
 
-| Name | Version |
-|------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.2, < 2.0 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 3.25 |
+output "frontend_ip_configuration_id" {
+  value = module.load_balancer.frontend_ip_configuration_id
+}
 
-### Providers
+output "backend_address_pool_id" {
+  value = module.load_balancer.backend_address_pool_id
+}
 
-| Name | Version |
-|------|---------|
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | ~> 3.25 |
+output "probe_id" {
+  value = module.load_balancer.probe_id
+}
 
-### Modules
+output "load_balancing_rule_id" {
+  value = module.load_balancer.load_balancing_rule_id
+}
+```
 
-No modules.
-
-### Resources
-
-| Name | Type |
-|------|------|
-| [azurerm_lb.lb](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/lb) | resource |
-| [azurerm_lb_backend_address_pool.lb_backend](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/lb_backend_address_pool) | resource |
-| [azurerm_lb_outbound_rule.out_rules](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/lb_outbound_rule) | resource |
-| [azurerm_lb_probe.probe](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/lb_probe) | resource |
-| [azurerm_lb_rule.in_rules](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/lb_rule) | resource |
-| [azurerm_network_security_rule.allow_inbound_ips](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_rule) | resource |
-| [azurerm_public_ip.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/public_ip) | resource |
-| [azurerm_public_ip.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/public_ip) | data source |
-
-### Inputs
+## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
-| <a name="input_frontend_ips"></a> [frontend\_ips](#input\_frontend\_ips) | A map of objects describing LB Frontend IP configurations, inbound and outbound rules. Used for both public or private load balancers. <br>Keys of the map are names of LB Frontend IP configurations.<br><br>Each Frontend IP configuration can have multiple rules assigned. They are defined in a maps called `in_rules` and `out_rules` for inbound and outbound rules respectively. A key in this map is the name of the rule, while value is the actual rule configuration. To understand this structure please see examples below.<br><br>**Inbound rules.**<br><br>Here is a list of properties supported by each `in_rule`:<br><br>- `protocol` : required, communication protocol, either 'Tcp', 'Udp' or 'All'.<br>- `port` : required, communication port, this is both the front- and the backend port if `backend_port` is not given.<br>- `backend_port` : optional, this is the backend port to forward traffic to in the backend pool.<br>- `floating_ip` : optional, defaults to `true`, enables floating IP for this rule.<br>- `session_persistence` : optional, defaults to 5 tuple (Azure default), see `Session persistence/Load distribution` below for details.<br><br>Public LB<br><br>- `create_public_ip` : Optional. Set to `true` to create a public IP.<br>- `public_ip_name` : Ignored if `create_public_ip` is `true`. The existing public IP resource name to use.<br>- `public_ip_resource_group` : Ignored if `create_public_ip` is `true` or if `public_ip_name` is null. The name of the resource group which holds `public_ip_name`.<br><br>Example<pre>frontend_ips = {<br>  pip_existing = {<br>    create_public_ip         = false<br>    public_ip_name           = "my_ip"<br>    public_ip_resource_group = "my_rg_name"<br>    in_rules = {<br>      HTTP = {<br>        port         = 80<br>        protocol     = "Tcp"<br>      }<br>    }<br>  }<br>}</pre>Forward to a different port on backend pool<pre>frontend_ips = {<br>  pip_existing = {<br>    create_public_ip         = false<br>    public_ip_name           = "my_ip"<br>    public_ip_resource_group = "my_rg_name"<br>    in_rules = {<br>      HTTP = {<br>        port         = 80<br>        backend_port = 8080<br>        protocol     = "Tcp"<br>      }<br>    }<br>  }<br>}</pre>Private LB<br><br>- `subnet_id` : Identifier of an existing subnet. This also trigger creation of an internal LB.<br>- `private_ip_address` : A static IP address of the Frontend IP configuration, has to be in limits of the subnet's (specified by `subnet_id`) address space. When not set, changes the address allocation from `Static` to `Dynamic`.<br><br>Example<pre>frontend_ips = {<br>  internal_fe = {<br>    subnet_id                     = azurerm_subnet.this.id<br>    private_ip_address            = "192.168.0.10"<br>    in_rules = {<br>      HA_PORTS = {<br>        port         = 0<br>        protocol     = "All"<br>      }<br>    }<br>  }<br>}</pre>Session persistence/Load distribution<br><br>By default the load balancer uses a 5 tuple hash to map traffic to available servers. This can be controlled using `session_persistence` property defined inside a role. Available values are:<br><br>- `Default` : this is the 5 tuple hash - this method is also used when no property is defined<br>- `SourceIP` : a 2 tuple hash is used<br>- `SourceIPProtocol` : a 3 tuple hash is used<br><br>Example<pre>frontend_ips = {<br>    rule_1 = {<br>      create_public_ip = true<br>      in_rules = {<br>        HTTP = {<br>          port     = 80<br>          protocol = "Tcp"<br>          session_persistence = "SourceIP"<br>        }<br>      }<br>    }<br>  }</pre>**Outbound rules.**<br><br>Each Frontend IP config can have outbound rules specified. Setting at least one `out_rule` switches the outgoing traffic from SNAT to Outbound rules. Keep in mind that since we use a single backend, and you cannot mix SNAT and Outbound rules traffic in rules using the same backend, setting one `out_rule` switches the outgoing traffic route for **ALL** `in_rules`.<br><br>Following properties are available:<br><br>- `protocol` : Protocol used by the rule. On of `All`, `Tcp` or `Udp` is accepted.<br>- `allocated_outbound_ports` : Number of ports allocated per instance. Defaults to `1024`.<br>- `enable_tcp_reset` : Ignored when `protocol` is set to `Udp`, defaults to `False` (Azure defaults).<br>- `idle_timeout_in_minutes` : Ignored when `protocol` is set to `Udp`. TCP connection timeout in case the connection is idle. Defaults to 4 minutes (Azure defaults).<br><br>Example:<pre>frontend_ips = {<br>  rule_1 = {<br>    create_public_ip = true<br>    in_rules = {<br>      HTTP = {<br>        port     = 80<br>        protocol = "Tcp"<br>        session_persistence = "SourceIP"<br>      }<br>    }<br>    out_rules = {<br>      "outbound_tcp" = {<br>        protocol                 = "Tcp"<br>        allocated_outbound_ports = 2048<br>        enable_tcp_reset         = true<br>        idle_timeout_in_minutes  = 10<br>      }<br>    }<br>  }<br>}</pre> | `any` | n/a | yes |
-| <a name="input_resource_group_name"></a> [resource\_group\_name](#input\_resource\_group\_name) | Name of a pre-existing Resource Group to place the resources in. | `string` | n/a | yes |
-| <a name="input_location"></a> [location](#input\_location) | Region to deploy load balancer and dependencies. | `string` | n/a | yes |
-| <a name="input_backend_name"></a> [backend\_name](#input\_backend\_name) | The name of the backend pool to create. All the frontends of the load balancer always use the same single backend. | `string` | `"vmseries_backend"` | no |
-| <a name="input_name"></a> [name](#input\_name) | The name of the load balancer. | `string` | n/a | yes |
-| <a name="input_probe_name"></a> [probe\_name](#input\_probe\_name) | The name of the load balancer probe. | `string` | `"vmseries_probe"` | no |
-| <a name="input_probe_port"></a> [probe\_port](#input\_probe\_port) | Health check port number of the load balancer probe. | `string` | `"80"` | no |
-| <a name="input_network_security_allow_source_ips"></a> [network\_security\_allow\_source\_ips](#input\_network\_security\_allow\_source\_ips) | List of IP CIDR ranges (such as `["192.168.0.0/16"]` or `["*"]`) from which the inbound traffic to all frontends should be allowed.<br>If it's empty, user is responsible for configuring a Network Security Group separately.<br>The list cannot include Azure tags like "Internet" or "Sql.EastUS". | `list(string)` | `[]` | no |
-| <a name="input_network_security_resource_group_name"></a> [network\_security\_resource\_group\_name](#input\_network\_security\_resource\_group\_name) | Name of the Resource Group where the `network_security_group_name` resides. If empty, defaults to `resource_group_name`. | `string` | `""` | no |
-| <a name="input_network_security_group_name"></a> [network\_security\_group\_name](#input\_network\_security\_group\_name) | Name of the pre-existing Network Security Group (NSG) where to add auto-generated rules. Each NSG rule corresponds to a single `in_rule` on the load balancer.<br>User is responsible to associate the NSG with the load balancer's subnet, the module only supplies the rules.<br>If empty, user is responsible for configuring an NSG separately. | `string` | `null` | no |
-| <a name="input_network_security_base_priority"></a> [network\_security\_base\_priority](#input\_network\_security\_base\_priority) | The base number from which the auto-generated priorities of the NSG rules grow.<br>Ignored if `network_security_group_name` is empty or if `network_security_allow_source_ips` is empty. | `number` | `1000` | no |
-| <a name="input_enable_zones"></a> [enable\_zones](#input\_enable\_zones) | If `false`, all the subnet-associated frontends and also all created Public IP addresses default to not to use Availability Zones (the `No-Zone` setting). It is intended for the regions that do not yet support Availability Zones. | `bool` | `true` | no |
-| <a name="input_tags"></a> [tags](#input\_tags) | Azure tags to apply to the created resources. | `map(string)` | `{}` | no |
-| <a name="input_avzones"></a> [avzones](#input\_avzones) | Controls zones for load balancer's Fronted IP configurations. For:<br><br>* public IPs - these are regions in which the IP resource is available<br>* private IPs - this represents Zones to which Azure will deploy paths leading to this Frontend IP.<br><br>For public IPs, after provider version 3.x (Azure API upgrade) you need to specify all zones available in a region (typically 3), ie: for zone-redundant with 3 availability zone in current region value will be:<pre>["1","2","3"]</pre> | `list(string)` | `[]` | no |
+|------|-------------|------|---------|----------|
+| load_balancer_name | The name of the Azure Load Balancer | `string` | n/a | yes |
+| location | The location/region where the Azure Load Balancer will be created | `string` | n/a | yes |
+| resource_group_name | The name of the resource group where the Azure Load Balancer will be created | `string` | n/a | yes |
+| load_balancer_sku | The SKU of the Azure Load Balancer | `string` | n/a | yes |
+| frontend_ip_configuration_name | The name of the frontend IP configuration | `string` | n/a | yes |
+| subnet_id | The ID of the subnet where the Azure Load Balancer will be deployed | `string` | n/a | yes |
+| private_ip_address_allocation | The allocation method for the private IP address | `string` | n/a | yes |
+| private_ip_address | The private IP address for the frontend IP configuration | `string` | n/a | yes |
+| backend_address_pool_name | The name of the backend address pool | `string` | n/a | yes |
+| probe_name | The name of the probe | `string` | n/a | yes |
+| probe_protocol | The protocol used for the probe | `string` | n/a | yes |
+| probe_port | The port used for the probe | `number` | n/a | yes |
+| probe_interval | The interval (in seconds) between probe requests | `number` | n/a | yes |
+| probe_number_of_probes | The number of consecutive probe failures required to mark a backend as unhealthy | `number` | n/a | yes |
+| probe_request_path | The path used for the probe request | `string` | n/a | yes |
+| probe_protocol_match | The protocol match condition for the probe | `string` | n/a | yes |
+| probe_ignore_https_server_name | Whether to ignore the HTTPS server name during the probe | `bool` | n/a | yes |
+| probe_match_body | The body match condition for the probe | `string` | n/a | yes |
+| probe_match_status_codes | The status codes to match for the probe | `list(number)` | n/a | yes |
+| probe_min_servers | The minimum number of healthy servers required for the probe | `number` | n/a | yes |
+| probe_max_servers | The maximum number of healthy servers required for the probe | `number` | n/a | yes |
+| probe_healthy_http_response | The healthy HTTP response for the probe | `string` | n/a | yes |
+| probe_unhealthy_http_response | The unhealthy HTTP response for the probe | `string` | n/a | yes |
+| probe_healthy_http_response_win | The healthy HTTP response for the probe (Windows) | `string` | n/a | yes |
+| probe_unhealthy_http_response_win | The unhealthy HTTP response for the probe (Windows) | `string` | n/a | yes |
+| load_balancing_rule_name | The name of the load balancing rule | `string` | n/a | yes |
+| load_balancing_rule_frontend_port | The frontend port for the load balancing rule | `number` | n/a | yes |
+| load_balancing_rule_backend_port | The backend port for the load balancing rule | `number` | n/a | yes |
+| load_balancing_rule_protocol | The protocol used for the load balancing rule | `string` | n/a | yes |
+| tags | Tags to apply to the Azure Load Balancer | `map(string)` | `{}` | no |
 
-### Outputs
+## Outputs
 
 | Name | Description |
 |------|-------------|
-| <a name="output_backend_pool_id"></a> [backend\_pool\_id](#output\_backend\_pool\_id) | The identifier of the backend pool. |
-| <a name="output_frontend_ip_configs"></a> [frontend\_ip\_configs](#output\_frontend\_ip\_configs) | Map of IP addresses, one per each entry of `frontend_ips` input. Contains public IP address for the frontends that have it, private IP address otherwise. |
-| <a name="output_health_probe"></a> [health\_probe](#output\_health\_probe) | The health probe object. |
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+| load_balancer_id | The ID of the Azure Load Balancer |
+| frontend_ip_configuration_id | The ID of the frontend IP configuration |
+| backend_address_pool_id | The ID of the backend address pool |
+| probe_id | The ID of the probe |
+| load_balancing_rule_id | The ID of the load balancing rule |
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).

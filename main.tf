@@ -50,7 +50,6 @@ module "virtual_network" {
     subnet1 = {
       subnet_type = "subnet1" // The type of the subnet
       cidrs       = ["10.0.1.0/24"] // The CIDR block of the subnet
-      ssh_port_open = true
       http_port_open = true
     }
     subnet2 = {
@@ -83,7 +82,7 @@ module "virtual_machine" {
   virtual_machine_size = "Standard_B1ls"
 
   // Define the custom data of the virtual machine
-  // custom_data = base64encode(file("${path.module}/example-file.sh"))
+  custom_data = base64encode(file("~/git/Azure-Terraform-Modules/virtual-machine/custom-data/script.sh"))
 
   // Define the operating system image of the virtual machine
   source_image_publisher = "Canonical"
@@ -92,9 +91,55 @@ module "virtual_machine" {
   source_image_version   = "latest"
   // Define the virtual network of the virtual machine
   subnet_id              = module.virtual_network.subnets["subnet1"].id
-  public_ip_enabled      = true // Whether the public IP is enabled
+  public_ip_enabled      = false // Whether the public IP is enabled
   public_ip_sku          = "Standard" // The SKU of the public IP
   // Define the admin username and password for the virtual machine
   admin_username       = "testuser" // The username of the admin
   admin_ssh_public_key = file("~/.ssh/id_rsa.pub") // The SSH public key of the admin
+}
+
+// Define the azurerm_public_ip module
+module "azurerm_public_ip" {
+  source = "./load-balancers" // The source of the module
+  names = {
+    environment  = "dev" // The environment name
+    location     = "centralindia" // The location of the public IP
+    project_name = "test" // The project name
+  }
+  frontend_ips = {
+    rule_1 = {
+      create_public_ip = true
+      in_rules = {
+        HTTP = {
+          port     = 80
+          protocol = "Tcp"
+          backend_port = 80
+          session_persistence = "SourceIP"
+        }
+      }
+    }
+  }
+  resource_group_name = module.resource_group.name // The name of the resource group
+  location            = "centralindia" // The location of the public IP
+  tags = {
+    environment = "dev" // The environment tag
+    project     = "test" // The project tag
+  }
+}
+
+// Define the load balancer module
+module "load_balancer" {
+  source = "./load-balancers" // The source of the module
+  names = {
+    environment  = "dev" // The environment name
+    location     = "centralindia" // The location of the load balancer
+    project_name = "test" // The project name
+  }
+  resource_group_name = module.resource_group.name // The name of the resource group
+  location            = "centralindia" // The location of the load balancer
+  tags = {
+    environment = "dev" // The environment tag
+    project     = "test" // The project tag
+  }
+  backend_pool_vm_ids = module.virtual_machine.vm_ids // The IDs of the virtual machines in the backend pool
 }
