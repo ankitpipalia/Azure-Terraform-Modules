@@ -54,7 +54,7 @@ variable "service_tags_allowed" {
 
 variable "enable_client_affinity" {
   description = "Should the App Service send session affinity cookies, which route client requests in the same session to the same instance?"
-  type        = bool 
+  type        = bool
   default     = false
 }
 
@@ -78,7 +78,7 @@ variable "tags" {
 
 variable "connection_strings" {
   description = "Map of connection strings for the web app"
-  type        = list(object({
+  type = list(object({
     name  = string
     type  = string
     value = string
@@ -92,5 +92,5 @@ variable "identity_ids" {
 
 variable "zip_deploy_file_path" {
   description = "Zip Deployment File path"
-  type = string
+  type        = string
 }
