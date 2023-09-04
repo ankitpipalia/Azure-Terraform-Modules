@@ -1,8 +1,3 @@
-variable "vm_name" {
-  description = "The name of the virtual machine"
-  type        = string
-}
-
 variable "location" {
   description = "The location/region where the virtual machine will be created"
   type        = string
@@ -81,21 +76,13 @@ variable "admin_password" {
 variable "disable_password_authentication" {
   description = "Flag to disable password authentication for SSH"
   type        = bool
-}
-
-variable "ssh_key_path" {
-  description = "The path to the SSH public key file"
-  type        = string
-}
-
-variable "ssh_key_data" {
-  description = "The SSH public key data"
-  type        = string
+  default     = false
 }
 
 variable "boot_diagnostics_enabled" {
   description = "Flag to enable boot diagnostics"
   type        = bool
+  default     = false
 }
 
 variable "boot_diagnostics_storage_uri" {
@@ -111,11 +98,6 @@ variable "tags" {
   })
 }
 
-variable "nic_name" {
-  description = "The name of the network interface"
-  type        = string
-}
-
 variable "ip_configuration_name" {
   description = "The name of the IP configuration"
   type        = string
@@ -129,14 +111,12 @@ variable "subnet_id" {
 variable "private_ip_address_allocation" {
   description = "The private IP address allocation method"
   type        = string
+  default = "Dynamic"
 }
 
 variable "private_ip_address" {
   description = "The private IP address"
   type        = string
+  default = "[172.16.0.0/24]"
 }
 
-variable "public_ip_address_id" {
-  description = "The ID of the public IP address"
-  type        = string
-}
