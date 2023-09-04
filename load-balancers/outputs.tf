@@ -1,5 +1,3 @@
-outputs.tf
-
 output "load_balancer_id" {
   description = "The ID of the Azure Load Balancer"
   value       = azurerm_lb.load_balancer.id

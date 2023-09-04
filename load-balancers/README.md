@@ -112,7 +112,3 @@ output "load_balancing_rule_id" {
 | backend_address_pool_id | The ID of the backend address pool |
 | probe_id | The ID of the probe |
 | load_balancing_rule_id | The ID of the load balancing rule |
-
-## License
-
-This project is licensed under the [MIT License](LICENSE).

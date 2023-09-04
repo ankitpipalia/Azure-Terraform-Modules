@@ -1,145 +1,63 @@
-// Define the required providers for Terraform
 terraform {
   required_providers {
     azurerm = {
-      source  = "hashicorp/azurerm" // The source of the provider
-      version = ">3" // The version of the provider
+      source  = "hashicorp/azurerm" 
+      version = ">3" 
     }
   }
 }
 
-// Define the Azure provider
 provider "azurerm" {
-  features {} // Enable all features
+  features {} 
 }
 
-// Define the resource group module
+locals {
+  subnets = ["subnet1", "subnet2", "subnet3"]
+}
+
 module "resource_group" {
-  source = "./resource-group" // The source of the module
-  names = {
-    environment  = "dev" // The environment name
-    location     = "centralindia" // The location of the resource group
-    project_name = "test" // The project name
-  }
-  location = "centralindia" // The location of the resource group
+  source = "./resource-group"
   tags = {
-    environment = "dev" // The environment tag
-    project     = "test" // The project tag
+    environment = "dev" 
+    project     = "test" 
   }
-  unique_name = "true" // Whether the name is unique
+  unique_name = "true" 
+  location = "centralindia"
 }
 
-// Define the virtual network module
 module "virtual_network" {
-  source = "./virtual-network" // The source of the module
-  names = {
-    environment  = "dev" // The environment name
-    location     = "centralindia" // The location of the virtual network
-    project_name = "test" // The project name
-  }
-  resource_group_name = module.resource_group.name // The name of the resource group
-  location            = "centralindia" // The location of the virtual network
+  source = "./virtual-network"
+  location = module.resource_group.location
+  resource_group_name = module.resource_group.name
   tags = {
-    environment = "dev" // The environment tag
-    project     = "test" // The project tag
+    environment = "dev" 
+    project     = "test" 
   }
-  enforce_subnet_names = false // Whether to enforce subnet names
-  
-  address_space        = ["10.0.0.0/16"] // The address space of the virtual network
-  subnets = {
-    subnet1 = {
-      subnet_type = "subnet1" // The type of the subnet
-      cidrs       = ["10.0.1.0/24"] // The CIDR block of the subnet
-      http_port_open = true
-    }
-    subnet2 = {
-      subnet_type = "subnet2" // The type of the subnet
-      cidrs       = ["10.0.2.0/24"] // The CIDR block of the subnet
-      https_port_open = true
-    }
-  }
+  address_space = ["10.0.0.0/16"]
 }
 
-// Define the virtual machine module
+module "subnets" {
+  source = "./subnets"
+  for_each = toset(local.subnets)
+  subnet_name = each.value
+  resource_group_name = module.resource_group.name
+  virtual_network_name = module.virtual_network.name
+  subnet_address_prefix = cidrsubnet(module.virtual_network.address_space[0], 8, index(local.subnets, each.value))  # Ensure unique address for each subnet
+  # For example, if you're given a prefix ending in /16 and you want your subnets to have a prefix of /20, then newbits would be 4, because 20 - 16 = 4
+}
+
 module "virtual_machine" {
-  count = 2
-  source = "./virtual-machine" // The source of the module
-  names = {
-    environment  = "dev" // The environment name
-    location     = "centralindia" // The location of the virtual machine
-    project_name = "k8s-nodes" // The project name
-  }
-  resource_group_name = module.resource_group.name // The name of the resource group
-  location            = "centralindia" // The location of the virtual machine
+  source = "./virtual-machine"
+  location = module.resource_group.location
+  resource_group_name = module.resource_group.name
   tags = {
-    environment = "dev" // The environment tag
-    project     = "test" // The project tag
+    environment = "dev" 
+    project     = "test" 
   }
-  // Define the kernel type of the virtual machine
-  kernel_type = "linux"
-
-  // Define the instance size of the virtual machine
-  virtual_machine_size = "Standard_B1ls"
-
-  // Define the custom data of the virtual machine
-  custom_data = base64encode(file("~/git/Azure-Terraform-Modules/virtual-machine/custom-data/script.sh"))
-
-  // Define the operating system image of the virtual machine
-  source_image_publisher = "Canonical"
-  source_image_offer     = "0001-com-ubuntu-minimal-focal"
-  source_image_sku       = "minimal-20_04-lts-gen2"
-  source_image_version   = "latest"
-  // Define the virtual network of the virtual machine
-  subnet_id              = module.virtual_network.subnets["subnet1"].id
-  public_ip_enabled      = false // Whether the public IP is enabled
-  public_ip_sku          = "Standard" // The SKU of the public IP
-  // Define the admin username and password for the virtual machine
-  admin_username       = "testuser" // The username of the admin
-  admin_ssh_public_key = file("~/.ssh/id_rsa.pub") // The SSH public key of the admin
-}
-
-// Define the azurerm_public_ip module
-module "azurerm_public_ip" {
-  source = "./load-balancers" // The source of the module
-  names = {
-    environment  = "dev" // The environment name
-    location     = "centralindia" // The location of the public IP
-    project_name = "test" // The project name
-  }
-  frontend_ips = {
-    rule_1 = {
-      create_public_ip = true
-      in_rules = {
-        HTTP = {
-          port     = 80
-          protocol = "Tcp"
-          backend_port = 80
-          session_persistence = "SourceIP"
-        }
-      }
-    }
-  }
-  resource_group_name = module.resource_group.name // The name of the resource group
-  location            = "centralindia" // The location of the public IP
-  tags = {
-    environment = "dev" // The environment tag
-    project     = "test" // The project tag
-  }
-}
-
-// Define the load balancer module
-module "load_balancer" {
-  source = "./load-balancers" // The source of the module
-  names = {
-    environment  = "dev" // The environment name
-    location     = "centralindia" // The location of the load balancer
-    project_name = "test" // The project name
-  }
-  resource_group_name = module.resource_group.name // The name of the resource group
-  location            = "centralindia" // The location of the load balancer
-  tags = {
-    environment = "dev" // The environment tag
-    project     = "test" // The project tag
-  }
-  backend_pool_vm_ids = module.virtual_machine.vm_ids // The IDs of the virtual machines in the backend pool
+  subnet_id = module.subnets["subnet1"].id
+  vm_size = "Standard_DS1_v2"
+  admin_username = "azureuser"
+  admin_password = "Password1234!"
+  disable_password_authentication = false
+  ssh_key_path = "~/.ssh/id_rsa.pub"
 }

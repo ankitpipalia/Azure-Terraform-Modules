@@ -19,7 +19,7 @@ module "Resource_Group" {
     names = {
         environment = "dev"
         location = "east"
-        project_name = "test"
+        project = "test"
           
     }
     unique_name = "false"
