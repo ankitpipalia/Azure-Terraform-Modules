@@ -1,16 +1,18 @@
-variable "tags" {
-  description = "Tags to be applied to resources (inclusive)"
-  type        = object({
-    environment         = string
-    project        = string
-  })
-}
-
 variable "address_space" {
   description = "The address space of the virtual network"
   type        = list(string)
 }
 
+variable "virtual_network_name" {
+  description = "The name of the virtual network"
+  type        = string
+}
+
+variable "tags" {
+  description = "tags to be applied to resources"
+  type        = map(string)
+  default     = {}
+}
 variable "location" {
   description = "The location of the virtual network"
   type        = string

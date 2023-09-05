@@ -141,5 +141,6 @@ variable "enable_boot_diagnostics" {
 variable "tags" {
   description = "tags to be applied to resources"
   type        = map(string)
+  default     = {}
 }
 

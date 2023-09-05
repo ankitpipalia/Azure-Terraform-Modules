@@ -3,16 +3,13 @@ variable "location" {
   type        = string
 }
 
-variable "unique_name" {
-  description = "Freeform input to append to resource group name. Set to 'true', to append 5 random integers"
-  type        = string
-  default     = null
+variable "tags" {
+  description = "tags to be applied to resources"
+  type        = map(string)
+  default     = {}
 }
 
-variable "tags" {
-  description = "Tags to be applied to resources (inclusive)"
-  type        = object({
-    environment         = string
-    project        = string
-  })
+variable "resource_group_name" {
+  description = "Name of the resource group"
+  type        = string
 }

@@ -17,27 +17,23 @@ locals {
 
 module "resource_group" {
   source = "./resource-group"
-  tags = {
-    environment = "dev" 
-    project     = "test" 
-  }
-  unique_name = "true" 
+
+  resource_group_name = "test-rg"
   location = "centralindia"
 }
 
 module "virtual_network" {
   source = "./virtual-network"
+
+  virtual_network_name = "test-vnet"
   location = module.resource_group.location
   resource_group_name = module.resource_group.name
-  tags = {
-    environment = "dev" 
-    project     = "test" 
-  }
   address_space = ["10.0.0.0/16"]
 }
 
 module "subnets" {
   source = "./subnets"
+
   for_each = toset(local.subnets)
   subnet_name = each.value
   resource_group_name = module.resource_group.name
@@ -48,19 +44,17 @@ module "subnets" {
 
 module "public_ip_address" {
   source = "./public-ip"
+
   public_ip_name = "test-pip"
   resource_group_name = module.resource_group.name
   location = module.resource_group.location
   allocation_method = "Static"
   sku = "Standard"
-  tags = {
-    environment = "dev" 
-    project     = "test" 
-  }
 }
 
 module "network_interface" {
   source = "./network-interface"
+
   network_interface_name = "test-nic"
   resource_group_name = module.resource_group.name
   location = module.resource_group.location
@@ -69,21 +63,14 @@ module "network_interface" {
   private_ip_address_allocation = "Dynamic"
   private_ip_address = null
   public_ip_address_id = module.public_ip_address.id
-  tags = {
-    environment = "dev" 
-    project     = "test" 
-  }
 }
 
 module "network_security_group" {
   source = "./network-security-group"
+
   network_security_group_name = "test-nsg"
   resource_group_name = module.resource_group.name
   location = module.resource_group.location
-  tags = {
-    environment = "dev" 
-    project     = "test" 
-  }
   inbound_rules = [
     {
       name                       = "SSH"
@@ -148,9 +135,5 @@ module "virtual_machine" {
   source_image_offer     = "0001-com-ubuntu-minimal-focal"
   source_image_sku       = "minimal-20_04-lts-gen2"
   source_image_version   = "latest"
-  tags = {
-    environment = "dev" 
-    project     = "test" 
-  }
   depends_on = [ module.network_interface ]
 }

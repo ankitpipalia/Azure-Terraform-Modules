@@ -39,6 +39,7 @@ variable "public_ip_address_id" {
 }
 
 variable "tags" {
-  description = "The tags for the network interface"
+  description = "tags to be applied to resources"
   type        = map(string)
+  default     = {}
 }

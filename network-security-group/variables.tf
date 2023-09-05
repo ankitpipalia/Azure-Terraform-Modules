@@ -16,6 +16,7 @@ variable "resource_group_name" {
 variable "tags" {
   description = "tags to be applied to resources"
   type        = map(string)
+  default     = {}
 }
 
 variable "inbound_rules" {
