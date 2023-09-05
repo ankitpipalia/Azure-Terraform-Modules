@@ -11,7 +11,6 @@ provider "azurerm" {
   features {} 
 }
 
-
 locals {
   subnets = ["subnet1", "subnet2", "subnet3"]
 }
@@ -76,6 +75,66 @@ module "network_interface" {
   }
 }
 
+module "network_security_group" {
+  source = "./network-security-group"
+  network_security_group_name = "test-nsg"
+  resource_group_name = module.resource_group.name
+  location = module.resource_group.location
+  tags = {
+    environment = "dev" 
+    project     = "test" 
+  }
+  inbound_rules = [
+    {
+      name                       = "SSH"
+      priority                   = 100
+      access                     = "Allow"
+      protocol                   = "Tcp"
+      source_address_prefix      = "*"
+      source_port_range          = "*"
+      destination_address_prefix = "*"
+      destination_port_range     = "22"
+      description                = "Allow SSH"
+    },
+    {
+      name                       = "HTTP"
+      priority                   = 101
+      access                     = "Allow"
+      protocol                   = "Tcp"
+      source_address_prefix      = "*"
+      source_port_range          = "*"
+      destination_address_prefix = "*"
+      destination_port_range     = "80"
+      description                = "Allow HTTP"
+    },
+    {
+      name                       = "HTTPS"
+      priority                   = 102
+      access                     = "Allow"
+      protocol                   = "Tcp"
+      source_address_prefix      = "*"
+      source_port_range          = "*"
+      destination_address_prefix = "*"
+      destination_port_range     = "443"
+      description                = "Allow HTTPS"
+    }
+  ]
+  outbound_rules = [
+    {
+      name                       = "AllowInternetOutBound"
+      priority                   = 100
+      access                     = "Allow"
+      protocol                   = "*"
+      source_address_prefix      = "*"
+      source_port_range          = "*"
+      destination_address_prefix = "*"
+      destination_port_range     = "*"
+      description                = "Allow Internet OutBound"
+    }
+  ]
+  subnet_id = module.subnets["subnet1"].id  
+}
+
 module "virtual_machine" {
   source = "./virtual-machine"
   virtual_machine_name = "test-vm"
@@ -93,4 +152,5 @@ module "virtual_machine" {
     environment = "dev" 
     project     = "test" 
   }
+  depends_on = [ module.network_interface ]
 }

@@ -31,9 +31,10 @@ variable "admin_password" {
 }
 
 variable "admin_ssh_public_key" {
-  description = "SSH Public Key"
+  description = "Public SSH Key"
   type        = string
-  default     = null
+  default     = ""
+  sensitive   = true
 }
 
 variable "network_interface_id" {
@@ -95,18 +96,6 @@ variable "source_image_id" {
   default     = null
 }
 
-variable "boot_diagnostics_enabled" {
-  description = "Enable Boot Diagnostics"
-  type        = bool
-  default     = false
-}
-
-variable "boot_diagnostics_storage_uri" {
-  description = "Boot Diagnostics Storage URI"
-  type        = string
-  default     = null
-}
-
 variable "availability_zone" {
   description = "Availability Zone"
   type        = string
@@ -119,16 +108,34 @@ variable "ultra_ssd_enabled" {
   default     = false
 }
 
+# VM Identity
 variable "identity_type" {
-  description = "Identity Type"
+  description = "The Managed Service Identity Type of this Virtual Machine. Possible values are SystemAssigned (where Azure will generate a Managed Identity for you), UserAssigned (where you can specify the Managed Identities ID)."
+  type        = string
+  default     = "SystemAssigned"
+
+  validation {
+    condition     = (contains(["systemassigned", "userassigned"], lower(var.identity_type)))
+    error_message = "The identity type can only be \"UserAssigned\" or \"SystemAssigned\"."
+  }
+}
+
+variable "identity_ids" {
+  description = "Specifies a list of user managed identity ids to be assigned to the VM"
+  type        = list(string)
+  default     = []
+}
+
+variable "diagnostics_storage_account_uri" {
+  description = "The Storage Account's Blob Endpoint which should hold the virtual machine's diagnostic files."
   type        = string
   default     = null
 }
-  
-variable "identity_ids" {
-  description = "Identity IDs"
-  type        = list(string)
-  default     = null
+
+variable "enable_boot_diagnostics" {
+  description = "Whether to enable boot diagnostics on the virtual machine."
+  type        = bool
+  default     = false
 }
 
 variable "tags" {

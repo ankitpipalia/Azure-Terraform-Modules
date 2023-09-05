@@ -5,12 +5,15 @@ resource "azurerm_linux_virtual_machine" "vm" {
   size                = var.vm_size
   admin_username      = var.admin_username
   admin_password      = var.admin_password
-
+  disable_password_authentication = var.admin_password == "" ? true : false
   network_interface_ids = [var.network_interface_id]
 
-  admin_ssh_key {
-    username   = var.admin_username
-    public_key = var.admin_ssh_public_key
+  dynamic "admin_ssh_key" {
+    for_each = var.admin_password == "" ? ["no_admin_password_provided"] : []
+    content {
+      username   = var.admin_username
+      public_key = var.admin_ssh_public_key
+    }
   }
 
   os_disk {
@@ -30,9 +33,12 @@ resource "azurerm_linux_virtual_machine" "vm" {
       version   = var.source_image_version
     }
   }
-  
-  boot_diagnostics {
-    storage_uri = var.boot_diagnostics_storage_uri
+
+  dynamic "boot_diagnostics" {
+    for_each = var.enable_boot_diagnostics ? ["enabled"] : []
+    content {
+      storage_account_uri = var.diagnostics_storage_account_uri
+    }
   }
 
   zone = var.availability_zone
