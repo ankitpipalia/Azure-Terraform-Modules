@@ -13,6 +13,7 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
+
 variable "location" {
   description = "The location of the virtual network"
   type        = string

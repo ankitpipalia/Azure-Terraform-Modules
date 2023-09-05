@@ -82,28 +82,6 @@ module "network_security_group" {
       destination_address_prefix = "*"
       destination_port_range     = "22"
       description                = "Allow SSH"
-    },
-    {
-      name                       = "HTTP"
-      priority                   = 101
-      access                     = "Allow"
-      protocol                   = "Tcp"
-      source_address_prefix      = "*"
-      source_port_range          = "*"
-      destination_address_prefix = "*"
-      destination_port_range     = "80"
-      description                = "Allow HTTP"
-    },
-    {
-      name                       = "HTTPS"
-      priority                   = 102
-      access                     = "Allow"
-      protocol                   = "Tcp"
-      source_address_prefix      = "*"
-      source_port_range          = "*"
-      destination_address_prefix = "*"
-      destination_port_range     = "443"
-      description                = "Allow HTTPS"
     }
   ]
   outbound_rules = [
@@ -124,6 +102,7 @@ module "network_security_group" {
 
 module "virtual_machine" {
   source = "./virtual-machine"
+
   virtual_machine_name = "test-vm"
   resource_group_name = module.resource_group.name
   location = module.resource_group.location
