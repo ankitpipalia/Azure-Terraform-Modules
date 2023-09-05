@@ -11,6 +11,7 @@ provider "azurerm" {
   features {} 
 }
 
+
 locals {
   subnets = ["subnet1", "subnet2", "subnet3"]
 }
