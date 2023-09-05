@@ -46,18 +46,50 @@ module "subnets" {
   # For example, if you're given a prefix ending in /16 and you want your subnets to have a prefix of /20, then newbits would be 4, because 20 - 16 = 4
 }
 
-module "virtual_machine" {
-  source = "./virtual-machine"
-  location = module.resource_group.location
+module "public_ip_address" {
+  source = "./public-ip"
+  public_ip_name = "test-pip"
   resource_group_name = module.resource_group.name
+  location = module.resource_group.location
+  allocation_method = "Static"
+  sku = "Standard"
   tags = {
     environment = "dev" 
     project     = "test" 
   }
+}
+
+module "network_interface" {
+  source = "./network-interface"
+  network_interface_name = "test-nic"
+  resource_group_name = module.resource_group.name
+  location = module.resource_group.location
+  ip_configuration_name = "testconfiguration1"
   subnet_id = module.subnets["subnet1"].id
-  vm_size = "Standard_DS1_v2"
-  admin_username = "azureuser"
+  private_ip_address_allocation = "Dynamic"
+  private_ip_address = null
+  public_ip_address_id = module.public_ip_address.id
+  tags = {
+    environment = "dev" 
+    project     = "test" 
+  }
+}
+
+module "virtual_machine" {
+  source = "./virtual-machine"
+  virtual_machine_name = "test-vm"
+  resource_group_name = module.resource_group.name
+  location = module.resource_group.location
+  vm_size = "Standard_B1ls"
+  admin_username = "testadmin"
   admin_password = "Password1234!"
-  disable_password_authentication = false
-  ssh_key_path = "~/.ssh/id_rsa.pub"
+  network_interface_id = module.network_interface.id
+  source_image_publisher = "Canonical"
+  source_image_offer     = "0001-com-ubuntu-minimal-focal"
+  source_image_sku       = "minimal-20_04-lts-gen2"
+  source_image_version   = "latest"
+  tags = {
+    environment = "dev" 
+    project     = "test" 
+  }
 }
