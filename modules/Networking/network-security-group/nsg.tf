@@ -2,7 +2,13 @@ resource "azurerm_network_security_group" "nsg" {
   name                = var.network_security_group_name
   resource_group_name = var.resource_group_name
   location            = var.location
-  tags                = var.tags
+  tags = merge(
+    {
+      "Environment" = var.tags.environment,
+      "Project"     = var.tags.project
+    },
+    var.custom_tags
+  )
 }
 
 resource "azurerm_network_security_rule" "inbound" {

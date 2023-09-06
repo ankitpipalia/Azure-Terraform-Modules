@@ -2,7 +2,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm" 
-      version = ">3" 
+      version = "~>3.0" 
     }
   }
 }
@@ -13,26 +13,37 @@ provider "azurerm" {
 
 locals {
   subnets = ["subnet1", "subnet2", "subnet3"]
+  tags = {
+    environment = "Production"
+    project     = "Project1"
+  }
+  custom_tags = {
+    owner = "user1"
+  }
 }
 
 module "resource_group" {
-  source = "./resource-group"
+  source = "./modules/Management/resource-group"
 
   resource_group_name = "test-rg"
   location = "centralindia"
+  tags = local.tags
+  custom_tags = local.custom_tags
 }
 
 module "virtual_network" {
-  source = "./virtual-network"
+  source = "./modules/Networking/Virtual Networks"
 
   virtual_network_name = "test-vnet"
   location = module.resource_group.location
   resource_group_name = module.resource_group.name
   address_space = ["10.0.0.0/16"]
+  tags = local.tags
+  custom_tags = local.custom_tags
 }
 
 module "subnets" {
-  source = "./subnets"
+  source = "./modules/Networking/subnets"
 
   for_each = toset(local.subnets)
   subnet_name = each.value
@@ -43,17 +54,19 @@ module "subnets" {
 }
 
 module "public_ip_address" {
-  source = "./public-ip"
+  source = "./modules/Networking/public-ip"
 
   public_ip_name = "test-pip"
   resource_group_name = module.resource_group.name
   location = module.resource_group.location
   allocation_method = "Static"
   sku = "Standard"
+  tags = local.tags
+  custom_tags = local.custom_tags
 }
 
 module "network_interface" {
-  source = "./network-interface"
+  source = "./modules/Networking/network-interface"
 
   network_interface_name = "test-nic"
   resource_group_name = module.resource_group.name
@@ -63,10 +76,12 @@ module "network_interface" {
   private_ip_address_allocation = "Dynamic"
   private_ip_address = null
   public_ip_address_id = module.public_ip_address.id
+  tags = local.tags
+  custom_tags = local.custom_tags
 }
 
 module "network_security_group" {
-  source = "./network-security-group"
+  source = "./modules/Networking/network-security-group"
 
   network_security_group_name = "test-nsg"
   resource_group_name = module.resource_group.name
@@ -98,10 +113,13 @@ module "network_security_group" {
     }
   ]
   subnet_id = module.subnets["subnet1"].id  
+
+  tags = local.tags
+  custom_tags = local.custom_tags
 }
 
 module "virtual_machine" {
-  source = "./virtual-machine"
+  source = "./modules/Compute/virtual-machine"
 
   virtual_machine_name = "test-vm"
   resource_group_name = module.resource_group.name
@@ -115,4 +133,7 @@ module "virtual_machine" {
   source_image_sku       = "minimal-20_04-lts-gen2"
   source_image_version   = "latest"
   depends_on = [ module.network_interface ]
+
+  tags = local.tags
+  custom_tags = local.custom_tags
 }

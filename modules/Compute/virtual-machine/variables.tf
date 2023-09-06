@@ -139,8 +139,15 @@ variable "enable_boot_diagnostics" {
 }
 
 variable "tags" {
-  description = "tags to be applied to resources"
+  description = "Tags to be applied to resources (inclusive)"
+  type        = object({
+    environment         = string
+    project        = string
+  })
+}
+
+variable "custom_tags" {
+  description = "Custom tags to be applied to resources (in addition to the tags above)"
   type        = map(string)
   default     = {}
 }
-

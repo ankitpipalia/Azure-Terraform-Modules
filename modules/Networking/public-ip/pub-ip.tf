@@ -5,5 +5,11 @@ resource "azurerm_public_ip" "public_ip" {
   allocation_method   = var.allocation_method
   sku                 = var.sku
 
-  tags = var.tags
+  tags = merge(
+    {
+      "Environment" = var.tags.environment,
+      "Project"     = var.tags.project
+    },
+    var.custom_tags
+  )
 }

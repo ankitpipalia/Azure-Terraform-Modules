@@ -26,7 +26,15 @@ variable "sku" {
 }
 
 variable "tags" {
-  description = "Tags to apply to the public IP"
+  description = "Tags to be applied to resources (inclusive)"
+  type        = object({
+    environment         = string
+    project        = string
+  })
+}
+
+variable "custom_tags" {
+  description = "Custom tags to be applied to resources (in addition to the tags above)"
   type        = map(string)
   default     = {}
 }

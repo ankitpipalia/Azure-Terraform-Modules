@@ -52,5 +52,12 @@ resource "azurerm_linux_virtual_machine" "vm" {
     identity_ids = var.identity_ids
   }
 
-  tags = var.tags
+  tags = merge(
+    {
+      "Environment" = var.tags.environment,
+      "Project"     = var.tags.project
+    },
+    var.custom_tags
+  )
+
 }

@@ -38,8 +38,40 @@ variable "public_ip_address_id" {
   type        = string
 }
 
+variable "dns_servers" {
+  description = "The DNS servers"
+  type        = list(string)
+  default     = []
+} 
+
+variable "enable_accelerated_networking" {
+  description = "Enable accelerated networking"
+  type        = bool
+  default     = false
+}
+
+variable "enable_ip_forwarding" {
+  description = "Enable IP forwarding"
+  type        = bool
+  default     = false
+}
+
+variable "internal_dns_name_label" {
+  description = "The internal DNS name label"
+  type        = string
+  default     = null
+}
+
 variable "tags" {
-  description = "tags to be applied to resources"
+  description = "Tags to be applied to resources (inclusive)"
+  type        = object({
+    environment         = string
+    project        = string
+  })
+}
+
+variable "custom_tags" {
+  description = "Custom tags to be applied to resources (in addition to the tags above)"
   type        = map(string)
   default     = {}
 }
