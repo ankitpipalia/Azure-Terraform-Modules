@@ -1,22 +1,20 @@
 resource "azurerm_storage_account" "sa" {
-  name                     = (var.name == null ? random_string.random.result : var.name)
+  name                     = var.storage_account_name
   resource_group_name      = var.resource_group_name
   location                 = var.location
   account_kind             = var.account_kind
-  account_tier             = local.account_tier
+  account_tier             = var.account_tier
   account_replication_type = var.replication_type
-  access_tier              = var.access_tier
-  tags                     = var.tags
-
-  is_hns_enabled                    = var.enable_hns
-  sftp_enabled                      = var.enable_sftp
-  large_file_share_enabled          = var.enable_large_file_share
-  allow_nested_items_to_be_public   = var.allow_nested_items_to_be_public
+  
+  tags = merge(
+    {
+      "Environment" = var.tags.environment,
+      "Project"     = var.tags.project
+    },
+    var.custom_tags
+  )
   enable_https_traffic_only         = var.enable_https_traffic_only
   min_tls_version                   = var.min_tls_version
-  nfsv3_enabled                     = var.nfsv3_enabled
-  infrastructure_encryption_enabled = var.infrastructure_encryption_enabled
-  shared_access_key_enabled         = var.shared_access_key_enabled
 
   identity {
     type = "SystemAssigned"
@@ -55,7 +53,7 @@ resource "azurerm_storage_account" "sa" {
   }
 
   dynamic "static_website" {
-    for_each = local.static_website_enabled
+    for_each = (var.static_website_enabled == true ? [1] : [])
     content {
       index_document     = var.index_path
       error_404_document = var.custom_404_path
@@ -77,4 +75,14 @@ resource "azurerm_storage_encryption_scope" "scope" {
   storage_account_id                 = azurerm_storage_account.sa.id
   source                             = coalesce(each.value.source, "Microsoft.Storage")
   infrastructure_encryption_required = coalesce(each.value.enable_infrastructure_encryption, var.infrastructure_encryption_enabled)
+}
+
+resource "azurerm_storage_container" "container" {
+  for_each = try({ for c in var.containers : c.name => c }, {})
+
+  storage_account_name = azurerm_storage_account.sa.name
+
+  name                  = each.key
+  container_access_type = each.value.container_access_type
+  metadata              = each.value.metadata
 }

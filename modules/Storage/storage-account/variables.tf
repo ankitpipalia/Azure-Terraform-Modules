@@ -1,7 +1,6 @@
-variable "name" {
+variable "storage_account_name" {
   description = "Storage account name"
   type        = string
-  default     = null
 }
 
 variable "location" {
@@ -15,8 +14,17 @@ variable "resource_group_name" {
 }
 
 variable "tags" {
-  description = "tags to be applied to resources"
+  description = "Tags to be applied to resources (inclusive)"
+  type        = object({
+    environment         = string
+    project        = string
+  })
+}
+
+variable "custom_tags" {
+  description = "Custom tags to be applied to resources (in addition to the tags above)"
   type        = map(string)
+  default     = {}
 }
 
 variable "account_kind" {
@@ -31,38 +39,9 @@ variable "account_tier" {
   default     = null
 }
 
-variable "access_tier" {
-  description = "Defines the access tier for BlobStorage, FileStorage and StorageV2 accounts"
-  type        = string
-  default     = "Hot"
-
-  validation {
-    condition     = (contains(["hot", "cool"], lower(var.access_tier)))
-    error_message = "The account_tier must be either \"Hot\" or \"Cool\"."
-  }
-}
-
 variable "replication_type" {
   description = "Storage account replication type - i.e. LRS, GRS, RAGRS, ZRS, GZRS, RAGZRS."
   type        = string
-}
-
-variable "enable_large_file_share" {
-  description = "Enable Large File Share."
-  type        = bool
-  default     = false
-}
-
-variable "enable_hns" {
-  description = "Enable Hierarchical Namespace (can be used with Azure Data Lake Storage Gen 2)."
-  type        = bool
-  default     = false
-}
-
-variable "enable_sftp" {
-  description = "Enable SFTP for storage account (enable_hns must be set to true for this to work)."
-  type        = bool
-  default     = false
 }
 
 variable "enable_https_traffic_only" {
@@ -75,12 +54,6 @@ variable "min_tls_version" {
   description = "The minimum supported TLS version for the storage account."
   type        = string
   default     = "TLS1_2"
-}
-
-variable "allow_nested_items_to_be_public" {
-  description = "Allow or disallow public access to all blobs or containers in the storage account."
-  type        = bool
-  default     = false
 }
 
 # Note: make sure to include the IP address of the host from where "terraform" command is executed to allow for access to the storage
@@ -121,7 +94,7 @@ variable "blob_cors" {
   default = null
 }
 
-variable "enable_static_website" {
+variable "static_website_enabled" {
   description = "Controls if static website to be enabled on the storage account. Possible values are `true` or `false`"
   type        = bool
   default     = false
@@ -147,6 +120,16 @@ variable "encryption_scopes" {
   }))
 
   default = {}
+}
+
+variable "containers" {
+  description = "List of objects to create some Blob containers in this Storage Account."
+  type = list(object({
+    name                  = string
+    container_access_type = optional(string, "private")
+    metadata              = optional(map(string))
+  }))
+  default = []
 }
 
 variable "infrastructure_encryption_enabled" {
