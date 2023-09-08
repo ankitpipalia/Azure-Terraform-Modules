@@ -45,10 +45,10 @@ module "storage_acount" {
   default_network_rule = "Allow" # Allow or Deny All Public Access Not Recommanded Use Your Public IP using Access List
 
   access_list = {
-    "ip1" = "150.129.104.117" # List Of IP's can access the storage account
+    "ip1" = "xx.xx.xx.xx" # List Of IP's can access the storage account
   }
 
-  
+
   static_website_enabled = true
   index_path = "index.html"
   custom_404_path = "error.html"
