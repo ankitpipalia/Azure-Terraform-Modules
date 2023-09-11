@@ -2,14 +2,6 @@
 
 This Terraform module creates an Azure Service Plan. It includes all the necessary resources for production use, except for the resource group.
 
-## Prerequisites
-
-Before using this module, make sure you have the following:
-
-- Azure subscription
-- Terraform installed
-- Azure Resource Group
-
 ## Usage
 ```hcl
 module "service_plan" {
@@ -18,7 +10,7 @@ module "service_plan" {
   location = "eastus"
   os_type = "Linux"
   resource_group_name = module.resource_group.name
-  sku = "F1"
+  sku_name = "F1"
 
   tags = {
     environment = "dev"

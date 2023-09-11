@@ -3,7 +3,7 @@ resource "azurerm_service_plan" "asp" {
   name                     = var.name
   location                 = var.location
   os_type                  = var.os_type
-  resource_group_name      = var.resource_group
+  resource_group_name      = var.resource_group_name
   sku_name                 = var.sku_name
 
   tags = merge(

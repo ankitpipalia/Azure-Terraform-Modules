@@ -2,6 +2,29 @@
 
 This Terraform module deploys a Linux Web App on Azure.
 
+## Usage
+```hcl
+module "service_plan" {
+  source = "/path/to/this/module"
+  name = "service-plan-name"
+  location = "eastus"
+  os_type = "Linux"
+  resource_group_name = module.resource_group.name
+  sku_name = "F1"
+
+  tags = {
+    environment = "dev"
+    costcenter = "it"
+  }
+}
+```
+
+## Resources
+
+ Name | Type |
+------|------|
+ [azurerm_service_plan.asp](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/service_plan) | resource |
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |

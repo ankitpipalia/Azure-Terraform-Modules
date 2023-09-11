@@ -31,6 +31,7 @@ resource "azurerm_linux_web_app" "lwa" {
     use_32_bit_worker                             = var.site_config.use_32_bit_worker
     websockets_enabled                            = var.site_config.websockets_enabled
     worker_count                                  = var.site_config.worker_count
+
     dynamic "ip_restriction" {
       for_each = var.ip_restriction
       content {
@@ -51,6 +52,7 @@ resource "azurerm_linux_web_app" "lwa" {
         }
       }
     }
+
     dynamic "scm_ip_restriction" {
       for_each = var.scm_ip_restriction
       content {
@@ -71,6 +73,7 @@ resource "azurerm_linux_web_app" "lwa" {
         }
       }
     }
+
     application_stack {
       docker_image        = var.application_stack["docker_image"]
       docker_image_tag    = var.application_stack["docker_image_tag"]
@@ -84,6 +87,8 @@ resource "azurerm_linux_web_app" "lwa" {
       ruby_version        = var.application_stack["ruby_version"]
     }
   }
+
+  
   logs {
     detailed_error_messages = var.logs.detailed_error_messages
     failed_request_tracing  = var.logs.failed_request_tracing
