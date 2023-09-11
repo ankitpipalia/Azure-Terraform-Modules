@@ -8,7 +8,6 @@ resource "azurerm_storage_account" "sa" {
   enable_https_traffic_only         = var.enable_https_traffic_only
   min_tls_version                   = var.min_tls_version
 
-
   tags = merge(
     {
       "Environment" = var.tags.environment,
@@ -68,7 +67,7 @@ resource "azurerm_storage_account" "sa" {
     bypass                     = var.traffic_bypass
   }
 }
-## azure reference https://docs.microsoft.com/en-us/azure/storage/common/infrastructure-encryption-enable?tabs=portal
+
 resource "azurerm_storage_encryption_scope" "scope" {
   for_each = var.encryption_scopes
 
