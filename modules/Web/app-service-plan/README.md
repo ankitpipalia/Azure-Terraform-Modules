@@ -1,25 +1,31 @@
-# Azure - App Service Plan Module
-This module will create an Azure App Service Plan.
+# Azure Terraform Module for Azure Service Plan
 
-<!--- BEGIN_TF_DOCS --->
-## Requirements
+This Terraform module creates an Azure Service Plan. It includes all the necessary resources for production use, except for the resource group.
 
- Name | Version |
-------|---------|
- <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.3 |
- <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 3.0 |
- <a name="requirement_random"></a> [random](#requirement\_random) | >= 3.1 |
+## Prerequisites
 
-## Providers
+Before using this module, make sure you have the following:
 
- Name | Version |
-------|---------|
- <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | ~> 3.0 |
- <a name="provider_random"></a> [random](#provider\_random) | >= 3.1 |
+- Azure subscription
+- Terraform installed
+- Azure Resource Group
 
-## Modules
+## Usage
+```hcl
+module "service_plan" {
+  source = "/path/to/this/module"
+  name = "service-plan-name"
+  location = "eastus"
+  os_type = "Linux"
+  resource_group_name = module.resource_group.name
+  sku = "F1"
 
-No modules.
+  tags = {
+    environment = "dev"
+    costcenter = "it"
+  }
+}
+```
 
 ## Resources
 
@@ -46,5 +52,3 @@ No modules.
  Name | Description |
 ------|-------------|
  <a name="output_app_service_plan_id"></a> [app_service_plan_id](#output\_app_service_plan_id) | The ID of the App Service Plan |
-
-<!--- END_TF_DOCS --->
