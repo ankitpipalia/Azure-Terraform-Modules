@@ -5,7 +5,10 @@ resource "azurerm_storage_account" "sa" {
   account_kind             = var.account_kind
   account_tier             = var.account_tier
   account_replication_type = var.replication_type
-  
+  enable_https_traffic_only         = var.enable_https_traffic_only
+  min_tls_version                   = var.min_tls_version
+
+
   tags = merge(
     {
       "Environment" = var.tags.environment,
@@ -13,8 +16,6 @@ resource "azurerm_storage_account" "sa" {
     },
     var.custom_tags
   )
-  enable_https_traffic_only         = var.enable_https_traffic_only
-  min_tls_version                   = var.min_tls_version
 
   identity {
     type = "SystemAssigned"
