@@ -20,11 +20,11 @@ module "static_site" {
 | Name               | Description                                      | Type   | Default             | Required |
 |--------------------|--------------------------------------------------|--------|---------------------|:--------:|
 | `static_site_name` | The name of the Azure Static Site.              | string | -                   | yes      |
-| `location`         | The Azure region where the site should be hosted. | string | -                   | yes      |
+| `location`         | The Azure region where the site should be hosted. | string | -                 | yes      |
 | `resource_group`   | The name of the Azure Resource Group.           | string | -                   | yes      |
 | `sku_tier`         | The pricing tier of the Static Site.            | string | -                   | yes      |
 | `sku_size`         | The size of the Static Site.                    | string | -                   | yes      |
-| `tags`             | Additional tags to apply to the Static Site.    | map    | `{}`                | no       |
+| `tags`             | Additional tags to apply to the Static Site.    | map    | -                   | yes       |
 | `extra_tags`       | Extra tags to merge with the default tags.      | map    | `{}`                | no       |
 | `identity_ids`     | The Azure Managed Identity IDs.                 | string | `null` (SystemAssigned) | no       |
 
