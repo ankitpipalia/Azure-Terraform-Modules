@@ -16,7 +16,7 @@ locals {
     environment = "Production"
     project     = "Project1"
   }
-  custom_tags = {
+  extra_tags = {
     owner = "user1"
   }
   storage_account_name = "ankitstgsimform924"
@@ -29,7 +29,7 @@ module "resource_group" {
   resource_group_name = "test-rg"
   location = "centralindia"
   tags = local.tags
-  custom_tags = local.custom_tags
+  extra_tags = local.extra_tags
 }
 
 module "storage_acount" {
@@ -64,5 +64,5 @@ module "storage_acount" {
   ]
   
   tags = local.tags
-  custom_tags = local.custom_tags
+  extra_tags = local.extra_tags
 }

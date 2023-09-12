@@ -17,7 +17,7 @@ locals {
     environment = "Production"
     project     = "Project1"
   }
-  custom_tags = {
+  extra_tags = {
     owner = "user1"
   }
 }
@@ -28,7 +28,7 @@ module "resource_group" {
   resource_group_name = "test-rg"
   location = "centralindia"
   tags = local.tags
-  custom_tags = local.custom_tags
+  extra_tags = local.extra_tags
 }
 
 module "virtual_network" {
@@ -39,7 +39,7 @@ module "virtual_network" {
   resource_group_name = module.resource_group.name
   address_space = ["10.0.0.0/16"]
   tags = local.tags
-  custom_tags = local.custom_tags
+  extra_tags = local.extra_tags
 }
 
 module "subnets" {
@@ -62,7 +62,7 @@ module "public_ip_address" {
   allocation_method = "Static"
   sku = "Standard"
   tags = local.tags
-  custom_tags = local.custom_tags
+  extra_tags = local.extra_tags
 }
 
 module "network_interface" {
@@ -77,7 +77,7 @@ module "network_interface" {
   private_ip_address = null
   public_ip_address_id = module.public_ip_address.id
   tags = local.tags
-  custom_tags = local.custom_tags
+  extra_tags = local.extra_tags
 }
 
 module "network_security_group" {
@@ -115,7 +115,7 @@ module "network_security_group" {
   subnet_id = module.subnets["subnet1"].id  
 
   tags = local.tags
-  custom_tags = local.custom_tags
+  extra_tags = local.extra_tags
 }
 
 module "virtual_machine" {
@@ -135,5 +135,5 @@ module "virtual_machine" {
   depends_on = [ module.network_interface ]
 
   tags = local.tags
-  custom_tags = local.custom_tags
+  extra_tags = local.extra_tags
 }

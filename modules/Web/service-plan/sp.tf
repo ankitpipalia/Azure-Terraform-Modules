@@ -11,7 +11,7 @@ resource "azurerm_service_plan" "asp" {
       "Environment" = var.tags.environment,
       "Project"     = var.tags.project
     },
-    var.custom_tags
+    var.extra_tags
   )
 
   per_site_scaling_enabled = var.per_site_scaling_enabled

@@ -14,7 +14,7 @@ resource "azurerm_linux_web_app" "web_app" {
       "Environment" = var.tags.environment,
       "Project"     = var.tags.project
     },
-    var.custom_tags
+    var.extra_tags
   )
 
   dynamic "logs" {

@@ -37,7 +37,7 @@ module "service_plan" {
  <a name="input_per_site_scaling_enabled"></a> [per_site_scaling_enabled](#input\_per_site_scaling_enabled) | Whether per-site scaling is enabled | `bool` | `false` | no |
  <a name="input_worker_count"></a> [worker_count](#input\_worker_count) | The number of workers associated with the App Service Plan | `number` | `1` | no |
  <a name="input_tags"></a> [tags](#input\_tags) | Tags to be applied to resources | `map(string)` | n/a | yes |
- <a name="input_custom_tags"></a> [custom_tags](#input\_custom\_tags) | Custom tags to be applied to resources | `map(string)` | `{}` | no |
+ <a name="input_extra_tags"></a> [extra_tags](#input\_custom\_tags) | extra tags to be applied to resources | `map(string)` | `{}` | no |
 
 ## Outputs
 

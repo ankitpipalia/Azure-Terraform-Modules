@@ -16,7 +16,7 @@ locals {
     environment = "Production"
     project     = "Project1"
   }
-  custom_tags = {
+  extra_tags = {
     owner = "user1"
   }
 }
@@ -27,7 +27,7 @@ module "resource_group" {
   resource_group_name = "test-rg"
   location = "centralindia"
   tags = local.tags
-  custom_tags = local.custom_tags
+  extra_tags = local.extra_tags
 }
 
 module "service_plan" {
@@ -39,5 +39,5 @@ module "service_plan" {
   sku_name = "B1"
 
   tags = local.tags
-  custom_tags = local.custom_tags
+  extra_tags = local.extra_tags
 }

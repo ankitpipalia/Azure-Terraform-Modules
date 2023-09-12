@@ -22,7 +22,7 @@ module "storage_account" {
     project     = "myproject"
   }
 
-  custom_tags = {
+  extra_tags = {
     owner = "me"
   }
 

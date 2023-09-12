@@ -10,6 +10,6 @@ resource "azurerm_virtual_network" "vnet" {
       "Environment" = var.tags.environment,
       "Project"     = var.tags.project
     },
-    var.custom_tags
+    var.extra_tags
   )
 }

@@ -32,8 +32,8 @@ variable "tags" {
   })
 }
 
-variable "custom_tags" {
-  description = "Custom tags to be applied to resources (in addition to the tags above)"
+variable "extra_tags" {
+  description = "extra tags to be applied to resources (in addition to the tags above)"
   type        = map(string)
   default     = {}
 }

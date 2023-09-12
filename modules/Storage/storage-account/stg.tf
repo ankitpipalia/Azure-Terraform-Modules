@@ -13,7 +13,7 @@ resource "azurerm_storage_account" "sa" {
       "Environment" = var.tags.environment,
       "Project"     = var.tags.project
     },
-    var.custom_tags
+    var.extra_tags
   )
 
   identity {

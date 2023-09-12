@@ -21,6 +21,6 @@ resource "azurerm_network_interface" "nic" {
       "Environment" = var.tags.environment,
       "Project"     = var.tags.project
     },
-    var.custom_tags
+    var.extra_tags
   )
 }

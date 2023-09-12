@@ -29,7 +29,7 @@ module "virtual_machine" {
   depends_on = [ module.network_interface ]
 
   tags = local.tags
-  custom_tags = local.custom_tags
+  extra_tags = local.extra_tags
 }
 ```
 

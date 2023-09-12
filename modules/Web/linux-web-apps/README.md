@@ -12,7 +12,7 @@ module "linux-web-apps" {
   service_plan_id = module.service_plan.id
 
   tags = local.tags
-  custom_tags = local.custom_tags
+  extra_tags = local.extra_tags
 
   identity_type = "SystemAssigned"
 

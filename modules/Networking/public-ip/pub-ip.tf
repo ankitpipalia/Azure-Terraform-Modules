@@ -10,6 +10,6 @@ resource "azurerm_public_ip" "public_ip" {
       "Environment" = var.tags.environment,
       "Project"     = var.tags.project
     },
-    var.custom_tags
+    var.extra_tags
   )
 }
