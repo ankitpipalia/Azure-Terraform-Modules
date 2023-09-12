@@ -33,9 +33,9 @@ module "resource_group" {
 module "service_plan" {
   source = "./modules/Web/service-plan"
   name = "ankit-test-plan"
-  location = "eastus"
-  os_type = "Linux"
+  location = module.resource_group.location
   resource_group_name = module.resource_group.name
+  os_type = "Linux"
   sku_name = "B1"
 
   tags = local.tags
@@ -44,44 +44,30 @@ module "service_plan" {
 
 module "linux-web-apps" {
   source = "./modules/Web/linux-web-apps"
-  linux_web_app_name = "ankit-test-web-app"
-  location = "eastus"
-  resource_group = module.resource_group.name
+  name = "ankit-test-app"
+  location = module.resource_group.location
+  resource_group_name = module.resource_group.name
   service_plan_id = module.service_plan.id
-  https_only = true
-  enabled = true
+
   tags = local.tags
   custom_tags = local.custom_tags
-  
-  
-  app_settings = {
-    "WEBSITES_ENABLE_APP_SERVICE_STORAGE" = "false"
-    "WEBSITES_CONTAINER_START_TIME_LIMIT" = "1800"
-    "WEBSITES_PORT" = "8080"
-  }
 
+  identity_type = "SystemAssigned"
 
-  client_affinity_enabled = false
-  identity_ids = "SystemAssigned"
+  settings = {
+    site_config = {
+      minimum_tls_version = "1.2"
+      http2_enabled       = true
 
+      application_stack = {
+        node_version = "18-lts"
+      }
+    }
 
-  site_config = {
-    always_on = true
-    container_registry_managed_identity_client_id = null
-    container_registry_use_managed_identity = false
-    ftps_state = "Disabled"
-    http2_enabled = true
-    use_32_bit_worker = false
-    websockets_enabled = true
-    worker_count = 1
-  }
-
-  application_stack = {
-    name = "NODE|14-lts"
-    version = "14.17"
-  }
-
-  logs {
-    
+    auth_settings = {
+      enabled                       = false
+      runtime_version               = "~1"
+      unauthenticated_client_action = "AllowAnonymous"
+    }
   }
 }

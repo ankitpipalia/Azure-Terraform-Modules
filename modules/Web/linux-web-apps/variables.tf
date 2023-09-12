@@ -1,33 +1,124 @@
-variable "linux_web_app_name" {
-  description = "The name of the Linux Web App"
+variable "active_directory_auth_setttings" {
+  description = "Active directory authentication provider settings for app service"
+  type        = any
+  default     = {}
+}
+
+variable "name" {
+  description = "The name of the function app"
   type        = string
 }
 
-variable "location" {
-  description = "The location"
-  type        = string
+variable "app_settings" {
+  description = "Function App application settings"
+  type        = map(any)
+  default     = {}
 }
 
-variable "resource_group" {
-  description = "The resource group name"
+variable "backup_sas_url" {
+  description = "URL SAS to backup"
   type        = string
+  default     = ""
+}
+
+variable "builtin_logging_enabled" {
+  type        = bool
+  description = "Whether AzureWebJobsDashboards should be enabled, default is true"
+  default     = true
+}
+
+variable "client_certificate_enabled" {
+  type        = bool
+  description = "Whether client certificate auth is enabled, default is false"
+  default     = false
+}
+
+variable "client_certificate_mode" {
+  type        = string
+  description = "The option for client certificates"
+  default     = "Optional"
+}
+
+variable "connection_strings" {
+  description = "Connection strings for App Service"
+  type        = list(map(string))
+  default     = []
+}
+
+variable "daily_memory_time_quota" {
+  type        = number
+  description = "The amount of memory in gigabyte-seconds that your app can consume per day, defaults to 0"
+  default     = 0
+}
+
+
+variable "enabled" {
+  type        = bool
+  description = "Is the function app enabled? Default is true"
+  default     = true
+}
+
+variable "force_disabled_content_share" {
+  type        = bool
+  description = "Should content share be disabled in storage account? Default is false"
+  default     = false
 }
 
 variable "https_only" {
-  description = "Whether to only allow HTTPS traffic"
-  type        = bool
-  default = true
-}
-
-variable "enabled" {
-  description = "Whether to enable the web app"
+  description = "Disable http procotol and keep only https"
   type        = bool
   default     = true
 }
 
-variable "service_plan_id" {
-  description = "The ID of the App Service Plan"
+variable "identity_ids" {
+  description = "Specifies a list of user managed identity ids to be assigned to the VM."
+  type        = list(string)
+  default     = []
+}
+
+variable "identity_type" {
+  description = "The Managed Service Identity Type of this Virtual Machine."
   type        = string
+  default     = ""
+}
+
+variable "location" {
+  description = "Azure location."
+  type        = string
+}
+
+variable "resource_group_name" {
+  description = "Resource group name"
+  type        = string
+}
+
+variable "service_plan_id" {
+  description = "Id of the App Service Plan for Function App hosting"
+  type        = string
+}
+
+variable "settings" {
+  description = "Specifies the Authentication enabled or not"
+  default     = false
+  type        = any
+}
+
+variable "site_config" {
+  description = "Site config for App Service. See documentation https://www.terraform.io/docs/providers/azurerm/r/app_service.html#site_config. IP restriction attribute is not managed in this block."
+  type        = any
+  default     = {}
+}
+
+variable "storage_key_vault_secret_id" {
+  type        = string
+  description = "The secret ID for the connection string of the storage account used by the function app"
+  default     = ""
+}
+
+variable "storage_uses_managed_identity" {
+  type        = bool
+  description = "If you want the storage account to use a managed identity instead of a access key"
+  default     = false
 }
 
 variable "tags" {
@@ -43,126 +134,14 @@ variable "custom_tags" {
   type        = map(string)
   default     = {}
 }
-
-variable "app_settings" {
-  description = "The app settings"
-  type        = map(string)
-}
-
-variable "client_affinity_enabled" {
-  description = "Whether client affinity is enabled"
+variable "web_app_vnet_integration_enabled" {
+  description = "Enable VNET integration with the Function App. `web_app_vnet_integration_subnet_id` is mandatory if enabled"
   type        = bool
+  default     = false
 }
 
-variable "identity_ids" {
-  description = "The list of user-assigned identity IDs"
-  type        = list(string)
-}
-
-variable "site_config" {
-  description = "The site configuration"
-  type        = object({
-    always_on                                     = bool
-    container_registry_managed_identity_client_id = string
-    container_registry_use_managed_identity       = bool
-    ftps_state                                    = string
-    http2_enabled                                 = bool
-    use_32_bit_worker                             = bool
-    websockets_enabled                            = bool
-    worker_count                                  = number
-    ip_restriction                                = list(object({
-      name                      = string
-      ip_address                = string
-      service_tag               = string
-      virtual_network_subnet_id = string
-      priority                  = number
-      action                    = string
-      headers                   = map(object({
-        x_azure_fdid      = string
-        x_fd_health_probe = string
-        x_forwarded_for   = string
-        x_forwarded_host  = string
-      }))
-    }))
-    scm_ip_restriction                            = list(object({
-      name                      = string
-      ip_address                = string
-      service_tag               = string
-      virtual_network_subnet_id = string
-      priority                  = number
-      action                    = string
-      headers                   = map(object({
-        x_azure_fdid      = string
-        x_fd_health_probe = string
-        x_forwarded_for   = string
-        x_forwarded_host  = string
-      }))
-    }))
-    application_stack                             = object({
-      docker_image        = string
-      docker_image_tag    = string
-      dotnet_version      = string
-      java_server         = string
-      java_server_version = string
-      java_version        = string
-      php_version         = string
-      python_version      = string
-      node_version        = string
-      ruby_version        = string
-    })
-  })
-}
-
-variable "logs" {
-  description = "The logs configuration"
-  type        = object({
-    detailed_error_messages = bool
-    failed_request_tracing  = bool
-    http_logs               = object({
-      file_system = object({
-        retention_in_days = number
-        retention_in_mb   = number
-      })
-    })
-  })
-}
-
-variable "storage_account" {
-  description = "The storage account"
-  type        = list(object({
-    access_key   = string
-    account_name = string
-    name         = string
-    share_name   = string
-    type         = string
-    mount_path   = string
-  }))
-}
-
-variable "application_stack" {
-  description = "The application stack"
-  type        = object({
-    docker_image        = string
-    docker_image_tag    = string
-    dotnet_version      = string
-    java_server         = string
-    java_server_version = string
-    java_version        = string
-    php_version         = string
-    python_version      = string
-    node_version        = string
-    ruby_version        = string
-  })
-  default = {
-    docker_image        = null
-    docker_image_tag    = null
-    dotnet_version      = null
-    java_server         = null
-    java_server_version = null
-    java_version        = null
-    php_version         = null
-    python_version      = null
-    node_version        = null
-    ruby_version        = null
-  }
+variable "web_app_vnet_integration_subnet_id" {
+  description = "ID of the subnet to associate with the Function App (VNet integration)"
+  type        = string
+  default     = null
 }
