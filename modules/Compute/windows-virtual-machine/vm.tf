@@ -1,20 +1,11 @@
-resource "azurerm_linux_virtual_machine" "vm" {
+resource "azurerm_windows_virtual_machine" "vm" {
   name                = var.virtual_machine_name
   resource_group_name = var.resource_group_name
   location            = var.location
   size                = var.vm_size
   admin_username      = var.admin_username
   admin_password      = var.admin_password
-  disable_password_authentication = var.admin_password == "" ? true : false
   network_interface_ids = [var.network_interface_id]
-
-  dynamic "admin_ssh_key" {
-    for_each = var.admin_password == "" ? ["no_admin_password_provided"] : []
-    content {
-      username   = var.admin_username
-      public_key = var.admin_ssh_public_key
-    }
-  }
 
   os_disk {
     caching              = var.os_disk_caching

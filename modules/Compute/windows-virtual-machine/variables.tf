@@ -30,13 +30,6 @@ variable "admin_password" {
   sensitive   = true
 }
 
-variable "admin_ssh_public_key" {
-  description = "Public SSH Key"
-  type        = string
-  default     = ""
-  sensitive   = true
-}
-
 variable "network_interface_id" {
   description = "Network Interface ID"
   type        = string

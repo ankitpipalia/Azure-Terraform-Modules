@@ -1,6 +1,6 @@
-# Azure Terraform Module for Linux Virtual Machine
+# Azure Terraform Module for Windows Virtual Machine
 
-This Terraform module creates a Linux virtual machine in Azure. It includes all the necessary resources for production use, except for the resource group, virtual network, and subnet.
+This Terraform module creates a Windows virtual machine in Azure. It includes all the necessary resources for production use, except for the resource group, virtual network, and subnet.
 
 ## Prerequisites
 
@@ -12,39 +12,24 @@ Before using this module, make sure you have the following:
 ## Usage
 
 ```hcl
-module "vm" {
-  source                = "path/to/module"
-  vm_name               = "my-vm"
-  location              = "eastus"
-  resource_group_name   = "my-resource-group"
-  vm_size               = "Standard_DS2_v2"
-  image_publisher       = "Canonical"
-  image_offer           = "UbuntuServer"
-  image_sku             = "18.04-LTS"
-  image_version         = "latest"
-  os_disk_name          = "my-os-disk"
-  os_disk_caching       = "ReadWrite"
-  os_disk_create_option = "FromImage"
-  os_disk_managed_disk_type = "Standard_LRS"
-  os_disk_size_gb       = 30
-  computer_name         = "my-vm"
-  admin_username        = "adminuser"
-  admin_password        = "adminpassword"
-  disable_password_authentication = false
-  ssh_key_path          = "~/.ssh/id_rsa.pub"
-  ssh_key_data          = ""
-  boot_diagnostics_enabled = true
-  boot_diagnostics_storage_uri = "https://mystorageaccount.blob.core.windows.net/"
-  tags = {
-    Environment = "Production"
-    Department  = "IT"
-  }
-  nic_name              = "my-nic"
-  ip_configuration_name = "my-ip-config"
-  subnet_id             = "/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/my-resource-group/providers/Microsoft.Network/virtualNetworks/my-vnet/subnets/my-subnet"
-  private_ip_address_allocation = "Dynamic"
-  private_ip_address    = ""
-  public_ip_address_id  = ""
+module "virtual_machine" {
+  source = "./modules/Compute/windows-virtual-machine"
+
+  virtual_machine_name = "test-vm"
+  resource_group_name = module.resource_group.name
+  location = module.resource_group.location
+  vm_size = "Standard_B1ls"
+  admin_username = "testadmin"
+  admin_password = "Password1234!"
+  network_interface_id = module.network_interface.id
+  source_image_publisher = "MicrosoftWindowsServer"
+  source_image_offer     = "WindowsServer"
+  source_image_sku       = "2016-Datacenter"
+  source_image_version   = "latest"
+  depends_on = [ module.network_interface ]
+
+  tags = local.tags
+  custom_tags = local.custom_tags
 }
 ```
 

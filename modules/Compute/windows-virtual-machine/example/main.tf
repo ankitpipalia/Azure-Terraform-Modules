@@ -12,7 +12,7 @@ provider "azurerm" {
 }
 
 locals {
-  subnets = ["subnet1", "subnet2", "subnet3"]
+  subnets = ["subnet1", "subnet2"]
   tags = {
     environment = "Production"
     project     = "Project1"
@@ -20,6 +20,15 @@ locals {
   custom_tags = {
     owner = "user1"
   }
+}
+
+module "resource_group" {
+  source = "./modules/Management/resource-group"
+
+  resource_group_name = "test-rg-1"
+  location = "centralindia"
+  tags = local.tags
+  custom_tags = local.custom_tags
 }
 
 module "virtual_network" {
@@ -77,17 +86,20 @@ module "network_security_group" {
   network_security_group_name = "test-nsg"
   resource_group_name = module.resource_group.name
   location = module.resource_group.location
+  subnet_id = module.subnets["subnet1"].id
+  
   inbound_rules = [
     {
-      name                       = "SSH"
-      priority                   = 100
+      name                       = "RDP"
+      priority                   = 101
       access                     = "Allow"
       protocol                   = "Tcp"
       source_address_prefix      = "*"
       source_port_range          = "*"
       destination_address_prefix = "*"
-      destination_port_range     = "22"
-      description                = "Allow SSH"
+      destination_port_range     = "3389"
+      description                = "Allow RDP"
+    
     }
   ]
   outbound_rules = [
@@ -102,15 +114,14 @@ module "network_security_group" {
       destination_port_range     = "*"
       description                = "Allow Internet OutBound"
     }
-  ]
-  subnet_id = module.subnets["subnet1"].id  
+  ]  
 
   tags = local.tags
   custom_tags = local.custom_tags
 }
 
 module "virtual_machine" {
-  source = "./modules/Compute/virtual-machine"
+  source = "./modules/Compute/windows-virtual-machine"
 
   virtual_machine_name = "test-vm"
   resource_group_name = module.resource_group.name
@@ -119,9 +130,9 @@ module "virtual_machine" {
   admin_username = "testadmin"
   admin_password = "Password1234!"
   network_interface_id = module.network_interface.id
-  source_image_publisher = "Canonical"
-  source_image_offer     = "0001-com-ubuntu-minimal-focal"
-  source_image_sku       = "minimal-20_04-lts-gen2"
+  source_image_publisher = "MicrosoftWindowsServer"
+  source_image_offer     = "WindowsServer"
+  source_image_sku       = "2016-Datacenter"
   source_image_version   = "latest"
   depends_on = [ module.network_interface ]
 
