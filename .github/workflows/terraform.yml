@@ -16,6 +16,9 @@ jobs:
         with:
           version: 1.1.7
 
-      - name: Validate modules
-        run: |
-          find . -type f -name "*.tf" -exec terraform validate {} \;
+    - name: Terraform Validate
+      run: |
+        for dir in $(find . -type d -path '*/modules/*'); do
+          echo "Validating $dir"
+          terraform validate $dir
+        done
