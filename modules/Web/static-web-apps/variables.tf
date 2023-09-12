@@ -1,21 +1,20 @@
-variable "project" {
-  type        = string
-  description = "Project name"
-}
-
-variable "env" {
-  type        = string
-  description = "Environment"
-}
-
 variable "location" {
   type        = string
   description = "Location"
 }
 
 variable "tags" {
+  description = "Tags to be applied to resources (inclusive)"
+  type        = object({
+    environment         = string
+    project        = string
+  })
+}
+
+variable "extra_tags" {
+  description = "extra tags to be applied to resources (in addition to the tags above)"
   type        = map(string)
-  description = "Tags"
+  default     = {}
 }
 
 variable "resource_group" {
@@ -23,7 +22,7 @@ variable "resource_group" {
   description = "Resource group name"
 }
 
-variable "name" {
+variable "static_site_name" {
   type        = string
   description = "Static site name"
 }
@@ -51,21 +50,5 @@ variable "sku_size" {
   validation {
     condition     = contains(["Free", "Standard"], var.sku_size)
     error_message = "SKU size must be either Free or Standard"
-  }
-}
-
-variable "domain_name" {
-  type        = string
-  description = "Domain name"
-  default     = null
-}
-
-variable "validation_type" {
-  type        = string
-  description = "Validation type"
-  default     = "dns-txt-token"
-  validation {
-    condition     = contains(["dns-txt-token", "cname-delegation"], var.validation_type)
-    error_message = "Validation type must be either cname-delegation or dns-txt-token"
   }
 }
