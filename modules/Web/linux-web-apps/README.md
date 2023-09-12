@@ -1,3 +1,40 @@
+## Azure Terraform Module for Linux Web Apps
+
+This Terraform module creates an Azure Linux Web Apps. It includes all the necessary resources for production use, except for the resource group.
+
+## Usage
+```hcl
+module "linux-web-apps" {
+  source = "path/to/this/module"
+  name = "xyz-test-app"
+  location = module.resource_group.location
+  resource_group_name = module.resource_group.name
+  service_plan_id = module.service_plan.id
+
+  tags = local.tags
+  custom_tags = local.custom_tags
+
+  identity_type = "SystemAssigned"
+
+  settings = {
+    site_config = {
+      minimum_tls_version = "1.2"
+      http2_enabled       = true
+
+      application_stack = {
+        node_version = "18-lts"
+      }
+    }
+
+    auth_settings = {
+      enabled                       = false
+      runtime_version               = "~1"
+      unauthenticated_client_action = "AllowAnonymous"
+    }
+  }
+}
+```
+
 ## Resources
 
 | Name | Type |
