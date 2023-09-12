@@ -1,114 +1,65 @@
-# Azure Load Balancer Terraform Module
+# Azure Load Balance Module 
 
-This Terraform module deploys an Azure Load Balancer in Azure with production-level features.
-
-## Prerequisites
-
-- Azure subscription
-- Terraform installed
+A Terraform module which creates Load Balancer on Azure with the following characteristics:
+- Ability to decide if it is a **Public** or **Private** Load Balancer
+- Configure Security Group for HTTP access
+- Create an Availabity Set if a load balancer is configured (True by Default)
+- Add VMs in the Backend Address Pool of the Load Balancer
 
 ## Usage
 
+# Public Load Balancer Creation example:
+
 ```hcl
-module "load_balancer" {
-  source                = "path/to/module"
-  load_balancer_name    = "my-load-balancer"
-  location              = "eastus"
-  resource_group_name   = "my-resource-group"
-  load_balancer_sku     = "Standard"
-  frontend_ip_configuration_name = "frontend-ip-config"
-  subnet_id             = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/my-resource-group/providers/Microsoft.Network/virtualNetworks/my-vnet/subnets/my-subnet"
-  private_ip_address_allocation = "Dynamic"
-  private_ip_address    = ""
-  backend_address_pool_name = "backend-pool"
-  probe_name            = "probe"
-  probe_protocol        = "Http"
-  probe_port            = 80
-  probe_interval        = 15
-  probe_number_of_probes = 2
-  probe_request_path    = "/"
-  probe_protocol_match  = "Any"
-  probe_ignore_https_server_name = false
-  probe_match_body      = ""
-  probe_match_status_codes = [200, 201, 202]
-  probe_min_servers     = 1
-  probe_max_servers     = 3
-  probe_healthy_http_response = ""
-  probe_unhealthy_http_response = ""
-  probe_healthy_http_response_win = ""
-  probe_unhealthy_http_response_win = ""
-  load_balancing_rule_name = "lb-rule"
-  load_balancing_rule_frontend_port = 80
-  load_balancing_rule_backend_port = 8080
-  load_balancing_rule_protocol = "Tcp"
-  tags = {
-    Environment = "Production"
-    Department  = "IT"
-  }
-}
+module "lb" {
+  source = "./modules/Networking/load-balancers"
 
-output "load_balancer_id" {
-  value = module.load_balancer.load_balancer_id
-}
+  resource_group_name = module.resource_group.name
+  location            = module.resource_group.location
 
-output "frontend_ip_configuration_id" {
-  value = module.load_balancer.frontend_ip_configuration_id
-}
+  lb_name            = "test-lb"
+  lb_type            = "public"
+  ft_name            = "lb-web-server"
+  lb_probes_port     = "80"
+  lb_probes_protocol = "Tcp"
+  lb_probes_path     = "/"
+  lb_nb_probes       = "2"
+  lb_rule_proto      = "Tcp"
+  lb_rule_ft_port    = "80"
+  lb_rule_bck_port   = "80"
+  public_ip_id       = module.public_ip_address.id
 
-output "backend_address_pool_id" {
-  value = module.load_balancer.backend_address_pool_id
-}
+  subnet_id = module.subnets["subnet1"].id
 
-output "probe_id" {
-  value = module.load_balancer.probe_id
-}
-
-output "load_balancing_rule_id" {
-  value = module.load_balancer.load_balancing_rule_id
+  tags                 = local.tags
+  extra_tags           = local.extra_tags
 }
 ```
 
-## Inputs
+# Private Load Balancer Creation example:
 
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|----------|
-| load_balancer_name | The name of the Azure Load Balancer | `string` | n/a | yes |
-| location | The location/region where the Azure Load Balancer will be created | `string` | n/a | yes |
-| resource_group_name | The name of the resource group where the Azure Load Balancer will be created | `string` | n/a | yes |
-| load_balancer_sku | The SKU of the Azure Load Balancer | `string` | n/a | yes |
-| frontend_ip_configuration_name | The name of the frontend IP configuration | `string` | n/a | yes |
-| subnet_id | The ID of the subnet where the Azure Load Balancer will be deployed | `string` | n/a | yes |
-| private_ip_address_allocation | The allocation method for the private IP address | `string` | n/a | yes |
-| private_ip_address | The private IP address for the frontend IP configuration | `string` | n/a | yes |
-| backend_address_pool_name | The name of the backend address pool | `string` | n/a | yes |
-| probe_name | The name of the probe | `string` | n/a | yes |
-| probe_protocol | The protocol used for the probe | `string` | n/a | yes |
-| probe_port | The port used for the probe | `number` | n/a | yes |
-| probe_interval | The interval (in seconds) between probe requests | `number` | n/a | yes |
-| probe_number_of_probes | The number of consecutive probe failures required to mark a backend as unhealthy | `number` | n/a | yes |
-| probe_request_path | The path used for the probe request | `string` | n/a | yes |
-| probe_protocol_match | The protocol match condition for the probe | `string` | n/a | yes |
-| probe_ignore_https_server_name | Whether to ignore the HTTPS server name during the probe | `bool` | n/a | yes |
-| probe_match_body | The body match condition for the probe | `string` | n/a | yes |
-| probe_match_status_codes | The status codes to match for the probe | `list(number)` | n/a | yes |
-| probe_min_servers | The minimum number of healthy servers required for the probe | `number` | n/a | yes |
-| probe_max_servers | The maximum number of healthy servers required for the probe | `number` | n/a | yes |
-| probe_healthy_http_response | The healthy HTTP response for the probe | `string` | n/a | yes |
-| probe_unhealthy_http_response | The unhealthy HTTP response for the probe | `string` | n/a | yes |
-| probe_healthy_http_response_win | The healthy HTTP response for the probe (Windows) | `string` | n/a | yes |
-| probe_unhealthy_http_response_win | The unhealthy HTTP response for the probe (Windows) | `string` | n/a | yes |
-| load_balancing_rule_name | The name of the load balancing rule | `string` | n/a | yes |
-| load_balancing_rule_frontend_port | The frontend port for the load balancing rule | `number` | n/a | yes |
-| load_balancing_rule_backend_port | The backend port for the load balancing rule | `number` | n/a | yes |
-| load_balancing_rule_protocol | The protocol used for the load balancing rule | `string` | n/a | yes |
-| tags | Tags to apply to the Azure Load Balancer | `map(string)` | `{}` | no |
+```hcl
+module "lb" {
+  source = "./modules/Networking/load-balancers"
 
-## Outputs
+  resource_group_name = module.resource_group.name
+  location            = module.resource_group.location
 
-| Name | Description |
-|------|-------------|
-| load_balancer_id | The ID of the Azure Load Balancer |
-| frontend_ip_configuration_id | The ID of the frontend IP configuration |
-| backend_address_pool_id | The ID of the backend address pool |
-| probe_id | The ID of the probe |
-| load_balancing_rule_id | The ID of the load balancing rule |
+  lb_name            = "test-lb"
+  lb_type            = "private"
+  ft_name            = "lb-web-server"
+  lb_probes_port     = "80"
+  lb_probes_protocol = "Tcp"
+  lb_probes_path     = "/"
+  lb_nb_probes       = "2"
+  lb_rule_proto      = "Tcp"
+  lb_rule_ft_port    = "80"
+  lb_rule_bck_port   = "80"
+  ft_priv_ip_addr   = "10.0.0.9"
+
+  subnet_id = module.subnets["subnet1"].id
+
+  tags                 = local.tags
+  extra_tags           = local.extra_tags
+}
+```

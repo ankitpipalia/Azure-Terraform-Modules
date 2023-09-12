@@ -1,47 +1,52 @@
-resource "azurerm_lb" "load_balancer" {
-  name                = var.load_balancer_name
-  location            = var.location
+# create and configure Azure Load Balancer
+
+resource "azurerm_lb" "lb" {
+  name                = var.lb_name
   resource_group_name = var.resource_group_name
-  sku                 = var.load_balancer_sku
+  location            = var.location
+
+  tags = merge(
+    {
+      "Environment" = var.tags.environment,
+      "Project"     = var.tags.project
+    },
+    var.extra_tags
+  )
 
   frontend_ip_configuration {
-    name                          = var.frontend_ip_configuration_name
+    name                          = var.ft_name
+    public_ip_address_id          = var.lb_type == "public" ? var.public_ip_id : null
     subnet_id                     = var.subnet_id
-    private_ip_address_allocation = var.private_ip_address_allocation
-    private_ip_address            = var.private_ip_address
+    private_ip_address            = var.lb_type == "private" ? var.ft_priv_ip_addr : null
+    private_ip_address_allocation = var.lb_type == "private" ? var.ft_priv_ip_addr_alloc : "Dynamic"
   }
+}
 
-  backend_address_pool {
-    name = var.backend_address_pool_name
-  }
+resource "azurerm_lb_probe" "lb" {
+  name                = "${azurerm_lb.lb.name}-${var.lb_probes_port}-probe"
+  loadbalancer_id     = azurerm_lb.lb.id
+  protocol            = var.lb_probes_protocol
+  port                = var.lb_probes_port
+  request_path        = var.lb_probes_protocol == "Tcp" ? null : var.lb_probes_path
+  number_of_probes    = var.lb_nb_probes
+}
 
-  probe {
-    name                      = var.probe_name
-    protocol                  = var.probe_protocol
-    port                      = var.probe_port
-    interval                  = var.probe_interval
-    number_of_probes          = var.probe_number_of_probes
-    request_path              = var.probe_request_path
-    protocol_match            = var.probe_protocol_match
-    ignore_https_server_name  = var.probe_ignore_https_server_name
-    match_body                = var.probe_match_body
-    match_status_codes        = var.probe_match_status_codes
-    min_servers               = var.probe_min_servers
-    max_servers               = var.probe_max_servers
-    healthy_http_response     = var.probe_healthy_http_response
-    unhealthy_http_response   = var.probe_unhealthy_http_response
-    healthy_http_response_win = var.probe_healthy_http_response_win
-    unhealthy_http_response_win = var.probe_unhealthy_http_response_win
-  }
+resource "azurerm_lb_rule" "lb" {
+  name                           = "${azurerm_lb.lb.name}-rule"
+  loadbalancer_id                = azurerm_lb.lb.id
+  protocol                       = var.lb_rule_proto
+  frontend_port                  = var.lb_rule_ft_port
+  backend_port                   = var.lb_rule_bck_port
+  frontend_ip_configuration_name = var.ft_name
+  probe_id                       = azurerm_lb_probe.lb.id
+  backend_address_pool_ids       = [azurerm_lb_backend_address_pool.lb.id]
+  depends_on = [
+    azurerm_lb_probe.lb,
+    azurerm_lb_backend_address_pool.lb,
+  ]
+}
 
-  load_balancing_rule {
-    name               = var.load_balancing_rule_name
-    frontend_port      = var.load_balancing_rule_frontend_port
-    backend_port       = var.load_balancing_rule_backend_port
-    protocol           = var.load_balancing_rule_protocol
-    backend_address_pool_id = azurerm_lb_backend_address_pool.load_balancer_backend_address_pool.id
-    probe_id           = azurerm_lb_probe.load_balancer_probe.id
-  }
-
-  tags = var.tags
+resource "azurerm_lb_backend_address_pool" "lb" {
+  name                = "${azurerm_lb.lb.name}-bck-pool"
+  loadbalancer_id     = azurerm_lb.lb.id
 }

@@ -85,12 +85,6 @@ module "lb" {
 
   subnet_id = module.subnets["subnet1"].id
 
-  tags = {
-    environment = "dev"
-    project     = "myproject"
-  }
-
-  extra_tags = {
-    owner = "me"
-  }
+  tags                 = local.tags
+  extra_tags           = local.extra_tags
 }
