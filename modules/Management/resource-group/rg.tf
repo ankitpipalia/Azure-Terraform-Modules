@@ -6,6 +6,6 @@ resource "azurerm_resource_group" "rg" {
       "Environment" = var.tags.environment,
       "Project"     = var.tags.project
     },
-    var.custom_tags
+    var.extra_tags
   )
 }

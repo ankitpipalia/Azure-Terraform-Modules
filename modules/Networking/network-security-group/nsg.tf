@@ -7,7 +7,7 @@ resource "azurerm_network_security_group" "nsg" {
       "Environment" = var.tags.environment,
       "Project"     = var.tags.project
     },
-    var.custom_tags
+    var.extra_tags
   )
 }
 
