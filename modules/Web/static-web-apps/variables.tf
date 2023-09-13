@@ -17,7 +17,7 @@ variable "extra_tags" {
   default     = {}
 }
 
-variable "resource_group" {
+variable "resource_group_name" {
   type        = string
   description = "Resource group name"
 }

@@ -25,7 +25,7 @@ locals {
 module "resource_group" {
   source = "./modules/Management/resource-group"
 
-  resource_group_name = "test-rg-1"
+  resource_group_name = "test-rg"
   location            = "centralindia"
   tags                = local.tags
   extra_tags          = local.extra_tags
@@ -60,37 +60,95 @@ module "public_ip_address" {
   resource_group_name = module.resource_group.name
   location            = module.resource_group.location
   allocation_method   = "Static"
-  sku                 = "Basic" # Change the SKU to Basic
+  sku                 = "Standard"
   tags                = local.tags
   extra_tags          = local.extra_tags
 }
 
-module "lb" {
-  source = "./modules/Networking/load-balancers"
+module "network_interface" {
+  source = "./modules/Networking/network-interface"
 
-  resource_group_name = module.resource_group.name
-  location            = module.resource_group.location
+  network_interface_name        = "test-nic"
+  resource_group_name           = module.resource_group.name
+  location                      = module.resource_group.location
+  ip_configuration_name         = "testconfiguration1"
+  subnet_id                     = module.subnets["subnet1"].id
+  private_ip_address_allocation = "Dynamic"
+  private_ip_address            = "10.0.0.4"
+  #  public_ip_address_id = module.public_ip_address.id
+  public_ip_address_id = null
+  tags                 = local.tags
+  extra_tags           = local.extra_tags
+}
 
-  lb_name            = "test-lb"
-  lb_type            = "public"
-  ft_name            = "lb-web-server"
-  lb_probes_port     = "80"
-  lb_probes_protocol = "Tcp"
-  lb_probes_path     = "/"
-  lb_nb_probes       = "2"
-  lb_rule_proto      = "Tcp"
-  lb_rule_ft_port    = "80"
-  lb_rule_bck_port   = "80"
-  public_ip_id       = module.public_ip_address.id
+module "network_security_group" {
+  source = "./modules/Networking/network-security-group"
 
+  network_security_group_name = "test-nsg"
+  resource_group_name         = module.resource_group.name
+  location                    = module.resource_group.location
+  inbound_rules = [
+    {
+      name                       = "SSH"
+      priority                   = 100
+      access                     = "Allow"
+      protocol                   = "Tcp"
+      source_address_prefix      = "*"
+      source_port_range          = "*"
+      destination_address_prefix = "*"
+      destination_port_range     = "22"
+      description                = "Allow SSH"
+    }
+  ]
+  outbound_rules = [
+    {
+      name                       = "AllowInternetOutBound"
+      priority                   = 100
+      access                     = "Allow"
+      protocol                   = "*"
+      source_address_prefix      = "*"
+      source_port_range          = "*"
+      destination_address_prefix = "*"
+      destination_port_range     = "*"
+      description                = "Allow Internet OutBound"
+    }
+  ]
   subnet_id = module.subnets["subnet1"].id
 
-  tags = {
-    environment = "dev"
-    project     = "myproject"
-  }
-
-  extra_tags = {
-    owner = "me"
-  }
+  tags       = local.tags
+  extra_tags = local.extra_tags
 }
+
+module "nat_gateway" {
+  source = "./modules/Networking/nat-gateway"
+
+  nat_gateway_name     = "test-nat-gateway"
+  resource_group_name  = module.resource_group.name
+  location             = module.resource_group.location
+  public_ip_address_id = module.public_ip_address.id
+  subnet_id            = module.subnets["subnet1"].id
+  tags                 = local.tags
+  extra_tags           = local.extra_tags
+}
+
+module "virtual_machine" {
+  source = "./modules/Compute/linux-virtual-machine"
+
+  virtual_machine_name   = "test-vm"
+  resource_group_name    = module.resource_group.name
+  location               = module.resource_group.location
+  vm_size                = "Standard_B1ls"
+  admin_username         = "testadmin"
+  admin_password         = "Password1234!"
+  network_interface_id   = module.network_interface.id
+  source_image_publisher = "Canonical"
+  source_image_offer     = "0001-com-ubuntu-minimal-focal"
+  source_image_sku       = "minimal-20_04-lts-gen2"
+  source_image_version   = "latest"
+  depends_on             = [module.network_interface]
+
+  tags       = local.tags
+  extra_tags = local.extra_tags
+}
+
+
