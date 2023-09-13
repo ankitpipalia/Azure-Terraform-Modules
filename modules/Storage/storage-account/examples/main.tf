@@ -19,7 +19,7 @@ locals {
   extra_tags = {
     owner = "user1"
   }
-  storage_account_name = "ankitstgsimform924"
+  storage_account_name = "xyzstgsimform924"
   #storage_account_name_validation = length(local.storage_account_name) >= 3 && length(local.storage_account_name) <= 24 && can(regex("^[a-z0-9]*$", local.storage_account_name))
 }
 

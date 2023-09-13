@@ -74,7 +74,7 @@ module "private_dns_zone" {
 
 module "mysql_server" {
   source = "./modules/Databases/mysql-server"
-  mysql_server_name = "test-mysql-server-ankit"
+  mysql_server_name = "test-mysql-server-xyz"
 
   resource_group_name = module.resource_group.name
   location            = module.resource_group.location
@@ -85,7 +85,7 @@ module "mysql_server" {
   tags                  = local.tags
   extra_tags            = local.extra_tags
 
-  azure_ad_admin_login    = "ankit.pipalia009@outlook.com"
-  azure_ad_admin_object_id = "0a8c004a-2b17-45f9-b0af-80e82d9db1d1"
+  azure_ad_admin_login    = "xyz@gmail.com"
+  azure_ad_admin_object_id = "xxxx-xxxx-xxxx-xxxx-xxxx"
 
 }

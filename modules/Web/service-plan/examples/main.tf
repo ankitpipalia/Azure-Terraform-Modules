@@ -32,7 +32,7 @@ module "resource_group" {
 
 module "service_plan" {
   source = "./modules/Web/service-plan"
-  name = "ankit-test-plan"
+  name = "xyz-test-plan"
   location = module.resource_group.location
   resource_group_name = module.resource_group.name
   os_type = "Linux"
