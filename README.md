@@ -6,16 +6,6 @@ This repository contains a collection of Terraform modules for provisioning reso
 
 ## Table of Contents
 
-- [Getting Started](#getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
-- [Usage](#usage)
-  - [Module Usage](#module-usage)
-- [Contributing](#contributing)
-- [License](#license)
-
-## Getting Started
-
 ### Prerequisites
 
 Before using these Terraform modules, make sure you have the following prerequisites installed on your machine:
