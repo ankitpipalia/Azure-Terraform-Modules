@@ -2,7 +2,7 @@
 Terraform module for creation Azure Nat Gateway
 
 ## Usage
-This module is provisioning Public IP Address, Azure NAT Gateway which is associated with target subnets. 
+This module is setting up an Azure NAT Gateway that is linked to specific subnets and Public IP Address.
 
 ```hcl
 module "nat_gateway" {
@@ -20,20 +20,14 @@ module "nat_gateway" {
 ```
 
 <!-- BEGIN_TF_DOCS -->
-## Requirements
-
-| Name                                                                         | Version   |
-| ---------------------------------------------------------------------------- | --------- |
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform)    | >= 1.0.0  |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm)          | >= 3.69.0 |
 
 ## Resources
 
 | Name                                                                                                                | Type      |
 |---------------------------------------------------------------------------------------------------------------------|-----------|
-| [azurerm_nat_gateway.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/nat_gateway)                                                                                        | resource  |
-| [azurerm_nat_gateway_public_ip_association.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/nat_gateway_public_ip_association)                                                                  | resource  |
-| [azurerm_subnet_nat_gateway_association.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet_nat_gateway_association)                                                                     | resource  |
+| [azurerm_nat_gateway](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/nat_gateway)                                                                                        | resource  |
+| [azurerm_nat_gateway_public_ip_association](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/nat_gateway_public_ip_association)                                                                  | resource  |
+| [azurerm_subnet_nat_gateway_association](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet_nat_gateway_association)                                                                     | resource  |
 
 
 ## Inputs
