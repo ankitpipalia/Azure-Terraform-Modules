@@ -40,11 +40,6 @@ variable "lb_probes_path" {
   default     = "/"
 }
 
-variable "lb_nb_probes" {
-  description = "Specifies the number of failed probe attempts after which the backend endpoint is removed from rotation"
-  default     = "2"
-}
-
 variable "lb_rule_proto" {
   description = "Specifies the transport protocol for the external endpoint."
   default     = "Tcp"
@@ -92,4 +87,45 @@ variable "ft_priv_ip_addr_alloc" {
 variable "public_ip_id" {
   description = "Define Public IP Address that will be used for NIC configuration"
   default     = ""
+}
+
+variable "lb_nat_pool_enabled" {
+  description = "Define if NAT Pool will be created"
+  default     = false
+}
+
+variable "nat_pool_frontend_ports" {
+  description = "Define the Frontend Ports that will be used for NAT Pool"
+  type        = list(number)
+  default     = [50000, 50001]
+}
+
+variable "os_flavor" {
+  description = "Define the OS Flavor that will be used for NAT Pool"
+  default     = "linux"
+}
+
+variable "lb_probe_enabled" {
+  description = "Define if Probe will be created"
+  default     = false
+}
+
+variable "load_balancer_health_probe_port" {
+  description = "Port on which the Probe queries the backend endpoint. Default `80`"
+  default     = 80
+}
+
+variable "lb_probe_protocol" {
+  description = "Specifies the protocol of the end point. Possible values are `Http`, `Https` or `Tcp`. If `Tcp` is specified, a received ACK is required for the probe to be successful. If `Http` is specified, a `200 OK` response from the specified `URI` is required for the probe to be successful."
+  default     = null
+}
+
+variable "lb_nb_probes" {
+  description = "The number of failed probe attempts after which the backend endpoint is removed from rotation. The default value is `2`. `NumberOfProbes` multiplied by `intervalInSeconds` value must be greater or equal to 10.Endpoints are returned to rotation when at least one probe is successful."
+  default     = null
+}
+
+variable "lb_probe_request_path" {
+  description = "Specifies the URI used for requesting health status from the backend endpoint. Required if `protocol` is set to `Http` or `Https`."
+  default     = null
 }

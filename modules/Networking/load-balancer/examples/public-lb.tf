@@ -53,14 +53,26 @@ module "subnets" {
   # For example, if you're given a prefix ending in /16 and you want your subnets to have a prefix of /20, then newbits would be 4, because 20 - 16 = 4
 }
 
+module "public_ip_address" {
+  source = "./modules/Networking/public-ip"
+
+  public_ip_name      = "test-pip"
+  resource_group_name = module.resource_group.name
+  location            = module.resource_group.location
+  allocation_method   = "Static"
+  sku                 = "Basic" # Change the SKU to Basic
+  tags                = local.tags
+  extra_tags          = local.extra_tags
+}
+
 module "lb" {
-  source = "./modules/Networking/load-balancers"
+  source = "./modules/Networking/load-balancer"
 
   resource_group_name = module.resource_group.name
   location            = module.resource_group.location
 
   lb_name            = "test-lb"
-  lb_type            = "private"
+  lb_type            = "public"
   ft_name            = "lb-web-server"
   lb_probes_port     = "80"
   lb_probes_protocol = "Tcp"
@@ -69,9 +81,9 @@ module "lb" {
   lb_rule_proto      = "Tcp"
   lb_rule_ft_port    = "80"
   lb_rule_bck_port   = "80"
-  ft_priv_ip_addr   = "10.0.0.9"
+  public_ip_id       = module.public_ip_address.id
 
-  subnet_id = module.subnets["subnet1"].id
+  subnet_id = null
 
   tags                 = local.tags
   extra_tags           = local.extra_tags
