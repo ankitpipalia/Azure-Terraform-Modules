@@ -150,26 +150,5 @@ module "vmss" {
   tags       = local.tags
   extra_tags = local.extra_tags
 
-
-  enable_vmss_autoscale = true
-
-  autoscale_setting_name = "test-vmss-autoscale"
-  profile_name       = "test-vmss-autoscale-profile"
-
-  default_capacity = 2
-  minimum_capacity = 2
-  maximum_capacity = 10
-
-  metric_name = "Percentage CPU"
-  time_grain  = "PT1M"
-  statistic   = "Average"
-  time_window = "PT5M"
-  time_aggregation   = "Average"
-  operator           = "GreaterThan"
-  threshold          = 75
-
-  scale_direction = "Increase"
-  scale_type      = "ChangeCount"
-  scale_value = 1
-  scale_cooldown = "PT1M"
+  enable_vmss_autoscale = false
 }
