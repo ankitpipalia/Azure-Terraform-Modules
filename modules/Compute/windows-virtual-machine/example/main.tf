@@ -32,7 +32,7 @@ module "resource_group" {
 }
 
 module "virtual_network" {
-  source = "./modules/Networking/Virtual Networks"
+  source = "./modules/Networking/virtual-network"
 
   virtual_network_name = "test-vnet"
   location = module.resource_group.location
