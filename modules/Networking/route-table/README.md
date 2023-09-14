@@ -1,6 +1,31 @@
 # Azure Route Table - Terraform Module
 This Terraform module creates an Azure Route Table.
 
+# Azure Route Table example:
+
+```hcl
+module "route_table" {
+  source = "./modules/Networking/route-table"
+
+  name                  = "test-rt"
+  resource_group_name   = module.resource_group.name
+  location              = module.resource_group.location
+  routes                = [
+    {
+      name                   = "route1"
+      address_prefix         = "10.0.0.0/24"
+      next_hop_type          = "VirtualAppliance"
+      next_hop_in_ip_address = "10.0.1.0"
+    },
+  ]
+  disable_bgp_route_propagation = true
+  subnet_id = module.subnets["subnet1"].id
+
+  tags                  = local.tags
+  extra_tags            = local.extra_tags
+}
+```
+
 ## Inputs
 
 | Name                           | Description                                                           | Type     | Default | Required |

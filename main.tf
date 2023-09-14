@@ -68,8 +68,8 @@ module "route_table" {
     },
   ]
   disable_bgp_route_propagation = true
+  subnet_id = module.subnets["subnet1"].id
+
   tags                  = local.tags
   extra_tags            = local.extra_tags
-
-  subnet_id = module.subnets["subnet1"].id
 }
