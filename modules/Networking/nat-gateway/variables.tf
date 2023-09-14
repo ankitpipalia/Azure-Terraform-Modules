@@ -16,13 +16,13 @@ variable "nat_gateway_name" {
 variable "nat_sku" {
   type        = string
   description = "SKU of NAT Gateway"
-  default = "Standard"
+  default     = "Standard"
 }
 
 variable "nat_idle_time" {
   type        = number
   description = "Idle timeout of NAT Gateway"
-  default = 10
+  default     = 10
 }
 
 variable "nat_zones" {
@@ -38,9 +38,9 @@ variable "public_ip_address_id" {
 
 variable "tags" {
   description = "Tags to be applied to resources (inclusive)"
-  type        = object({
-    environment         = string
-    project        = string
+  type = object({
+    environment = string
+    project     = string
   })
 }
 

@@ -42,7 +42,7 @@ variable "dns_servers" {
   description = "The DNS servers"
   type        = list(string)
   default     = []
-} 
+}
 
 variable "enable_accelerated_networking" {
   description = "Enable accelerated networking"
@@ -64,9 +64,9 @@ variable "internal_dns_name_label" {
 
 variable "tags" {
   description = "Tags to be applied to resources (inclusive)"
-  type        = object({
-    environment         = string
-    project        = string
+  type = object({
+    environment = string
+    project     = string
   })
 }
 

@@ -1,12 +1,12 @@
 resource "azurerm_storage_account" "sa" {
-  name                     = var.storage_account_name
-  resource_group_name      = var.resource_group_name
-  location                 = var.location
-  account_kind             = var.account_kind
-  account_tier             = var.account_tier
-  account_replication_type = var.replication_type
-  enable_https_traffic_only         = var.enable_https_traffic_only
-  min_tls_version                   = var.min_tls_version
+  name                      = var.storage_account_name
+  resource_group_name       = var.resource_group_name
+  location                  = var.location
+  account_kind              = var.account_kind
+  account_tier              = var.account_tier
+  account_replication_type  = var.replication_type
+  enable_https_traffic_only = var.enable_https_traffic_only
+  min_tls_version           = var.min_tls_version
 
   tags = merge(
     {
@@ -31,14 +31,14 @@ resource "azurerm_storage_account" "sa" {
           days = var.blob_delete_retention_days
         }
       }
-      
+
       dynamic "container_delete_retention_policy" {
         for_each = (var.container_delete_retention_days == 0 ? [] : [1])
         content {
           days = var.container_delete_retention_days
         }
       }
-      
+
       dynamic "cors_rule" {
         for_each = (var.blob_cors == null ? {} : var.blob_cors)
         content {

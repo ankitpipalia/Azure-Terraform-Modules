@@ -1,6 +1,6 @@
 output "name" {
   description = "Virtual Network name"
-  value = azurerm_virtual_network.vnet.name
+  value       = azurerm_virtual_network.vnet.name
 }
 
 output "id" {
@@ -10,7 +10,7 @@ output "id" {
 
 output "location" {
   description = "Virtual Network location"
-  value = azurerm_virtual_network.vnet.location
+  value       = azurerm_virtual_network.vnet.location
 }
 
 output "rg" {

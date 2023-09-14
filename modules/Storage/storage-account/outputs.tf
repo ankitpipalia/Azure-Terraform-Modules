@@ -77,10 +77,10 @@ output "storage_account_primary_table_host" {
 
 output "storage_encryption_scope_ids" {
   description = "The IDs of the storage encryption scopes"
-  value = [for scope in azurerm_storage_encryption_scope.scope : scope.id]
+  value       = [for scope in azurerm_storage_encryption_scope.scope : scope.id]
 }
 
 output "storage_container_ids" {
   description = "The IDs of the storage containers"
-  value = [for container in azurerm_storage_container.container : container.id]
+  value       = [for container in azurerm_storage_container.container : container.id]
 }

@@ -1,10 +1,10 @@
 resource "azurerm_windows_virtual_machine" "vm" {
-  name                = var.virtual_machine_name
-  resource_group_name = var.resource_group_name
-  location            = var.location
-  size                = var.vm_size
-  admin_username      = var.admin_username
-  admin_password      = var.admin_password
+  name                  = var.virtual_machine_name
+  resource_group_name   = var.resource_group_name
+  location              = var.location
+  size                  = var.vm_size
+  admin_username        = var.admin_username
+  admin_password        = var.admin_password
   network_interface_ids = [var.network_interface_id]
 
   os_disk {
@@ -39,7 +39,7 @@ resource "azurerm_windows_virtual_machine" "vm" {
   }
 
   identity {
-    type = var.identity_type
+    type         = var.identity_type
     identity_ids = var.identity_ids
   }
 
