@@ -1,27 +1,3 @@
-terraform {
-  required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = "~>3.0"
-    }
-  }
-  required_version = "~>1.0"
-}
-
-provider "azurerm" {
-  features {}
-}
-
-locals {
-  tags = {
-    environment = "Production"
-    project     = "Project1"
-  }
-  extra_tags = {
-    owner = "user1"
-  }
-}
-
 module "resource_group" {
   source = "./modules/Management/resource-group"
 

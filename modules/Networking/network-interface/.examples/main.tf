@@ -1,33 +1,7 @@
-terraform {
-  required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = "~>3.0"
-    }
-  }
-  required_version = "~>1.0"
-}
-
-
-provider "azurerm" {
-  features {}
-}
-
-locals {
-  subnets = ["subnet1", "subnet2", "subnet3"]
-  tags = {
-    environment = "Production"
-    project     = "Project1"
-  }
-  extra_tags = {
-    owner = "user1"
-  }
-}
-
 module "resource_group" {
   source = "./modules/Management/resource-group"
 
-  resource_group_name = "test-rg-1"
+  resource_group_name = "test-rg"
   location            = "centralindia"
   tags                = local.tags
   extra_tags          = local.extra_tags
@@ -62,31 +36,23 @@ module "public_ip_address" {
   resource_group_name = module.resource_group.name
   location            = module.resource_group.location
   allocation_method   = "Static"
-  sku                 = "Basic" # Change the SKU to Basic
+  sku                 = "Standard"
   tags                = local.tags
   extra_tags          = local.extra_tags
 }
 
-module "lb" {
-  source = "./modules/Networking/load-balancer"
+module "network_interface" {
+  source = "./modules/Networking/network-interface"
 
-  resource_group_name = module.resource_group.name
-  location            = module.resource_group.location
-
-  lb_name            = "test-lb"
-  lb_type            = "public"
-  ft_name            = "lb-web-server"
-  lb_probes_port     = "80"
-  lb_probes_protocol = "Tcp"
-  lb_probes_path     = "/"
-  lb_nb_probes       = "2"
-  lb_rule_proto      = "Tcp"
-  lb_rule_ft_port    = "80"
-  lb_rule_bck_port   = "80"
-  public_ip_id       = module.public_ip_address.id
-
-  subnet_id = null
-
-  tags       = local.tags
-  extra_tags = local.extra_tags
+  network_interface_name        = "test-nic"
+  resource_group_name           = module.resource_group.name
+  location                      = module.resource_group.location
+  ip_configuration_name         = "testconfiguration1"
+  subnet_id                     = module.subnets["subnet1"].id
+  private_ip_address_allocation = "Dynamic"
+  private_ip_address            = "10.0.0.4"
+  #  public_ip_address_id = module.public_ip_address.id
+  public_ip_address_id = null
+  tags                 = local.tags
+  extra_tags           = local.extra_tags
 }
