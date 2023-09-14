@@ -12,7 +12,7 @@ A Terraform module which creates Load Balancer on Azure with the following chara
 
 ```hcl
 module "lb" {
-  source = "~/git/Azure-Terraform-Modules/modules/Networking/load-balancer"
+  source = "./modules/Networking/load-balancer"
 
   resource_group_name = module.resource_group.name
   location            = module.resource_group.location
@@ -40,7 +40,7 @@ module "lb" {
 
 ```hcl
 module "lb" {
-  source = "~/git/Azure-Terraform-Modules/modules/Networking/load-balancer"
+  source = "./modules/Networking/load-balancer"
 
   resource_group_name = module.resource_group.name
   location            = module.resource_group.location

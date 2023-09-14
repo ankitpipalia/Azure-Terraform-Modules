@@ -15,7 +15,7 @@ Before using this module, make sure you have the following:
 
 ```hcl
 module "vmss" {
-  source = "~/git/Azure-Terraform-Modules/modules/Compute/linux-vmss"
+  source = "./modules/Compute/linux-vmss"
 
   virtual_machine_scale_set_name = "test-vmss"
   resource_group_name            = module.resource_group.name
@@ -66,7 +66,7 @@ module "vmss" {
 
 ```hcl
 module "vmss" {
-  source = "~/git/Azure-Terraform-Modules/modules/Compute/linux-vmss"
+  source = "./modules/Compute/linux-vmss"
 
   virtual_machine_scale_set_name = "test-vmss"
   resource_group_name            = module.resource_group.name

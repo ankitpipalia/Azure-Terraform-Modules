@@ -5,7 +5,7 @@ This Terraform module creates an Azure Route Table.
 
 ```hcl
 module "route_table" {
-  source = "~/git/Azure-Terraform-Modules/modules/Networking/route-table"
+  source = "./modules/Networking/route-table"
 
   name                  = "test-rt"
   resource_group_name   = module.resource_group.name

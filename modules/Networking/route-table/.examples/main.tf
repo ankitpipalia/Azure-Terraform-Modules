@@ -24,7 +24,7 @@ locals {
 }
 
 module "resource_group" {
-  source = "~/git/Azure-Terraform-Modules/modules/Management/resource-group"
+  source = "./modules/Management/resource-group"
 
   resource_group_name = "test-rg"
   location            = "centralindia"
@@ -33,7 +33,7 @@ module "resource_group" {
 }
 
 module "virtual_network" {
-  source = "~/git/Azure-Terraform-Modules/modules/Networking/virtual-network"
+  source = "./modules/Networking/virtual-network"
 
   virtual_network_name = "test-vnet"
   location             = module.resource_group.location
@@ -44,7 +44,7 @@ module "virtual_network" {
 }
 
 module "subnets" {
-  source = "~/git/Azure-Terraform-Modules/modules/Networking/subnets"
+  source = "./modules/Networking/subnets"
 
   for_each              = toset(local.subnets)
   subnet_name           = each.value
@@ -55,7 +55,7 @@ module "subnets" {
 }
 
 module "route_table" {
-  source = "~/git/Azure-Terraform-Modules/modules/Networking/route-table"
+  source = "./modules/Networking/route-table"
 
   name                = "test-rt"
   resource_group_name = module.resource_group.name

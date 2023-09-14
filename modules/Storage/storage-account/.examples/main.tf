@@ -25,7 +25,7 @@ locals {
 }
 
 module "resource_group" {
-  source = "~/git/Azure-Terraform-Modules/modules/Management/resource-group"
+  source = "./modules/Management/resource-group"
 
   resource_group_name = "test-rg"
   location            = "centralindia"
@@ -34,7 +34,7 @@ module "resource_group" {
 }
 
 module "storage_acount" {
-  source = "~/git/Azure-Terraform-Modules/modules/Storage/storage-account"
+  source = "./modules/Storage/storage-account"
   #storage_account_name = local.storage_account_name_validation ? local.storage_account_name : assert(false, "Invalid storage account name. The name can only consist of lowercase letters and numbers, and must be between 3 and 24 characters long.")
   storage_account_name = local.storage_account_name
   resource_group_name  = module.resource_group.name

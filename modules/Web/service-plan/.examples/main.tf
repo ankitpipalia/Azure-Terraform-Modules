@@ -23,7 +23,7 @@ locals {
 }
 
 module "resource_group" {
-  source = "~/git/Azure-Terraform-Modules/modules/Management/resource-group"
+  source = "./modules/Management/resource-group"
 
   resource_group_name = "test-rg"
   location            = "centralindia"
@@ -32,7 +32,7 @@ module "resource_group" {
 }
 
 module "service_plan" {
-  source              = "~/git/Azure-Terraform-Modules/modules/Web/service-plan"
+  source              = "./modules/Web/service-plan"
   name                = "xyz-test-plan"
   location            = module.resource_group.location
   resource_group_name = module.resource_group.name

@@ -6,7 +6,7 @@ This module is setting up an Azure NAT Gateway that is linked to specific subnet
 
 ```hcl
 module "nat_gateway" {
-  source = "~/git/Azure-Terraform-Modules/modules/Networking/nat-gateway"
+  source = "./modules/Networking/nat-gateway"
 
   nat_gateway_name     = "test-nat-gateway"
   resource_group_name  = module.resource_group.name

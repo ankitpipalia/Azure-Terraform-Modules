@@ -6,7 +6,7 @@ This module creates an Azure Storage Account with a set of containers and option
 
 ```hcl
 module "storage_account" {
-  source = ".~/git/Azure-Terraform-Modules/modules/storage_account"
+  source = "../modules/storage_account"
 
   storage_account_name = "mystorageaccount"
   resource_group_name  = "myresourcegroup"

@@ -24,7 +24,7 @@ locals {
 }
 
 module "resource_group_1" {
-  source = "~/git/Azure-Terraform-Modules/modules/Management/resource-group"
+  source = "./modules/Management/resource-group"
 
   resource_group_name = "test-rg"
   location            = "centralindia"
@@ -33,7 +33,7 @@ module "resource_group_1" {
 }
 
 module "resource_group_2" {
-  source = "~/git/Azure-Terraform-Modules/modules/Management/resource-group"
+  source = "./modules/Management/resource-group"
 
   resource_group_name = "test-rg"
   location            = "centralindia"
@@ -42,7 +42,7 @@ module "resource_group_2" {
 }
 
 module "virtual_network_1" {
-  source = "~/git/Azure-Terraform-Modules/modules/Networking/virtual-network"
+  source = "./modules/Networking/virtual-network"
 
   virtual_network_name = "test-vne-1"
   location             = module.resource_group_1.location
@@ -53,7 +53,7 @@ module "virtual_network_1" {
 }
 
 module "subnets_1" {
-  source = "~/git/Azure-Terraform-Modules/modules/Networking/subnets"
+  source = "./modules/Networking/subnets"
 
   for_each              = toset(local.subnets)
   subnet_name           = each.value
@@ -64,7 +64,7 @@ module "subnets_1" {
 }
 
 module "virtual_network_2" {
-  source = "~/git/Azure-Terraform-Modules/modules/Networking/virtual-network"
+  source = "./modules/Networking/virtual-network"
 
   virtual_network_name = "test-vnet-2"
   location             = module.resource_group_2.location
@@ -75,7 +75,7 @@ module "virtual_network_2" {
 }
 
 module "subnets_2" {
-  source = "~/git/Azure-Terraform-Modules/modules/Networking/subnets"
+  source = "./modules/Networking/subnets"
 
   for_each              = toset(local.subnets)
   subnet_name           = each.value
@@ -86,7 +86,7 @@ module "subnets_2" {
 }
 
 module "vnet_peer" {
-  source = "~/git/Azure-Terraform-Modules/modules/Networking/vnet-peering"
+  source = "./modules/Networking/vnet-peering"
 
   src_resource_group_name = module.resource_group_1.name
   dst_resource_group_name = module.resource_group_2.name

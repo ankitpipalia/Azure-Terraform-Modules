@@ -4,7 +4,7 @@
 
 ```hcl
 module "mssql_server" {
-  source = "~/git/Azure-Terraform-Modules/modules/Databases/mssql-server"
+  source = "./modules/Databases/mssql-server"
   mssql_server_name = "test-mssql-server-xyz"
 
   resource_group_name = module.resource_group.name
