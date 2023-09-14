@@ -2,10 +2,12 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~>3.0"
+      version = "~>3.72"
     }
   }
+  required_version = ">= 1.5.7"
 }
+
 
 provider "azurerm" {
   features {}
@@ -69,10 +71,10 @@ module "lb" {
   lb_rule_proto      = "Tcp"
   lb_rule_ft_port    = "80"
   lb_rule_bck_port   = "80"
-  ft_priv_ip_addr   = "10.0.0.9"
+  ft_priv_ip_addr    = "10.0.0.9"
 
   subnet_id = module.subnets["subnet1"].id
 
-  tags                 = local.tags
-  extra_tags           = local.extra_tags
+  tags       = local.tags
+  extra_tags = local.extra_tags
 }

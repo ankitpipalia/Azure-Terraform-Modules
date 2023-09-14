@@ -2,9 +2,10 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~>3.0"
+      version = "~>3.72"
     }
   }
+  required_version = ">= 1.5.7"
 }
 
 provider "azurerm" {
@@ -73,7 +74,7 @@ module "private_dns_zone" {
 }
 
 module "mssql_server" {
-  source = "./modules/Databases/mssql-server"
+  source            = "./modules/Databases/mssql-server"
   mssql_server_name = "test-mssql-server-xyz"
 
   resource_group_name = module.resource_group.name
@@ -82,10 +83,10 @@ module "mssql_server" {
   administrator_login          = "mssqladmin"
   administrator_login_password = "H@Sh1CoR3!"
 
-  tags                  = local.tags
-  extra_tags            = local.extra_tags
+  tags       = local.tags
+  extra_tags = local.extra_tags
 
-  azure_ad_admin_login    = "xyz@gmail.com"
+  azure_ad_admin_login     = "xyz@gmail.com"
   azure_ad_admin_object_id = "xxxx-xxxx-xxxx-xxxx-xxxx"
 
 }

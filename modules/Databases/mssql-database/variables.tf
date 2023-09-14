@@ -1,5 +1,5 @@
 variable "mssql_database_name" {
-  type = string
+  type        = string
   description = "Name of MSSQL database"
 }
 
@@ -118,9 +118,9 @@ variable "destination_type" {
 
 variable "tags" {
   description = "Tags to be applied to resources (inclusive)"
-  type        = object({
-    environment         = string
-    project        = string
+  type = object({
+    environment = string
+    project     = string
   })
 }
 

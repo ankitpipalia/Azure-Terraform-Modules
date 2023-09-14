@@ -1,14 +1,15 @@
 terraform {
   required_providers {
     azurerm = {
-      source  = "hashicorp/azurerm" 
-      version = "~>3.0" 
+      source  = "hashicorp/azurerm"
+      version = "~>3.72"
     }
   }
+  required_version = ">= 1.5.7"
 }
 
 provider "azurerm" {
-  features {} 
+  features {}
 }
 
 locals {
@@ -27,19 +28,19 @@ module "resource_group" {
   source = "./modules/Management/resource-group"
 
   resource_group_name = "test-rg"
-  location = "centralindia"
-  tags = local.tags
-  extra_tags = local.extra_tags
+  location            = "centralindia"
+  tags                = local.tags
+  extra_tags          = local.extra_tags
 }
 
 module "storage_acount" {
   source = "./modules/Storage/storage-account"
   #storage_account_name = local.storage_account_name_validation ? local.storage_account_name : assert(false, "Invalid storage account name. The name can only consist of lowercase letters and numbers, and must be between 3 and 24 characters long.")
   storage_account_name = local.storage_account_name
-  resource_group_name = module.resource_group.name
-  location = module.resource_group.location
-  account_tier = "Standard"
-  replication_type = "LRS"
+  resource_group_name  = module.resource_group.name
+  location             = module.resource_group.location
+  account_tier         = "Standard"
+  replication_type     = "LRS"
 
   default_network_rule = "Deny" # Allow or Deny All Public Access Not Recommanded Use Your Public IP using Access List
 
@@ -49,20 +50,20 @@ module "storage_acount" {
 
 
   static_website_enabled = true
-  index_path = "index.html"
-  custom_404_path = "error.html"
+  index_path             = "index.html"
+  custom_404_path        = "error.html"
 
   containers = [
     {
-      name = "images"
+      name        = "images"
       access_type = "private"
     },
     {
-      name = "thumbnails"
+      name        = "thumbnails"
       access_type = "private"
     }
   ]
-  
-  tags = local.tags
+
+  tags       = local.tags
   extra_tags = local.extra_tags
 }

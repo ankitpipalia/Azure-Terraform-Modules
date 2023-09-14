@@ -5,7 +5,7 @@ variable "storage_account_name" {
 
 variable "location" {
   description = "location of the resource"
-  type        = string  
+  type        = string
 }
 
 variable "resource_group_name" {
@@ -15,9 +15,9 @@ variable "resource_group_name" {
 
 variable "tags" {
   description = "Tags to be applied to resources (inclusive)"
-  type        = object({
-    environment         = string
-    project        = string
+  type = object({
+    environment = string
+    project     = string
   })
 }
 

@@ -29,6 +29,6 @@ resource "azurerm_private_dns_zone_virtual_network_link" "virtual_network_link" 
   resource_group_name   = azurerm_private_dns_zone.private_dns_zone.resource_group_name
   virtual_network_id    = each.value.virtual_network_id
   registration_enabled  = each.value.registration_enabled
-  
+
   tags = azurerm_private_dns_zone.private_dns_zone.tags
 }

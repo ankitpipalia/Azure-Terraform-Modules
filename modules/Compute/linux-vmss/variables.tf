@@ -165,7 +165,7 @@ variable "identity_ids" {
 variable "enable_vmss_autoscale" {
   description = "Enables autoscale for VMSS"
   type        = bool
-  default     = false  
+  default     = false
 }
 
 variable "autoscale_setting_name" {
@@ -237,12 +237,12 @@ variable "scale_type" {
   description = "The type of the scale action"
   type        = string
 }
-  
+
 variable "scale_value" {
   description = "The value of the scale action"
   type        = number
 }
-  
+
 variable "scale_cooldown" {
   description = "The cooldown of the scale action"
   type        = string

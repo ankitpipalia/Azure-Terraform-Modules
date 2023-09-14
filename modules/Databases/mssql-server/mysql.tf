@@ -1,5 +1,5 @@
 locals {
-  ip_rules    = { for e in [for k, ip in var.ip_rules : try(regex("/", ip), 0) != 0 ? { (k) = { start_ip_address = cidrhost(ip, 0), end_ip_address = cidrhost(ip, -1) } } : { (k) = { start_ip_address = ip, end_ip_address = ip } }] : keys(e)[0] => e[keys(e)[0]] }
+  ip_rules = { for e in [for k, ip in var.ip_rules : try(regex("/", ip), 0) != 0 ? { (k) = { start_ip_address = cidrhost(ip, 0), end_ip_address = cidrhost(ip, -1) } } : { (k) = { start_ip_address = ip, end_ip_address = ip } }] : keys(e)[0] => e[keys(e)[0]] }
 }
 
 resource "azurerm_mssql_server" "mssql_server" {
@@ -59,7 +59,7 @@ resource "azurerm_mssql_server_transparent_data_encryption" "mssql_server" {
 
 resource "azurerm_mssql_firewall_rule" "azure_services" {
   count = var.firewall_rule_name == null ? 0 : 1
-  
+
   name             = var.firewall_rule_name
   server_id        = azurerm_mssql_server.mssql_server.id
   start_ip_address = "0.0.0.0"

@@ -1,14 +1,15 @@
 terraform {
   required_providers {
     azurerm = {
-      source  = "hashicorp/azurerm" 
-      version = "~>3.0" 
+      source  = "hashicorp/azurerm"
+      version = "~>3.72"
     }
   }
+  required_version = ">= 1.5.7"
 }
 
 provider "azurerm" {
-  features {} 
+  features {}
 }
 
 locals {
@@ -25,31 +26,31 @@ module "resource_group" {
   source = "./modules/Management/resource-group"
 
   resource_group_name = "test-rg"
-  location = "centralindia"
-  tags = local.tags
-  extra_tags = local.extra_tags
+  location            = "centralindia"
+  tags                = local.tags
+  extra_tags          = local.extra_tags
 }
 
 module "service_plan" {
-  source = "./modules/Web/service-plan"
-  name = "xyz-test-plan"
-  location = module.resource_group.location
+  source              = "./modules/Web/service-plan"
+  name                = "xyz-test-plan"
+  location            = module.resource_group.location
   resource_group_name = module.resource_group.name
-  os_type = "Linux"
-  sku_name = "B1"
+  os_type             = "Linux"
+  sku_name            = "B1"
 
-  tags = local.tags
+  tags       = local.tags
   extra_tags = local.extra_tags
 }
 
 module "linux-web-apps" {
-  source = "./modules/Web/linux-web-apps"
-  name = "xyz-test-app"
-  location = module.resource_group.location
+  source              = "./modules/Web/linux-web-apps"
+  name                = "xyz-test-app"
+  location            = module.resource_group.location
   resource_group_name = module.resource_group.name
-  service_plan_id = module.service_plan.id
+  service_plan_id     = module.service_plan.id
 
-  tags = local.tags
+  tags       = local.tags
   extra_tags = local.extra_tags
 
   identity_type = "SystemAssigned"

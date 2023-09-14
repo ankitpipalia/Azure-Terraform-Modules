@@ -2,9 +2,10 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~>3.0"
+      version = "~>3.72"
     }
   }
+  required_version = ">= 1.5.7"
 }
 
 provider "azurerm" {
@@ -77,7 +78,7 @@ module "lb" {
   lb_probes_port     = "80"
   lb_probes_protocol = "Tcp"
   lb_probes_path     = "/"
-  lb_nb_probes   = "2"
+  lb_nb_probes       = "2"
   lb_rule_proto      = "Tcp"
   lb_rule_ft_port    = "80"
   lb_rule_bck_port   = "80"

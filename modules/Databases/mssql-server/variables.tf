@@ -65,9 +65,9 @@ variable "public_network_access_enabled" {
 
 variable "tags" {
   description = "Tags to be applied to resources (inclusive)"
-  type        = object({
-    environment         = string
-    project        = string
+  type = object({
+    environment = string
+    project     = string
   })
 }
 

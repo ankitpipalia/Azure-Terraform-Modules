@@ -2,9 +2,10 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~>3.0"
+      version = "~>3.72"
     }
   }
+  required_version = ">= 1.5.7"
 }
 
 provider "azurerm" {
@@ -73,7 +74,7 @@ module "private_dns_zone" {
 }
 
 module "mssql_server" {
-  source = "./modules/Databases/mssql-server"
+  source            = "./modules/Databases/mssql-server"
   mssql_server_name = "test-mssql-server-xyz"
 
   resource_group_name = module.resource_group.name
@@ -82,33 +83,33 @@ module "mssql_server" {
   administrator_login          = "mssqladmin"
   administrator_login_password = "H@Sh1CoR3!"
 
-  tags                  = local.tags
-  extra_tags            = local.extra_tags
+  tags       = local.tags
+  extra_tags = local.extra_tags
 
-  azure_ad_admin_login    = "xyz@outlook.com"
+  azure_ad_admin_login     = "xyz@outlook.com"
   azure_ad_admin_object_id = "xxxx-xxxx-xxxx-xxxx-xxxx"
 
 }
 
 module "mssql_database" {
-  source = "./modules/Databases/mssql-database"
+  source              = "./modules/Databases/mssql-database"
   mssql_database_name = "test-mssql-database-xyz"
-  collation = "SQL_Latin1_General_CP1_CI_AS"
-  
-  
-  server_id           = module.mssql_server.id
+  collation           = "SQL_Latin1_General_CP1_CI_AS"
+
+
+  server_id            = module.mssql_server.id
   storage_account_type = "ZRS"
-  server_fqdn = "module.mssql_server.fqdn"
+  server_fqdn          = "module.mssql_server.fqdn"
 
   databases = {
     testdb1 = {
-      name = "testdb1"
+      name      = "testdb1"
       collation = "SQL_Latin1_General_CP1_CI_AS"
     }
   }
 
-  sku = "GP_S_Gen5_2"
-  max_size = "20"
+  sku          = "GP_S_Gen5_2"
+  max_size     = "20"
   min_capacity = "0.5"
 
   tags       = local.tags

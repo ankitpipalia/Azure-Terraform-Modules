@@ -27,8 +27,8 @@ resource "azurerm_lb" "lb" {
 # Backend address pool for Load Balancer
 #---------------------------------------
 resource "azurerm_lb_backend_address_pool" "bepool" {
-  name                = "${azurerm_lb.lb.name}-bck-pool"
-  loadbalancer_id     = azurerm_lb.lb.id
+  name            = "${azurerm_lb.lb.name}-bck-pool"
+  loadbalancer_id = azurerm_lb.lb.id
 }
 
 #---------------------------------------
@@ -36,7 +36,7 @@ resource "azurerm_lb_backend_address_pool" "bepool" {
 #---------------------------------------
 resource "azurerm_lb_nat_pool" "natpol" {
   name                           = "${azurerm_lb.lb.name}-nat-pool"
-  resource_group_name = var.resource_group_name
+  resource_group_name            = var.resource_group_name
   loadbalancer_id                = azurerm_lb.lb.id
   protocol                       = "Tcp"
   frontend_port_start            = var.nat_pool_frontend_ports[0]
@@ -64,12 +64,12 @@ resource "azurerm_lb_nat_pool" "natpol" {
 # Health Probe for resources
 #---------------------------------------
 resource "azurerm_lb_probe" "lbp" {
-  name                = "${azurerm_lb.lb.name}-${var.lb_probes_port}-probe"
-  loadbalancer_id     = azurerm_lb.lb.id
-  port                = var.lb_probes_port
-  protocol            = var.lb_probe_protocol
-  request_path        = var.lb_probe_protocol != "Tcp" ? var.lb_probe_request_path : null
-  number_of_probes    = var.lb_nb_probes
+  name             = "${azurerm_lb.lb.name}-${var.lb_probes_port}-probe"
+  loadbalancer_id  = azurerm_lb.lb.id
+  port             = var.lb_probes_port
+  protocol         = var.lb_probe_protocol
+  request_path     = var.lb_probe_protocol != "Tcp" ? var.lb_probe_request_path : null
+  number_of_probes = var.lb_nb_probes
 }
 
 #--------------------------

@@ -2,10 +2,12 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~>3.0"
+      version = "~>3.72"
     }
   }
+  required_version = ">= 1.5.7"
 }
+
 
 provider "azurerm" {
   features {}
@@ -85,6 +87,6 @@ module "lb" {
 
   subnet_id = null
 
-  tags                 = local.tags
-  extra_tags           = local.extra_tags
+  tags       = local.tags
+  extra_tags = local.extra_tags
 }

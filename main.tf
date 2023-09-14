@@ -2,9 +2,10 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~>3.0"
+      version = "~>3.72"
     }
   }
+  required_version = ">= 1.5.7"
 }
 
 provider "azurerm" {
@@ -56,10 +57,10 @@ module "subnets" {
 module "route_table" {
   source = "./modules/Networking/route-table"
 
-  name                  = "test-rt"
-  resource_group_name   = module.resource_group.name
-  location              = module.resource_group.location
-  routes                = [
+  name                = "test-rt"
+  resource_group_name = module.resource_group.name
+  location            = module.resource_group.location
+  routes = [
     {
       name                   = "route1"
       address_prefix         = "10.0.0.0/24"
@@ -68,8 +69,8 @@ module "route_table" {
     },
   ]
   disable_bgp_route_propagation = true
-  subnet_id = module.subnets["subnet1"].id
+  subnet_id                     = module.subnets["subnet1"].id
 
-  tags                  = local.tags
-  extra_tags            = local.extra_tags
+  tags       = local.tags
+  extra_tags = local.extra_tags
 }
