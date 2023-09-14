@@ -28,7 +28,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "vmss" {
       version   = var.source_image_version
     }
   }
-  custom_data = var.custom_data
+  custom_data = base64encode(var.custom_data)
 
   os_disk {
     caching              = var.os_disk_caching
@@ -67,43 +67,5 @@ resource "azurerm_linux_virtual_machine_scale_set" "vmss" {
   identity {
     type         = var.identity_type
     identity_ids = var.identity_ids
-  }
-}
-
-resource "azurerm_monitor_autoscale_setting" "vmss_as" {
-  name                = var.autoscale_setting_name
-  resource_group_name = var.resource_group_name
-  location            = var.location
-  target_resource_id  = var.enable_vmss_autoscale ? azurerm_linux_virtual_machine_scale_set.vmss.id : null
-
-  profile {
-    name = var.profile_name
-
-    capacity {
-      default = var.default_capacity
-      minimum = var.minimum_capacity
-      maximum = var.maximum_capacity
-    }
-
-    rule {
-      metric_trigger {
-        metric_name        = var.metric_name
-        metric_namespace   = "microsoft.compute/virtualmachinescalesets"
-        metric_resource_id = azurerm_linux_virtual_machine_scale_set.vmss.id
-        time_grain         = var.time_grain
-        statistic          = var.statistic
-        time_window        = var.time_window
-        time_aggregation   = var.time_aggregation
-        operator           = var.operator
-        threshold          = var.threshold
-      }
-
-      scale_action {
-        direction = var.scale_direction
-        type      = var.scale_type
-        value     = var.scale_value
-        cooldown  = var.scale_cooldown
-      }
-    }
   }
 }

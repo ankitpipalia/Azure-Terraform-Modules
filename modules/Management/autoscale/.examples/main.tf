@@ -1,28 +1,3 @@
-terraform {
-  required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = "~>3.0"
-    }
-  }
-  required_version = "~>1.0"
-}
-
-provider "azurerm" {
-  features {}
-}
-
-locals {
-  subnets = ["subnet1", "subnet2", "subnet3"]
-  tags = {
-    environment = "Production"
-    project     = "Project1"
-  }
-  extra_tags = {
-    owner = "user1"
-  }
-}
-
 module "resource_group" {
   source = "./modules/Management/resource-group"
 
@@ -151,5 +126,34 @@ module "vmss" {
   tags       = local.tags
   extra_tags = local.extra_tags
 
-  enable_vmss_autoscale = false
+}
+
+module "autoscale_vmss" {
+  source = "./modules/Management/autoscale"
+
+  resource_group_name = module.resource_group.name
+  location            = module.resource_group.location
+  target_resource_id = module.vmss.vmss_id
+
+  autoscale_setting_name = "test-vmss-autoscale"
+  profile_name           = "test-vmss-autoscale-profile"
+
+  default_capacity = 2
+  minimum_capacity = 2
+  maximum_capacity = 10
+
+  metric_name      = "Percentage CPU"
+  metric_namespace = "Microsoft.Compute/virtualMachineScaleSets"
+  metric_resource_id = module.vmss.vmss_id
+  time_grain       = "PT1M"
+  statistic        = "Average"
+  time_window      = "PT5M"
+  time_aggregation = "Average"
+  operator         = "GreaterThan"
+  threshold        = 75
+
+  scale_direction = "Increase"
+  scale_type      = "ChangeCount"
+  scale_value     = 1
+  scale_cooldown  = "PT1M" 
 }

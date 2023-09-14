@@ -29,6 +29,7 @@ The repository follows the following directory hierarchy structure:
   - `mssql-server`: Module for creating SQL Server instances.
 
 - **Management**: Contains configurations for creating management resources.
+  - `autoscale`: Module for creating autoscale rules.
   - `resource-group`: Module for creating resource groups.
 
 - **Networking**: Contains configurations for creating networking resources.

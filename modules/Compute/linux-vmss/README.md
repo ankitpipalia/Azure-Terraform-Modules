@@ -100,12 +100,9 @@ module "vmss" {
 | `admin_password`                       | Admin Password for the virtual machines.                                    | string    | -         | yes      |
 | `admin_ssh_public_key`                 | Public SSH Key for authentication (optional).                               | string    | ""        | no       |
 | `admin_username`                       | Default Username for the virtual machines.                                  | string    | -         | yes      |
-| `autoscale_setting_name`               | Name of the autoscale setting (if enabled).                                  | string    | -         | no       |
 | `custom_data`                          | Custom data to be passed to the virtual machines.                           | string    | "# noop"  | no       |
-| `default_capacity`                     | Default capacity of the autoscale profile (if enabled).                     | number    | -         | no       |
 | `enable_health_probe_id`               | Enables health check probe id for Scale Set.                                | bool      | false     | no       |
-| `enable_public_ip_address`             | Enable or disable the assignment of public IP addresses to virtual machines. | bool      | false     | no       |
-| `enable_vmss_autoscale`               | Enable or disable autoscale for the VMSS.                                   | bool      | false     | no       |
+| `enable_public_ip_address`             | Enable or disable the assignment of public IP addresses to virtual machines. | bool      | false     | no       ||
 | `extra_tags`                           | Extra tags to be applied to resources (in addition to the tags above).      | map(string)| {}        | no       |
 | `health_probe_id`                      | Health probe id (if enabled).                                               | string    | null      | no       |
 | `identity_ids`                         | List of user-managed identity ids to be assigned to the VM.                 | list(string)| []        | no       |
@@ -113,20 +110,12 @@ module "vmss" {
 | `instances`                            | Number of instances in the VMSS.                                            | number    | -         | yes      |
 | `location`                             | Azure location/region where the virtual machine will be created.           | string    | -         | yes      |
 | `load_balancer_backend_address_pool_ids`| Load balancer backend address pool ids (if any).                            | list(string)| -         | no       |
-| `metric_name`                          | Name of the metric trigger for autoscaling (if enabled).                    | string    | -         | no       |
-| `minimum_capacity`                     | Minimum capacity of the autoscale profile (if enabled).                     | number    | -         | no       |
 | `nat_gateway_name`                     | Linux ScaleSet name.                                                         | string    | -         | yes      |
 | `nat_idle_time`                        | Idle timeout (in seconds) of the NAT Gateway.                               | number    | 10        | no       |
 | `nat_sku`                              | SKU (Service Level) of the NAT Gateway.                                     | string    | "Standard"| no       |
 | `nat_zones`                            | List of availability zones for the NAT Gateway.                             | list(string)| []        | no       |
-| `profile_name`                         | Name of the autoscale profile (if enabled).                                  | string    | -         | no       |
 | `public_ip_address_id`                 | ID of the associated public IP address.                                     | string    | -         | yes      |
 | `resource_group_name`                  | Name of an existing resource group to be imported.                           | string    | -         | yes      |
-| `scale_aggregation`                    | Aggregation method for the metric trigger (if enabled).                      | string    | -         | no       |
-| `scale_cooldown`                       | Cooldown period for the scale action (if enabled).                          | string    | -         | no       |
-| `scale_direction`                      | Direction of the scale action (if enabled).                                 | string    | -         | no       |
-| `scale_type`                           | Type of the scale action (if enabled).                                      | string    | -         | no       |
-| `scale_value`                          | Value of the scale action (if enabled).                                     | number    | -         | no       |
 | `source_image_id`                      | Operating System Image ID.                                                  | string    | null      | no       |
 | `source_image_offer`                   | Operating System Name.                                                       | string    | null      | no       |
 | `source_image_publisher`               | Operating System Publisher.                                                  | string    | null      | no       |
