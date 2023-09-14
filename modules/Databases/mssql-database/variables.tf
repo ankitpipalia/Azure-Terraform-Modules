@@ -8,11 +8,6 @@ variable "server_id" {
   description = "Id of SQL server"
 }
 
-variable "server_fqdn" {
-  type        = string
-  description = "FQDN of Azure SQL Server"
-}
-
 variable "collation" {
   type        = string
   description = "Specifies the collation of the database"

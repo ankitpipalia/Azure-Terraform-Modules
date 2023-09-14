@@ -99,7 +99,6 @@ module "mssql_database" {
 
   server_id            = module.mssql_server.id
   storage_account_type = "ZRS"
-  server_fqdn          = "module.mssql_server.fqdn"
 
   databases = {
     testdb1 = {

@@ -11,7 +11,6 @@ module "mssql_database" {
   
   server_id           = module.mssql_server.id
   storage_account_type = "ZRS"
-  server_fqdn = "module.mssql_server.fqdn"
 
   databases = {
     testdb1 = {
@@ -49,7 +48,6 @@ module "mssql_database" {
 | `min_capacity`                  | The minimum size of the database in gigabytes.                                                    | string   | -                                 | yes      |
 | `public_network_access_enabled`  | Whether public network access is allowed for this database.                                        | bool     | false                             | no       |
 | `retention_days`                | Specifies the number of days to keep in the Threat Detection audit logs.                           | number   | 3                                 | no       |
-| `server_fqdn`                  | FQDN of Azure SQL Server.                                                                         | string   | -                                 | yes      |
 | `server_id`                     | ID of SQL server.                                                                                 | string   | -                                 | yes      |
 | `sku`                           | Specifies the SKU of the database.                                                                | string   | -                                 | yes      |
 | `storage_account_type`          | Specifies the storage account type used to store backups for this database.                        | string   | -                                 | yes      |
