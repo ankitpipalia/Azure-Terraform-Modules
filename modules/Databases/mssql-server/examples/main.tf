@@ -2,10 +2,10 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~>3.72"
+      version = "~>3.0"
     }
   }
-  required_version = ">= 1.5.7"
+  required_version = "~>1.0"
 }
 
 provider "azurerm" {
@@ -24,7 +24,7 @@ locals {
 }
 
 module "resource_group" {
-  source = "./modules/Management/resource-group"
+  source = "~/git/Azure-Terraform-Modules/modules/Management/resource-group"
 
   resource_group_name = "test-rg"
   location            = "centralindia"
@@ -33,7 +33,7 @@ module "resource_group" {
 }
 
 module "virtual_network" {
-  source = "./modules/Networking/virtual-network"
+  source = "~/git/Azure-Terraform-Modules/modules/Networking/virtual-network"
 
   virtual_network_name = "test-vnet"
   location             = module.resource_group.location
@@ -44,7 +44,7 @@ module "virtual_network" {
 }
 
 module "subnets" {
-  source = "./modules/Networking/subnets"
+  source = "~/git/Azure-Terraform-Modules/modules/Networking/subnets"
 
   for_each              = toset(local.subnets)
   subnet_name           = each.value
@@ -55,7 +55,7 @@ module "subnets" {
 }
 
 module "private_dns_zone" {
-  source = "./modules/Networking/private-dns-zone"
+  source = "~/git/Azure-Terraform-Modules/modules/Networking/private-dns-zone"
 
   private_dns_zone_name = "testdnszone.local"
   resource_group_name   = module.resource_group.name
@@ -74,7 +74,7 @@ module "private_dns_zone" {
 }
 
 module "mssql_server" {
-  source            = "./modules/Databases/mssql-server"
+  source            = "~/git/Azure-Terraform-Modules/modules/Databases/mssql-server"
   mssql_server_name = "test-mssql-server-xyz"
 
   resource_group_name = module.resource_group.name

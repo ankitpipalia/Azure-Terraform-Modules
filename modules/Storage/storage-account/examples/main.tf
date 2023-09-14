@@ -2,10 +2,10 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~>3.72"
+      version = "~>3.0"
     }
   }
-  required_version = ">= 1.5.7"
+  required_version = "~>1.0"
 }
 
 provider "azurerm" {
@@ -25,7 +25,7 @@ locals {
 }
 
 module "resource_group" {
-  source = "./modules/Management/resource-group"
+  source = "~/git/Azure-Terraform-Modules/modules/Management/resource-group"
 
   resource_group_name = "test-rg"
   location            = "centralindia"
@@ -34,7 +34,7 @@ module "resource_group" {
 }
 
 module "storage_acount" {
-  source = "./modules/Storage/storage-account"
+  source = "~/git/Azure-Terraform-Modules/modules/Storage/storage-account"
   #storage_account_name = local.storage_account_name_validation ? local.storage_account_name : assert(false, "Invalid storage account name. The name can only consist of lowercase letters and numbers, and must be between 3 and 24 characters long.")
   storage_account_name = local.storage_account_name
   resource_group_name  = module.resource_group.name

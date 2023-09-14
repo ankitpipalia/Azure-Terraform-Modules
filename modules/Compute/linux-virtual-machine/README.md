@@ -13,7 +13,7 @@ Before using this module, make sure you have the following:
 
 ```hcl
 module "virtual_machine" {
-  source = "./modules/Compute/virtual-machine"
+  source = "~/git/Azure-Terraform-Modules/modules/Compute/virtual-machine"
 
   virtual_machine_name = "test-vm"
   resource_group_name = module.resource_group.name

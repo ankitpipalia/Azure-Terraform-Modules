@@ -5,7 +5,7 @@ This Terraform module creates an Azure Service Plan. It includes all the necessa
 ## Usage
 ```hcl
 module "static_site" {
-  source = "./modules/Web/static-web-apps"
+  source = "~/git/Azure-Terraform-Modules/modules/Web/static-web-apps"
 
   static_site_name = "test-static-site"
   location = "eastasia"

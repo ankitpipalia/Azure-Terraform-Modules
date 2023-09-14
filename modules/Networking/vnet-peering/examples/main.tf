@@ -2,10 +2,10 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~>3.72"
+      version = "~>3.0"
     }
   }
-  required_version = ">= 1.5.7"
+  required_version = "~>1.0"
 }
 
 provider "azurerm" {
@@ -24,7 +24,7 @@ locals {
 }
 
 module "resource_group_1" {
-  source = "./modules/Management/resource-group"
+  source = "~/git/Azure-Terraform-Modules/modules/Management/resource-group"
 
   resource_group_name = "test-rg"
   location            = "centralindia"
@@ -33,7 +33,7 @@ module "resource_group_1" {
 }
 
 module "resource_group_2" {
-  source = "./modules/Management/resource-group"
+  source = "~/git/Azure-Terraform-Modules/modules/Management/resource-group"
 
   resource_group_name = "test-rg"
   location            = "centralindia"
@@ -42,7 +42,7 @@ module "resource_group_2" {
 }
 
 module "virtual_network_1" {
-  source = "./modules/Networking/virtual-network"
+  source = "~/git/Azure-Terraform-Modules/modules/Networking/virtual-network"
 
   virtual_network_name = "test-vne-1"
   location             = module.resource_group_1.location
@@ -53,7 +53,7 @@ module "virtual_network_1" {
 }
 
 module "subnets_1" {
-  source = "./modules/Networking/subnets"
+  source = "~/git/Azure-Terraform-Modules/modules/Networking/subnets"
 
   for_each              = toset(local.subnets)
   subnet_name           = each.value
@@ -64,7 +64,7 @@ module "subnets_1" {
 }
 
 module "virtual_network_2" {
-  source = "./modules/Networking/virtual-network"
+  source = "~/git/Azure-Terraform-Modules/modules/Networking/virtual-network"
 
   virtual_network_name = "test-vnet-2"
   location             = module.resource_group_2.location
@@ -75,7 +75,7 @@ module "virtual_network_2" {
 }
 
 module "subnets_2" {
-  source = "./modules/Networking/subnets"
+  source = "~/git/Azure-Terraform-Modules/modules/Networking/subnets"
 
   for_each              = toset(local.subnets)
   subnet_name           = each.value
@@ -86,7 +86,7 @@ module "subnets_2" {
 }
 
 module "vnet_peer" {
-  source = "./modules/Networking/vnet-peering"
+  source = "~/git/Azure-Terraform-Modules/modules/Networking/vnet-peering"
 
   src_resource_group_name = module.resource_group_1.name
   dst_resource_group_name = module.resource_group_2.name

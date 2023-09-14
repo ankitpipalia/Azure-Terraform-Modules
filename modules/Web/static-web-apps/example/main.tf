@@ -2,10 +2,10 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~>3.72"
+      version = "~>3.0"
     }
   }
-  required_version = ">= 1.5.7"
+  required_version = "~>1.0"
 }
 
 provider "azurerm" {
@@ -23,7 +23,7 @@ locals {
 }
 
 module "resource_group" {
-  source = "./modules/Management/resource-group"
+  source = "~/git/Azure-Terraform-Modules/modules/Management/resource-group"
 
   resource_group_name = "test-rg-1"
   location            = "centralindia"
@@ -32,7 +32,7 @@ module "resource_group" {
 }
 
 module "static_site" {
-  source = "./modules/Web/static-web-apps"
+  source = "~/git/Azure-Terraform-Modules/modules/Web/static-web-apps"
 
   static_site_name = "test-static-site"
   location         = "eastasia"

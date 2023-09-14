@@ -4,7 +4,7 @@
 
 ```hcl
 module "mssql_database" {
-  source = "./modules/Databases/mssql-database"
+  source = "~/git/Azure-Terraform-Modules/modules/Databases/mssql-database"
   mssql_database_name = "test-mssql-database-xyz"
   collation = "SQL_Latin1_General_CP1_CI_AS"
   

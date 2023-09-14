@@ -2,10 +2,10 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~>3.72"
+      version = "~>3.0"
     }
   }
-  required_version = ">= 1.5.7"
+  required_version = "~>1.0"
 }
 
 provider "azurerm" {
@@ -24,7 +24,7 @@ locals {
 }
 
 module "resource_group" {
-  source = "./modules/Management/resource-group"
+  source = "~/git/Azure-Terraform-Modules/modules/Management/resource-group"
 
   resource_group_name = "test-rg-1"
   location            = "centralindia"
@@ -33,7 +33,7 @@ module "resource_group" {
 }
 
 module "virtual_network" {
-  source = "./modules/Networking/virtual-network"
+  source = "~/git/Azure-Terraform-Modules/modules/Networking/virtual-network"
 
   virtual_network_name = "test-vnet"
   location             = module.resource_group.location
@@ -44,7 +44,7 @@ module "virtual_network" {
 }
 
 module "subnets" {
-  source = "./modules/Networking/subnets"
+  source = "~/git/Azure-Terraform-Modules/modules/Networking/subnets"
 
   for_each              = toset(local.subnets)
   subnet_name           = each.value
@@ -55,7 +55,7 @@ module "subnets" {
 }
 
 module "public_ip_address" {
-  source = "./modules/Networking/public-ip"
+  source = "~/git/Azure-Terraform-Modules/modules/Networking/public-ip"
 
   public_ip_name      = "test-pip"
   resource_group_name = module.resource_group.name
@@ -67,7 +67,7 @@ module "public_ip_address" {
 }
 
 module "network_interface" {
-  source = "./modules/Networking/network-interface"
+  source = "~/git/Azure-Terraform-Modules/modules/Networking/network-interface"
 
   network_interface_name        = "test-nic"
   resource_group_name           = module.resource_group.name
@@ -82,7 +82,7 @@ module "network_interface" {
 }
 
 module "network_security_group" {
-  source = "./modules/Networking/network-security-group"
+  source = "~/git/Azure-Terraform-Modules/modules/Networking/network-security-group"
 
   network_security_group_name = "test-nsg"
   resource_group_name         = module.resource_group.name
@@ -122,7 +122,7 @@ module "network_security_group" {
 }
 
 module "virtual_machine" {
-  source = "./modules/Compute/windows-virtual-machine"
+  source = "~/git/Azure-Terraform-Modules/modules/Compute/windows-virtual-machine"
 
   virtual_machine_name   = "test-vm"
   resource_group_name    = module.resource_group.name

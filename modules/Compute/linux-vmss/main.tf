@@ -28,6 +28,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "vmss" {
       version   = var.source_image_version
     }
   }
+  custom_data = var.custom_data
 
   os_disk {
     caching              = var.os_disk_caching
