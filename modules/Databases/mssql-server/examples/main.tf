@@ -72,14 +72,14 @@ module "private_dns_zone" {
   }
 }
 
-module "mysql_server" {
-  source = "./modules/Databases/mysql-server"
-  mysql_server_name = "test-mysql-server-xyz"
+module "mssql_server" {
+  source = "./modules/Databases/mssql-server"
+  mssql_server_name = "test-mssql-server-xyz"
 
   resource_group_name = module.resource_group.name
   location            = module.resource_group.location
 
-  administrator_login          = "mysqladmin"
+  administrator_login          = "mssqladmin"
   administrator_login_password = "H@Sh1CoR3!"
 
   tags                  = local.tags

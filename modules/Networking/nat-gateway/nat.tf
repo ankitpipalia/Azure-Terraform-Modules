@@ -21,7 +21,6 @@ resource "azurerm_nat_gateway_public_ip_association" "nat_gateway" {
 }
 
 resource "azurerm_subnet_nat_gateway_association" "nat_gateway" {
-  for_each = toset([var.subnet_id])
 
   nat_gateway_id = azurerm_nat_gateway.nat_gateway.id
   subnet_id      = var.subnet_id

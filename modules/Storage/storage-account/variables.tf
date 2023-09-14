@@ -4,8 +4,8 @@ variable "storage_account_name" {
 }
 
 variable "location" {
-  description = "Specifies the supported Azure location to MySQL server resource"
-  type        = string
+  description = "location of the resource"
+  type        = string  
 }
 
 variable "resource_group_name" {
