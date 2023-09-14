@@ -38,6 +38,7 @@ The repository follows the following directory hierarchy structure:
   - `network-security-group`: Module for creating network security groups.
   - `private-dns-zone`: Module for creating private DNS zones.
   - `public-ip`: Module for creating public IPs.
+  - `route-table`: Module for creating route tables.
   - `subnets`: Module for creating subnets.
   - `virtual-network`: Module for creating virtual networks.
   - `vnet-peering`: Module for creating VNet peering.
