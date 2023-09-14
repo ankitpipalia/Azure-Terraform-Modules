@@ -1,3 +1,34 @@
+## Usage
+
+# MSSQL Database example:
+
+```hcl
+module "mssql_database" {
+  source = "./modules/Databases/mssql-database"
+  mssql_database_name = "test-mssql-database-xyz"
+  collation = "SQL_Latin1_General_CP1_CI_AS"
+  
+  
+  server_id           = module.mssql_server.id
+  storage_account_type = "ZRS"
+  server_fqdn = "module.mssql_server.fqdn"
+
+  databases = {
+    testdb1 = {
+      name = "testdb1"
+      collation = "SQL_Latin1_General_CP1_CI_AS"
+    }
+  }
+
+  sku = "GP_S_Gen5_2"
+  max_size = "20"
+  min_capacity = "0.5"
+
+  tags       = local.tags
+  extra_tags = local.extra_tags
+}
+```
+
 ## Inputs
 
 | Name                            | Description                                                                                       | Type     | Default                           | Required |

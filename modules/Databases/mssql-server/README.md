@@ -1,3 +1,27 @@
+## Usage
+
+# MSSQL Database example:
+
+```hcl
+module "mssql_server" {
+  source = "./modules/Databases/mssql-server"
+  mssql_server_name = "test-mssql-server-xyz"
+
+  resource_group_name = module.resource_group.name
+  location            = module.resource_group.location
+
+  administrator_login          = "mssqladmin"
+  administrator_login_password = "H@Sh1CoR3!"
+
+  tags                  = local.tags
+  extra_tags            = local.extra_tags
+
+  azure_ad_admin_login    = "xyz@outlook.com"
+  azure_ad_admin_object_id = "xxxx-xxxx-xxxx-xxxx-xxxx"
+
+}
+```
+
 ## Inputs
 
 | Name                              | Description                                                                                         | Type     | Default   | Required |
