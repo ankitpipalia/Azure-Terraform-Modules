@@ -23,6 +23,7 @@ The repository follows the following directory hierarchy structure:
   - `linux-virtual-machine`: Module for creating Linux virtual machines.
   - `linux-vmss`: Module for creating Linux Virtual Machine Scale Sets.
   - `windows-virtual-machine`: Module for creating Windows virtual machines.
+  - `windows-vmss`: Module for creating Windows Virtual Machine Scale Sets.
 
 - **Databases**: Contains configurations for creating database resources.
   - `mssql-database`: Module for creating SQL Server databases.
