@@ -11,8 +11,6 @@ Before using this module, make sure you have the following:
 
 ## Usage
 
-### With AutoScale
-
 ```hcl
 module "vmss" {
   source = "./modules/Compute/linux-vmss"
@@ -36,60 +34,6 @@ module "vmss" {
 
   tags       = local.tags
   extra_tags = local.extra_tags
-
-
-  enable_vmss_autoscale = true
-
-  autoscale_setting_name = "test-vmss-autoscale"
-  profile_name       = "test-vmss-autoscale-profile"
-
-  default_capacity = 2
-  minimum_capacity = 2
-  maximum_capacity = 10
-
-  metric_name = "Percentage CPU"
-  time_grain  = "PT1M"
-  statistic   = "Average"
-  time_window = "PT5M"
-  time_aggregation   = "Average"
-  operator           = "GreaterThan"
-  threshold          = 75
-
-  scale_direction = "Increase"
-  scale_type      = "ChangeCount"
-  scale_value = 1
-  scale_cooldown = "PT1M"
-}
-```
-
-### Without AutoScale
-
-```hcl
-module "vmss" {
-  source = "./modules/Compute/linux-vmss"
-
-  virtual_machine_scale_set_name = "test-vmss"
-  resource_group_name            = module.resource_group.name
-  location                       = module.resource_group.location
-  vm_sku                         = "Standard_B1ls"
-  instances                      = 2
-  admin_username                 = "azureuser"
-  admin_password                 = "P@ssw0rd1234!"
-
-  source_image_publisher = "Canonical"
-  source_image_offer     = "0001-com-ubuntu-minimal-focal"
-  source_image_sku       = "minimal-20_04-lts-gen2"
-  source_image_version   = "latest"
-
-  subnet_id = module.subnets["subnet1"].id
-
-  load_balancer_backend_address_pool_ids = [module.lb.load_balancer_backend_pool_id]
-
-  tags       = local.tags
-  extra_tags = local.extra_tags
-
-
-  enable_vmss_autoscale = false
 }
 ```
 
@@ -110,7 +54,7 @@ module "vmss" {
 | `instances`                            | Number of instances in the VMSS.                                            | number    | -         | yes      |
 | `location`                             | Azure location/region where the virtual machine will be created.           | string    | -         | yes      |
 | `load_balancer_backend_address_pool_ids`| Load balancer backend address pool ids (if any).                            | list(string)| -         | no       |
-| `nat_gateway_name`                     | Linux ScaleSet name.                                                         | string    | -         | yes      |
+| `nat_gateway_name`                     | Name of NAT Gateway.                                                         | string    | -         | yes      |
 | `nat_idle_time`                        | Idle timeout (in seconds) of the NAT Gateway.                               | number    | 10        | no       |
 | `nat_sku`                              | SKU (Service Level) of the NAT Gateway.                                     | string    | "Standard"| no       |
 | `nat_zones`                            | List of availability zones for the NAT Gateway.                             | list(string)| []        | no       |
@@ -125,7 +69,7 @@ module "vmss" {
 | `tags`                                 | Tags to be applied to resources (inclusive).                                 | object    | -         | yes      |
 |                                        | - `environment`: Environment tag.                                            | string    | -         | yes      |
 |                                        | - `project`: Project tag.                                                    | string    | -         | yes      |
-| `virtual_machine_scale_set_name`       | Linux ScaleSet name.                                                         | string    | -         | yes      |
+| `virtual_machine_scale_set_name`       | Virtual Machine ScaleSet name.                                               | string    | -         | yes      |
 | `vm_sku`                               | Size of the virtual machines.                                                | string    | -         | yes      |
 
 ## Outputs
