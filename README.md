@@ -53,5 +53,4 @@ The repository follows the following directory hierarchy structure:
     - [service-plan](modules/Web/service-plan): Module for creating service plans.
     - [static-web-apps](modules/Web/static-web-apps): Module for creating static web apps.
 
-
 Please refer to the respective module's directory for more details.

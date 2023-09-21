@@ -120,7 +120,7 @@ module "vmss" {
   source_image_version   = "latest"
 
   subnet_id = module.subnets["subnet1"].id
-  
+
   enable_load_balancer_backend_address_pool_ids = true
   load_balancer_backend_address_pool_ids = [module.lb.load_balancer_backend_pool_id]
 
