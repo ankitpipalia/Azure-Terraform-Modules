@@ -70,11 +70,6 @@ variable "subnet_id" {
   type        = string
 }
 
-variable "load_balancer_backend_address_pool_ids" {
-  description = "Load balancer backend address pool ids."
-  type        = list(string)
-}
-
 variable "enable_health_probe_id" {
   description = "Enables health check probe id for Scale Set"
   type        = bool
@@ -160,4 +155,26 @@ variable "identity_ids" {
   description = "Specifies a list of user managed identity ids to be assigned to the VM"
   type        = list(string)
   default     = []
+}
+
+variable "enable_load_balancer_backend_address_pool_ids" {
+  description = "Enables load balancer backend address pool ids for Scale Set"
+  type        = bool
+  default     = false
+}
+
+variable "load_balancer_backend_address_pool_ids" {
+  description = "Load balancer backend address pool ids."
+  type        = list(string)
+}
+
+variable "application_gateway_backend_address_pool_ids" {
+  description = "Application gateway backend address pool ids."
+  type        = list(string)
+}
+  
+variable "enable_application_gateway_backend_address_pool_ids" {
+  description = "Enables application gateway backend address pool ids for Scale Set"
+  type        = bool
+  default     = false
 }

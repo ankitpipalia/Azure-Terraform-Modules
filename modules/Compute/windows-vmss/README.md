@@ -43,9 +43,12 @@ module "vmss" {
 |----------------------------------------|-----------------------------------------------------------------------------|-----------|-----------|:--------:|
 | `admin_password`                       | Admin Password for the virtual machines.                                    | string    | -         | yes      |
 | `admin_username`                       | Default Username for the virtual machines.                                  | string    | -         | yes      |
+| `application_gateway_backend_address_pool_ids`| Application gateway backend address pool ids (if any).                      | list(string)| -         | no       |
 | `custom_data`                          | Custom data to be passed to the virtual machines.                           | string    | "# noop"  | no       |
 | `enable_health_probe_id`               | Enables health check probe id for Scale Set.                                | bool      | false     | no       |
 | `enable_public_ip_address`             | Enable or disable the assignment of public IP addresses to virtual machines. | bool      | false     | no       ||
+| `enable_load_balancer_backend_address_pool_ids`| Enable or disable the assignment of load balancer backend address pool ids to virtual machines. | bool      | false     | no       |
+| `enable_application_gateway_backend_address_pool_ids`| Enable or disable the assignment of application gateway backend address pool ids to virtual machines. | bool      | false     | no       |
 | `extra_tags`                           | Extra tags to be applied to resources (in addition to the tags above).      | map(string)| {}        | no       |
 | `health_probe_id`                      | Health probe id (if enabled).                                               | string    | null      | no       |
 | `identity_ids`                         | List of user-managed identity ids to be assigned to the VM.                 | list(string)| []        | no       |
