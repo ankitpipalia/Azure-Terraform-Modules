@@ -41,7 +41,8 @@ resource "azurerm_windows_virtual_machine_scale_set" "vmss" {
           name = "pip"
         }
       }
-      load_balancer_backend_address_pool_ids = var.load_balancer_backend_address_pool_ids
+      load_balancer_backend_address_pool_ids = var.enable_load_balancer_backend_address_pool_ids ? var.load_balancer_backend_address_pool_ids : null
+      application_gateway_backend_address_pool_ids = var.enable_application_gateway_backend_address_pool_ids ? var.application_gateway_backend_address_pool_ids : null
     }
   }
 
