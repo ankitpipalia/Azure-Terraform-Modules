@@ -19,37 +19,38 @@ The repository follows the following directory hierarchy structure:
 
 ## Modules
 
-- **Compute**: Contains configurations for creating compute resources.
-  - `linux-virtual-machine`: Module for creating Linux virtual machines.
-  - `linux-vmss`: Module for creating Linux Virtual Machine Scale Sets.
-  - `windows-virtual-machine`: Module for creating Windows virtual machines.
+- **Compute**:
+    - [linux-virtual-machine](modules/Compute/linux-virtual-machine): Module for creating Linux virtual machines.
+    - [linux-vmss](modules/Compute/linux-vmss): Module for creating Linux Virtual Machine Scale Sets. 
+    - [windows-virtual-machine](modules/Compute/windows-virtual-machine): Module for creating Windows virtual machines.
+    - [windows-vmss](modules/Compute/windows-vmss): Module for creating Windows Virtual Machine Scale Sets.
 
-- **Databases**: Contains configurations for creating database resources.
-  - `mssql-database`: Module for creating SQL Server databases.
-  - `mssql-server`: Module for creating SQL Server instances.
-
-- **Management**: Contains configurations for creating management resources.
-  - `autoscale`: Module for creating autoscale rules.
-  - `resource-group`: Module for creating resource groups.
-
-- **Networking**: Contains configurations for creating networking resources.
-  - `load-balancer`: Module for creating load balancers.
-  - `nat-gateway`: Module for creating NAT gateways.
-  - `network-interface`: Module for creating network interfaces.
-  - `network-security-group`: Module for creating network security groups.
-  - `private-dns-zone`: Module for creating private DNS zones.
-  - `public-ip`: Module for creating public IPs.
-  - `route-table`: Module for creating route tables.
-  - `subnets`: Module for creating subnets.
-  - `virtual-network`: Module for creating virtual networks.
-  - `vnet-peering`: Module for creating VNet peering.
-
-- **Storage**: Contains configurations for creating storage resources.
-  - `storage-account`: Module for creating storage accounts.
-
-- **Web**: Contains configurations for creating web resources.
-  - `linux-web-apps`: Module for creating Linux web apps.
-  - `service-plan`: Module for creating service plans.
-  - `static-web-apps`: Module for creating static web apps.
+- **Databases**:
+    - [mssql-database](modules/Databases/mssql-database): Module for creating SQL Server databases.
+    - [mssql-server](modules/Databases/mssql-server): Module for creating SQL Server instances.
+  
+- **Management**:
+    - [autoscale](modules/Management/autoscale): Module for creating autoscale rules.
+    - [resource-group](modules/Management/resource-group): Module for creating resource groups.
+  
+- **Networking**:
+    - [load-balancer](modules/Networking/load-balancer): Module for creating load balancers.
+    - [nat-gateway](modules/Networking/nat-gateway): Module for creating NAT gateways.
+    - [network-interface](modules/Networking/network-interface): Module for creating network interfaces.
+    - [network-security-group](modules/Networking/network-security-group): Module for creating network security groups.
+    - [private-dns-zone](modules/Networking/private-dns-zone): Module for creating private DNS zones.
+    - [public-ip](modules/Networking/public-ip): Module for creating public IPs.
+    - [route-table](modules/Networking/route-table): Module for creating route tables.
+    - [subnets](modules/Networking/subnets): Module for creating subnets.
+    - [virtual-network](modules/Networking/virtual-network): Module for creating virtual networks.
+    - [vnet-peering](modules/Networking/vnet-peering): Module for creating VNet peering.
+  
+- **Storage**:
+    - [storage-account](modules/Storage/storage-account): Module for creating storage accounts.
+  
+- **Web**:
+    - [linux-web-apps](modules/Web/linux-web-apps): Module for creating Linux web apps.
+    - [service-plan](modules/Web/service-plan): Module for creating service plans.
+    - [static-web-apps](modules/Web/static-web-apps): Module for creating static web apps.
 
 Please refer to the respective module's directory for more details.

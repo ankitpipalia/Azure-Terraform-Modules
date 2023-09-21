@@ -4,7 +4,7 @@ variable "resource_group_name" {
 }
 
 variable "virtual_machine_scale_set_name" {
-  description = "Linux ScaleSet name"
+  description = "Windows ScaleSet name"
   type        = string
 }
 
@@ -50,13 +50,6 @@ variable "admin_username" {
 variable "admin_password" {
   description = "Admin Password"
   type        = string
-  sensitive   = true
-}
-
-variable "admin_ssh_public_key" {
-  description = "Public SSH Key"
-  type        = string
-  default     = ""
   sensitive   = true
 }
 

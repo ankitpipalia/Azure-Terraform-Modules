@@ -1,6 +1,6 @@
-# Azure Terraform Module for Linux Virtual Machine
+# Azure Terraform Module for Windows Virtual Machine
 
-This Terraform module creates a Linux virtual machine Scale Set in Azure. It includes all the necessary resources for production use, except for the resource group, virtual network, and subnet.
+This Terraform module creates a Windows virtual machine Scale Set in Azure. It includes all the necessary resources for production use, except for the resource group, virtual network, and subnet.
 
 ## Prerequisites
 
@@ -13,23 +13,23 @@ Before using this module, make sure you have the following:
 
 ```hcl
 module "vmss" {
-  source = "./modules/Compute/linux-vmss"
+  source = "./modules/Compute/windows-vmss"
 
   virtual_machine_scale_set_name = "test-vmss"
   resource_group_name            = module.resource_group.name
   location                       = module.resource_group.location
   vm_sku                         = "Standard_B1ls"
   instances                      = 2
-  admin_username                 = "azureuser"
-  admin_password                 = "P@ssw0rd1234!"
+  admin_username                 = "testadmin"
+  admin_password                 = "Password1234!"
 
-  source_image_publisher = "Canonical"
-  source_image_offer     = "0001-com-ubuntu-minimal-focal"
-  source_image_sku       = "minimal-20_04-lts-gen2"
+  source_image_publisher = "MicrosoftWindowsServer"
+  source_image_offer     = "WindowsServer"
+  source_image_sku       = "2016-Datacenter"
   source_image_version   = "latest"
 
   subnet_id = module.subnets["subnet1"].id
-  
+
   enable_load_balancer_backend_address_pool_ids = true
   load_balancer_backend_address_pool_ids = [module.lb.load_balancer_backend_pool_id]
 
@@ -43,7 +43,6 @@ module "vmss" {
 | Name                                   | Description                                                                 | Type      | Default   | Required |
 |----------------------------------------|-----------------------------------------------------------------------------|-----------|-----------|:--------:|
 | `admin_password`                       | Admin Password for the virtual machines.                                    | string    | -         | yes      |
-| `admin_ssh_public_key`                 | Public SSH Key for authentication (optional).                               | string    | ""        | no       |
 | `admin_username`                       | Default Username for the virtual machines.                                  | string    | -         | yes      |
 | `application_gateway_backend_address_pool_ids`| Application gateway backend address pool ids (if any).                      | list(string)| -         | no       |
 | `custom_data`                          | Custom data to be passed to the virtual machines.                           | string    | "# noop"  | no       |
@@ -73,7 +72,7 @@ module "vmss" {
 | `tags`                                 | Tags to be applied to resources (inclusive).                                 | object    | -         | yes      |
 |                                        | - `environment`: Environment tag.                                            | string    | -         | yes      |
 |                                        | - `project`: Project tag.                                                    | string    | -         | yes      |
-| `virtual_machine_scale_set_name`       | Virtual Machine ScaleSet name.                                               | string    | -         | yes      |
+| `virtual_machine_scale_set_name`       | Virtual Machine ScaleSet name.                                                         | string    | -         | yes      |
 | `vm_sku`                               | Size of the virtual machines.                                                | string    | -         | yes      |
 
 ## Outputs

@@ -1,4 +1,4 @@
-resource "azurerm_linux_virtual_machine_scale_set" "vmss" {
+resource "azurerm_windows_virtual_machine_scale_set" "vmss" {
   name                            = var.virtual_machine_scale_set_name
   resource_group_name             = var.resource_group_name
   location                        = var.location
@@ -6,15 +6,6 @@ resource "azurerm_linux_virtual_machine_scale_set" "vmss" {
   instances                       = var.instances
   admin_username                  = var.admin_username
   admin_password                  = var.admin_password
-  disable_password_authentication = var.admin_password == "" ? true : false
-
-  dynamic "admin_ssh_key" {
-    for_each = var.admin_password == "" ? ["no_admin_password_provided"] : []
-    content {
-      username   = var.admin_username
-      public_key = var.admin_ssh_public_key
-    }
-  }
 
   source_image_id = var.source_image_id
 
