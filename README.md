@@ -20,39 +20,39 @@ The repository follows the following directory hierarchy structure:
 ## Modules
 
 - **Compute**:
-  - [linux-virtual-machine](modules/Compute/linux-virtual-machine): Module for creating Linux virtual machines.
-  - [linux-vmss](modules/Compute/linux-vmss): Module for creating Linux Virtual Machine Scale Sets.
-  - [windows-virtual-machine](modules/Compute/windows-virtual-machine): Module for creating Windows virtual machines.
-  - [windows-vmss](modules/Compute/windows-vmss): Module for creating Windows Virtual Machine Scale Sets.
+    - [linux-virtual-machine](modules/Compute/linux-virtual-machine): Module for creating Linux virtual machines.
+    - [linux-vmss](modules/Compute/linux-vmss): Module for creating Linux Virtual Machine Scale Sets. 
+    - [windows-virtual-machine](modules/Compute/windows-virtual-machine): Module for creating Windows virtual machines.
+    - [windows-vmss](modules/Compute/windows-vmss): Module for creating Windows Virtual Machine Scale Sets.
 
 - **Databases**:
-  - [mssql-database](modules/Databases/mssql-database): Module for creating SQL Server databases.
-  - [mssql-server](modules/Databases/mssql-server): Module for creating SQL Server instances.
+    - [mssql-database](modules/Databases/mssql-database): Module for creating SQL Server databases.
+    - [mssql-server](modules/Databases/mssql-server): Module for creating SQL Server instances.
   
 - **Management**:
-  - [autoscale](modules/Management/autoscale): Module for creating autoscale rules.
-  - [resource-group](modules/Management/resource-group): Module for creating resource groups.
+    - [autoscale](modules/Management/autoscale): Module for creating autoscale rules.
+    - [resource-group](modules/Management/resource-group): Module for creating resource groups.
   
 - **Networking**:
-  - [application-gateway](modules/Networking/application-gateway): Module for creating application gateways.
-  - [firewall](modules/Networking/firewall): Module for creating firewalls.
-  - [load-balancer](modules/Networking/load-balancer): Module for creating load balancers.
-  - [nat-gateway](modules/Networking/nat-gateway): Module for creating NAT gateways.
-  - [network-interface](modules/Networking/network-interface): Module for creating network interfaces.
-  - [network-security-group](modules/Networking/network-security-group): Module for creating network security groups.
-  - [private-dns-zone](modules/Networking/private-dns-zone): Module for creating private DNS zones.
-  - [public-ip](modules/Networking/public-ip): Module for creating public IPs.
-  - [route-table](modules/Networking/route-table): Module for creating route tables.
-  - [subnets](modules/Networking/subnets): Module for creating subnets.
-  - [virtual-network](modules/Networking/virtual-network): Module for creating virtual networks.
-  - [vnet-peering](modules/Networking/vnet-peering): Module for creating VNet peering.
+    - [application-gateway](modules/Networking/application-gateway): Module for creating application gateways.
+    - [firewall](modules/Networking/firewall): Module for creating firewalls.
+    - [load-balancer](modules/Networking/load-balancer): Module for creating load balancers.
+    - [nat-gateway](modules/Networking/nat-gateway): Module for creating NAT gateways.
+    - [network-interface](modules/Networking/network-interface): Module for creating network interfaces.
+    - [network-security-group](modules/Networking/network-security-group): Module for creating network security groups.
+    - [private-dns-zone](modules/Networking/private-dns-zone): Module for creating private DNS zones.
+    - [public-ip](modules/Networking/public-ip): Module for creating public IPs.
+    - [route-table](modules/Networking/route-table): Module for creating route tables.
+    - [subnets](modules/Networking/subnets): Module for creating subnets.
+    - [virtual-network](modules/Networking/virtual-network): Module for creating virtual networks.
+    - [vnet-peering](modules/Networking/vnet-peering): Module for creating VNet peering.
   
 - **Storage**:
-  - [storage-account](modules/Storage/storage-account): Module for creating storage accounts.
+    - [storage-account](modules/Storage/storage-account): Module for creating storage accounts.
   
 - **Web**:
-  - [linux-web-apps](modules/Web/linux-web-apps): Module for creating Linux web apps.
-  - [service-plan](modules/Web/service-plan): Module for creating service plans.
-  - [static-web-apps](modules/Web/static-web-apps): Module for creating static web apps.
+    - [linux-web-apps](modules/Web/linux-web-apps): Module for creating Linux web apps.
+    - [service-plan](modules/Web/service-plan): Module for creating service plans.
+    - [static-web-apps](modules/Web/static-web-apps): Module for creating static web apps.
 
 Please refer to the respective module's directory for more details.
