@@ -9,7 +9,7 @@ Deploy an Azure Firewall with a dedicated Terraform module.
 
 ```hcl
 module "firewall" {
-  source = "./modules/Networking/firewall"
+  source = "./modules/Networking/firewall-tools/firewall"
 
   firewall_name       = "test-fw"
   location            = module.resource_group.location
