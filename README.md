@@ -28,12 +28,17 @@ The repository follows the following directory hierarchy structure:
 - **Databases**:
     - [mssql-database](modules/Databases/mssql-database): Module for creating SQL Server databases.
     - [mssql-server](modules/Databases/mssql-server): Module for creating SQL Server instances.
-  
+    - [mysql](modules/Databases/mysql): Module for creating MySQL databases and Flexible Server.
+
 - **Management**:
     - [autoscale](modules/Management/autoscale): Module for creating autoscale rules.
     - [resource-group](modules/Management/resource-group): Module for creating resource groups.
   
 - **Networking**:
+    - [application-gateway](modules/Networking/application-gateway): Module for creating application gateways.
+    - [firewall](modules/Networking/firewall-tools/firewall): Module for creating firewalls.
+    - [firewall-policy](modules/Networking/firewall-tools/policy): Module for creating firewall policies.
+    - [firewall-rule-collection-group](modules/Networking/firewall-tools/rule-collection-group): Module for creating firewall rule collection groups.
     - [load-balancer](modules/Networking/load-balancer): Module for creating load balancers.
     - [nat-gateway](modules/Networking/nat-gateway): Module for creating NAT gateways.
     - [network-interface](modules/Networking/network-interface): Module for creating network interfaces.

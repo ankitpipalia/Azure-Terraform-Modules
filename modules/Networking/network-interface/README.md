@@ -38,5 +38,5 @@ module "network_interface" {
 | Name | Description |
 |------|-------------|
 | network_interface_id | The ID of the network interface |
-| network_interface_private_ip | The private IP address of the network interface |
-| network_interface_public_ip | The public IP address of the network interface |
+| private_ip | The private IP address of the network interface |
+| public_ip | The public IP address of the network interface |

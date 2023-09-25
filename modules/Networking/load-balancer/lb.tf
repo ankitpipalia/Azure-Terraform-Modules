@@ -46,21 +46,6 @@ resource "azurerm_lb_nat_pool" "natpol" {
 }
 
 #---------------------------------------
-# Load Balancer NAT rule for SSH
-#---------------------------------------
-# resource "azurerm_lb_nat_rule" "natrule" {
-#   name                           = "${azurerm_lb.lb.name}-nat-pool-rule"
-#   resource_group_name            = var.resource_group_name
-#   loadbalancer_id                = azurerm_lb.lb.id
-#   protocol                       = "Tcp"
-#   frontend_port_start            = var.nat_pool_frontend_ports[0]  # Specify the start port
-#   frontend_port_end              = var.nat_pool_frontend_ports[1]  # Specify the end port
-#   backend_port                   = var.os_flavor == "linux" ? 22 : 3389
-#   frontend_ip_configuration_name = var.ft_name
-#   backend_address_pool_id        = azurerm_lb_backend_address_pool.bepool.id
-# }
-
-#---------------------------------------
 # Health Probe for resources
 #---------------------------------------
 resource "azurerm_lb_probe" "lbp" {
