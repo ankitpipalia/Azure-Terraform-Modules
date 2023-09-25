@@ -28,7 +28,8 @@ The repository follows the following directory hierarchy structure:
 - **Databases**:
     - [mssql-database](modules/Databases/mssql-database): Module for creating SQL Server databases.
     - [mssql-server](modules/Databases/mssql-server): Module for creating SQL Server instances.
-  
+    - [mysql](modules/Databases/mysql): Module for creating MySQL databases and Flexible Server.
+
 - **Management**:
     - [autoscale](modules/Management/autoscale): Module for creating autoscale rules.
     - [resource-group](modules/Management/resource-group): Module for creating resource groups.

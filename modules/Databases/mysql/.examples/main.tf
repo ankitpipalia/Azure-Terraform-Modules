@@ -49,19 +49,23 @@ module "private_dns_zone" {
 }
 
 module "mysql_server" {
-  source = "./modules/Databases/mysql-server"
+  source = "./modules/Databases/mysql"
 
-  mysql_server_name      = "ankitsimformserver"
-  resource_group_name    = module.resource_group.name
-  location               = module.resource_group.location
-  administrator_login    = "mysqladmin"
-  administrator_password = "P@ssw0rd1234"
-  mysql_version          = "5.7"
+  mysql_server_name            = "testsimformserver"
+  resource_group_name          = module.resource_group.name
+  location                     = module.resource_group.location
+  administrator_login          = "mysqladmin"
+  administrator_password       = "P@ssw0rd1234"
+  mysql_version                = "5.7"
   backup_retention_days        = 7
   create_mode                  = "Default"
   geo_redundant_backup_enabled = false
-  sku_name                     = "B_Standard_B1s"
+  server_sku_name              = "B_Standard_B1s"
   zone                         = "1"
+
+  database_name = "testdb"
+  collation     = "utf8_general_ci"
+  charset       = "utf8"
 
   tags       = local.tags
   extra_tags = local.extra_tags
