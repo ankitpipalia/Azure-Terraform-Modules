@@ -92,7 +92,7 @@ variable "virtual_hub" {
   description = "A list of virtual_hub blocks as defined below."
   type        = list(object({
     virtual_hub_id  = string
-    public_ip_count = Optional(number)
+    public_ip_count = number
   }))
   default     = []
 }
@@ -111,8 +111,8 @@ variable "ip_configuration" {
   description = "A list of ip_configuration blocks as defined below."
   type        = list(object({
     name                 = string
-    subnet_id            = Optional(string)
-    public_ip_address_id = Optional(string)
+    subnet_id            = string
+    public_ip_address_id = string
   }))
   default     = []
 }
