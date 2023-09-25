@@ -37,8 +37,8 @@ The repository follows the following directory hierarchy structure:
 - **Networking**:
     - [application-gateway](modules/Networking/application-gateway): Module for creating application gateways.
     - [firewall](modules/Networking/firewall-tools/firewall): Module for creating firewalls.
-    - [firewall-application-rule-collection](modules/Networking/firewall-tools/firewall-application-rule-collection): Module for creating firewall application rule collections.
-    - [firewall-ip-rule-collection](modules/Networking/firewall-tools/firewall-ip-rule-collection): Module for creating firewall IP rule collections.
+    - [firewall-policy](modules/Networking/firewall-tools/policy): Module for creating firewall policies.
+    - [firewall-rule-collection-group](modules/Networking/firewall-tools/rule-collection-group): Module for creating firewall rule collection groups.
     - [load-balancer](modules/Networking/load-balancer): Module for creating load balancers.
     - [nat-gateway](modules/Networking/nat-gateway): Module for creating NAT gateways.
     - [network-interface](modules/Networking/network-interface): Module for creating network interfaces.
