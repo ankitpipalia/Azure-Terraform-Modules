@@ -38,6 +38,10 @@ The repository follows the following directory hierarchy structure:
     - [autoscale](modules/Management/autoscale): Module for creating autoscale rules.
     - [resource-group](modules/Management/resource-group): Module for creating resource groups.
   
+- **Monitoring**:
+    - [log-analytics-workspace](modules/Monitoring/log-analytics-workspace): Module for creating log analytics workspaces.
+    - [diagnostic-settings](modules/Monitoring/diagnostic-settings): Module for creating diagnostic settings.
+
 - **Networking**:
     - [application-gateway](modules/Networking/application-gateway): Module for creating application gateways.
     - [firewall](modules/Networking/firewall-tools/firewall): Module for creating firewalls.
