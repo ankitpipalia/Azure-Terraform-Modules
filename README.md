@@ -53,7 +53,10 @@ The repository follows the following directory hierarchy structure:
     - [subnets](modules/Networking/subnets): Module for creating subnets.
     - [virtual-network](modules/Networking/virtual-network): Module for creating virtual networks.
     - [vnet-peering](modules/Networking/vnet-peering): Module for creating VNet peering.
-  
+
+- **Security**:
+    - [key-vault](modules/Security/key-vault): Module for creating key vaults.
+
 - **Storage**:
     - [storage-account](modules/Storage/storage-account): Module for creating storage accounts.
   
