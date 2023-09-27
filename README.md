@@ -39,8 +39,8 @@ The repository follows the following directory hierarchy structure:
     - [resource-group](modules/Management/resource-group): Module for creating resource groups.
   
 - **Monitoring**:
-    - [log-analytics-workspace](modules/Monitoring/log-analytics-workspace): Module for creating log analytics workspaces.
-    - [diagnostic-settings](modules/Monitoring/diagnostic-settings): Module for creating diagnostic settings.
+    - [log-analytics-workspace](modules/Moniter/log-analytics-workspace): Module for creating log analytics workspaces.
+    - [diagnostic-settings](modules/Moniter/diagnostic-setting): Module for creating diagnostic settings.
 
 - **Networking**:
     - [application-gateway](modules/Networking/application-gateway): Module for creating application gateways.
