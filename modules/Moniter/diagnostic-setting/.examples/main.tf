@@ -57,14 +57,19 @@ module "law" {
 
 data "azurerm_client_config" "current" {}
 
-resource "azurerm_key_vault" "example" {
-  name                       = "ankitsdfkjhfkvdv"
-  location                   = module.resource_group.location
-  resource_group_name        = module.resource_group.name
-  tenant_id                  = data.azurerm_client_config.current.tenant_id
-  soft_delete_retention_days = 7
+module "key-vault" {
+  source = "./modules/Security/key-vault"
+
+  key_vault_name      = "hvdhybbfhb645tfh"
+  resource_group_name = module.resource_group.name
+  location            = module.resource_group.location
+
+  sku_name                        = "standard"
+  tenant_id = data.azurerm_client_config.current.tenant_id
   purge_protection_enabled   = false
-  sku_name                   = "standard"
+
+  tags                = local.tags
+  extra_tags          = local.extra_tags
 }
 
 module "diagnostic-setting" {
@@ -72,7 +77,7 @@ module "diagnostic-setting" {
 
   diagnostic_setting_name = "test-diag"
   storage_account_id      = module.storage_account.id
-  target_resource_id      = azurerm_key_vault.example.id
+  target_resource_id      = module.key-vault.id
 
   log_analytics_destination_type = "Dedicated"
   log_analytics_workspace_id = module.law.id

@@ -54,15 +54,3 @@ module "law" {
 
   depends_on = [module.resource_group, module.storage_account]
 }
-
-data "azurerm_client_config" "current" {}
-
-resource "azurerm_key_vault" "example" {
-  name                       = "ankitsdfkjhfkvdv"
-  location                   = module.resource_group.location
-  resource_group_name        = module.resource_group.name
-  tenant_id                  = data.azurerm_client_config.current.tenant_id
-  soft_delete_retention_days = 7
-  purge_protection_enabled   = false
-  sku_name                   = "standard"
-}
