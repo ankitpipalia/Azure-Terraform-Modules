@@ -9,7 +9,7 @@ module "resource_group" {
 
 module "storage_acount" {
   source               = "./modules/Storage/storage-account"
-  storage_account_name = "xyzstgsimform924"
+  storage_account_name = "xyzstgabcpqr924"
   resource_group_name  = module.resource_group.name
   location             = module.resource_group.location
   account_tier         = "Standard"

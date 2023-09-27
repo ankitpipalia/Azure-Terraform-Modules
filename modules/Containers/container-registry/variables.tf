@@ -1,96 +1,35 @@
-variable "resource_group_name" {
-  description = "The name of the Azure resource group."
-  type        = string
-}
-
-variable "registry_name" {
-  description = "The name of the Azure Container Registry."
-  type        = string
-}
-
-variable "location" {
-  description = "The location/region where the Azure Container Registry will be created."
-  type        = string
-}
-
-variable "sku" {
-  description = "The SKU (pricing tier) of the Azure Container Registry."
-  type        = string
-  default     = "Standard"
-}
-
-variable "admin_enabled" {
-  description = "Specifies whether admin user is enabled for the Azure Container Registry."
-  type        = optioanl(bool)
-  default     = false
-}
-
-variable "allow_public_access" {
-  description = "Specifies whether public network access is allowed for the Azure Container Registry."
-  type        = optional(bool)
-  default     = true
-}
-
-variable "zone_redundancy_enabled" {
-  description = "Specifies whether zone redundancy is enabled for the Azure Container Registry."
-  type        = optional(bool)
-  default     = false
-}
-
-variable "allow_anonymous_pull_enabled" {
-  description = "Specifies whether anonymous pull is allowed for the Azure Container Registry."
-  type        = optional(bool)
-  default     = false
-}
-
-variable "network_rule_bypass_option" {
-  description = "The bypass option for network rules of the Azure Container Registry."
-  type        = optional(string)
-  default     = "AzureServices"
-}
-
-
-variable "tags" {
-  description = "Tags to be applied to resources (inclusive)"
+variable "container_registry_config" {
+  description = "Manages an Azure Container Registry"
   type = object({
-    environment = string
-    project     = string
+    name                          = string
+    admin_enabled                 = optional(bool)
+    sku                           = optional(string)
+    public_network_access_enabled = optional(bool)
+    quarantine_policy_enabled     = optional(bool)
+    zone_redundancy_enabled       = optional(bool)
   })
 }
 
-variable "extra_tags" {
-  description = "extra tags to be applied to resources (in addition to the tags above)"
-  type        = map(string)
-  default     = {}
+variable "location" {
+  description = "The Azure Region in which to create the Azure Container Registry"
+  type        = string
 }
 
-variable "identity_ids" {
-  description = "Specifies a list of user managed identity ids to be assigned. This is required when `type` is set to `UserAssigned` or `SystemAssigned, UserAssigned`"
-  default     = null
+variable "resource_group_name" {
+  description = "The name of the resource group in which to create the Azure Container Registry"
+  type        = string
 }
 
 variable "georeplications" {
-  description = "A list of georeplication configurations for the Azure Container Registry."
+  description = "A list of Azure locations where the container registry should be geo-replicated"
   type = list(object({
-    location                  = string
-    regional_endpoint_enabled = bool
-    zone_redundancy_enabled   = bool
-    tags                      = map(string)
+    location                = string
+    zone_redundancy_enabled = optional(bool)
   }))
   default = []
 }
 
-variable "encryption" {
-  description = "Encrypt registry using a customer-managed key"
-  type = object({
-    key_vault_key_id   = string
-    identity_client_id = string
-  })
-  default = null
-}
-
-
-variable "network_rule_set" {
+variable "network_rule_set" { # change this to match actual objects
   description = "Manage network rules for Azure Container Registries"
   type = object({
     default_action = optional(string)
@@ -113,20 +52,55 @@ variable "retention_policy" {
   default = null
 }
 
-variable "log_analytics_workspace_name" {
-  description = "The name of the Log Analytics workspace for diagnostic settings."
-  type        = string
+variable "enable_content_trust" {
+  description = "Boolean value to enable or disable Content trust in Azure Container Registry"
+  default     = false
+}
+
+variable "identity_ids" {
+  description = "Specifies a list of user managed identity ids to be assigned. This is required when `type` is set to `UserAssigned` or `SystemAssigned, UserAssigned`"
   default     = null
 }
 
-variable "storage_account_name" {
-  description = "The name of the Azure Storage Account for diagnostic settings."
-  type        = string
-  default     = null
+variable "encryption" {
+  description = "Encrypt registry using a customer-managed key"
+  type = object({
+    key_vault_key_id   = string
+    identity_client_id = string
+  })
+  default = null
 }
 
-variable "acr_diag_logs" {
-  description = "List of diagnostic logs to enable for the Azure Container Registry."
-  type        = list(string)
-  default     = []
+variable "scope_map" {
+  description = "Manages an Azure Container Registry scope map. Scope Maps are a preview feature only available in Premium SKU Container registries."
+  type = map(object({
+    actions = list(string)
+  }))
+  default = null
+}
+
+variable "container_registry_webhooks" {
+  description = "Manages an Azure Container Registry Webhook"
+  type = map(object({
+    service_uri    = string
+    actions        = list(string)
+    status         = optional(string)
+    scope          = string
+    custom_headers = map(string)
+  }))
+  default = null
+}
+
+variable "tags" {
+  description = "Tags to be applied to resources (inclusive)"
+  type = object({
+    environment = string
+    project     = string
+  })
+}
+
+variable "extra_tags" {
+  description = "extra tags to be applied to resources (in addition to the tags above)"
+  type        = map(string)
+  default     = {}
 }
