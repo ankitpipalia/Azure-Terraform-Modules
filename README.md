@@ -25,6 +25,10 @@ The repository follows the following directory hierarchy structure:
     - [windows-virtual-machine](modules/Compute/windows-virtual-machine): Module for creating Windows virtual machines.
     - [windows-vmss](modules/Compute/windows-vmss): Module for creating Windows Virtual Machine Scale Sets.
 
+- **Containers**:
+    - [container-registry](modules/Containers/container-registry): Module for creating container registries.
+    - [container-apps](modules/Containers/container-apps): Module for creating container apps.
+
 - **Databases**:
     - [mssql-database](modules/Databases/mssql-database): Module for creating SQL Server databases.
     - [mssql-server](modules/Databases/mssql-server): Module for creating SQL Server instances.
