@@ -39,7 +39,6 @@ module "pg_db" {
 
   postgresql_server_name = "tesadasdst-pg"
   sku                    = "GP_Gen5_2" # Changed SKU to support vnet access
-
   subnet_id = module.subnets["subnet1"].id
   postgresql_database_name     = "testxyabzcpg-db"
   administrator_login          = "pgsqladmin"

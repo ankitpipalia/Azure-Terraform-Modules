@@ -4,20 +4,39 @@ A Terraform module for deploying a simple PostgreSQL instance.
 
 ## Usage
 
-Before deploying this module you will need to have a vNet deployed with a subnet that has `Microsoft.Sql` enabled as a `service_endpoint`.  Without this other servers you deploy into this subnet will _not_ be able to access the instance securely.
+Before deploying this module you will need to have a vNet deployed with a subnet that has `Microsoft.Sql` enabled as a `service_endpoint`.  Without this other servers you deploy into this subnet will _not_ be able to access the instance securely. You can use the following module to deploy a vNet with a subnet that has this enabled:
+
+```hcl
+module "subnets" {
+  source = "./modules/Networking/subnets"
+
+  for_each              = toset(local.subnets)
+  subnet_name           = each.value
+  resource_group_name   = module.resource_group.name
+  virtual_network_name  = module.virtual_network.name
+  subnet_address_prefix = cidrsubnet(module.virtual_network.address_space[0], 8, index(local.subnets, each.value)) # Ensure unique address for each subnet
+  service_endpoints = "Microsoft.Sql"
+}
+```
+
+
 
 ```hcl
 module "pg_db" {
-  source  = "./modules/Databases/postgresql"
+  source = "./modules/Databases/postgresql"
 
-  name                = "test75xyzabcdb"
-  resource_group_name = var.resource_group_name
+  location             = module.resource_group.location
+  resource_group_name  = module.resource_group.name
 
-  subnet_id = var.subnet_id_for_servers
+  postgresql_server_name = "tesadasdst-pg"
+  sku                    = "GP_Gen5_2" # Changed SKU to support vnet access
+  subnet_id = module.subnets["subnet1"].id
+  postgresql_database_name     = "testxyabzcpg-db"
+  administrator_login          = "pgsqladmin"
+  administrator_login_password = "P@ssw0rd1234"
 
-  postgresql_database_name     = 
-  administrator_login_password = 
-  administrator_login_password = 
+  tags                = local.tags
+  extra_tags          = local.extra_tags
 }
 ```
 
@@ -33,22 +52,25 @@ module "pg_db" {
 
 ## Inputs
 
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
-| <a name="input_db_name"></a> [db\_name](#input\_db\_name) | The name of the database to create | `string` | n/a | yes |
-| <a name="input_db_password"></a> [db\_password](#input\_db\_password) | The password of the administration user to create | `string` | n/a | yes |
-| <a name="input_db_username"></a> [db\_username](#input\_db\_username) | The name of the administration user to create | `string` | n/a | yes |
-| <a name="input_name"></a> [name](#input\_name) | A name which will be pre-pended to the resources created | `string` | n/a | yes |
-| <a name="input_resource_group_name"></a> [resource\_group\_name](#input\_resource\_group\_name) | The name of the resource group to deploy the service into | `string` | n/a | yes |
-| <a name="input_subnet_id"></a> [subnet\_id](#input\_subnet\_id) | The ID of a subnet to bind the database service into (must have 'Microsoft.Sql' enabled as a service\_endpoint) | `string` | n/a | yes |
-| <a name="input_additional_ip_allowlist"></a> [additional\_ip\_allowlist](#input\_additional\_ip\_allowlist) | An optional list of CIDR ranges to allow traffic from | `list(any)` | `[]` | no |
-| <a name="input_auto_grow_enabled"></a> [auto\_grow\_enabled](#input\_auto\_grow\_enabled) | Whether the disk space should automatically expand | `bool` | `false` | no |
-| <a name="input_backup_retention_days"></a> [backup\_retention\_days](#input\_backup\_retention\_days) | The number of days to retain backups | `number` | `7` | no |
-| <a name="input_max_allocated_storage_mb"></a> [max\_allocated\_storage\_mb](#input\_max\_allocated\_storage\_mb) | The maximum size of the attached disk in MB | `number` | `10240` | no |
-| <a name="input_postgresql_version"></a> [postgresql\_version](#input\_postgresql\_version) | The version of PostgreSQL to deploy | `string` | `"11"` | no |
-| <a name="input_publicly_accessible"></a> [publicly\_accessible](#input\_publicly\_accessible) | Whether to make this instance accessible over the internet | `bool` | `true` | no |
-| <a name="input_sku"></a> [sku](#input\_sku) | The SKU of the server instance to deploy | `string` | `"GP_Gen5_2"` | no |
-| <a name="input_tags"></a> [tags](#input\_tags) | The tags to append to this resource | `map(string)` | `{}` | no |
+| Name                              | Description                                                                                                         | Type     | Default  | Required |
+|-----------------------------------|---------------------------------------------------------------------------------------------------------------------|----------|----------|----------|
+| `postgresql_server_name`          | The name of the Azure PostgreSQL Server.                                                                           | string   |          | Yes      |
+| `location`                        | The Azure region where the PostgreSQL Server will be created.                                                     | string   |          | Yes      |
+| `resource_group_name`             | The name of the Azure Resource Group where the PostgreSQL Server and related resources will be deployed.         | string   |          | Yes      |
+| `administrator_login`             | The administrator login for the PostgreSQL Server.                                                                 | string   |          | Yes      |
+| `administrator_login_password`    | The password for the PostgreSQL Server administrator login.                                                        | string   |          | Yes      |
+| `sku`                             | The SKU (pricing tier) for the PostgreSQL Server.                                                                  | string   |          | Yes      |
+| `postgresql_version`              | The version of PostgreSQL to use.                                                                                  | string   |          | Yes      |
+| `max_allocated_storage_mb`        | The maximum storage capacity for the PostgreSQL Server in megabytes.                                              | number   |          | Yes      |
+| `backup_retention_days`           | The number of days to retain backups for the PostgreSQL Server.                                                     | number   |          | Yes      |
+| `auto_grow_enabled`               | Enable or disable auto-grow for the PostgreSQL Server storage.                                                      | bool     |          | Yes      |
+| `publicly_accessible`             | Enable or disable public network access to the PostgreSQL Server.                                                   | bool     |          | Yes      |
+| `tags`                            | A map of tags to apply to the PostgreSQL Server and related resources.                                              | map      | {}       | No       |
+| `extra_tags`                      | Additional tags to apply to the PostgreSQL Server and related resources.                                             | map      | {}       | No       |
+| `postgresql_database_name`        | The name of the PostgreSQL database to create.                                                                     | string   |          | Yes      |
+| `subnet_id`                       | The ID of the subnet where the PostgreSQL Server should be placed for virtual network access.                    | string   |          | No       |
+| `additional_ip_allowlist`         | A list of additional IP addresses allowed to access the PostgreSQL Server (firewall rules).                        | list(string) | []    | No       |
+
 
 ## Outputs
 
