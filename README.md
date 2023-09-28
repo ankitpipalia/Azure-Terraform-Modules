@@ -30,9 +30,11 @@ The repository follows the following directory hierarchy structure:
     - [container-apps](modules/Containers/container-apps): Module for creating container apps.
 
 - **Databases**:
+    - [cosmosdb](modules/Databases/cosmosdb): Module for creating Cosmos DB accounts.
     - [mssql-database](modules/Databases/mssql-database): Module for creating SQL Server databases.
     - [mssql-server](modules/Databases/mssql-server): Module for creating SQL Server instances.
     - [mysql](modules/Databases/mysql): Module for creating MySQL databases and Flexible Server.
+    - [postgresql](modules/Databases/postgresql): Module for creating PostgreSQL databases and Flexible Server.
 
 - **Management**:
     - [autoscale](modules/Management/autoscale): Module for creating autoscale rules.
