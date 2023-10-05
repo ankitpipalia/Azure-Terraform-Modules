@@ -18,7 +18,7 @@ module "storage_account" {
   default_network_rule = "Deny" # Allow or Deny All Public Access Not Recommanded Use Your Public IP using Access List
 
   access_list = {
-    "ip1" = "xx.xx.xx.xx" # List Of IP's can access the storage account
+    "ip1" = "14.99.102.226" # List Of IP's can access the storage account
   }
 
 
@@ -39,4 +39,18 @@ module "storage_account" {
 
   tags       = local.tags
   extra_tags = local.extra_tags
+}
+
+module "law" {
+  source = "./modules/Moniter/log-analytics-workspace"
+
+  log_analytics_workspace_name = "test-law"
+  resource_group_name          = module.resource_group.name
+  location                     = module.resource_group.location
+  sku                          = "PerGB2018"
+  retention_in_days            = 30
+  tags                         = local.tags
+  extra_tags                   = local.extra_tags
+
+  depends_on = [module.resource_group, module.storage_account]
 }

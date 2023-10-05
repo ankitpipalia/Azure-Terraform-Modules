@@ -25,15 +25,25 @@ The repository follows the following directory hierarchy structure:
     - [windows-virtual-machine](modules/Compute/windows-virtual-machine): Module for creating Windows virtual machines.
     - [windows-vmss](modules/Compute/windows-vmss): Module for creating Windows Virtual Machine Scale Sets.
 
+- **Containers**:
+    - [container-registry](modules/Containers/container-registry): Module for creating container registries.
+    - [container-apps](modules/Containers/container-apps): Module for creating container apps.
+
 - **Databases**:
+    - [cosmosdb](modules/Databases/cosmosdb): Module for creating Cosmos DB accounts.
     - [mssql-database](modules/Databases/mssql-database): Module for creating SQL Server databases.
     - [mssql-server](modules/Databases/mssql-server): Module for creating SQL Server instances.
     - [mysql](modules/Databases/mysql): Module for creating MySQL databases and Flexible Server.
+    - [postgresql](modules/Databases/postgresql): Module for creating PostgreSQL databases and Flexible Server.
 
 - **Management**:
     - [autoscale](modules/Management/autoscale): Module for creating autoscale rules.
     - [resource-group](modules/Management/resource-group): Module for creating resource groups.
   
+- **Monitoring**:
+    - [log-analytics-workspace](modules/Moniter/log-analytics-workspace): Module for creating log analytics workspaces.
+    - [diagnostic-settings](modules/Moniter/diagnostic-setting): Module for creating diagnostic settings.
+
 - **Networking**:
     - [application-gateway](modules/Networking/application-gateway): Module for creating application gateways.
     - [firewall](modules/Networking/firewall-tools/firewall): Module for creating firewalls.
@@ -49,7 +59,10 @@ The repository follows the following directory hierarchy structure:
     - [subnets](modules/Networking/subnets): Module for creating subnets.
     - [virtual-network](modules/Networking/virtual-network): Module for creating virtual networks.
     - [vnet-peering](modules/Networking/vnet-peering): Module for creating VNet peering.
-  
+
+- **Security**:
+    - [key-vault](modules/Security/key-vault): Module for creating key vaults.
+
 - **Storage**:
     - [storage-account](modules/Storage/storage-account): Module for creating storage accounts.
   

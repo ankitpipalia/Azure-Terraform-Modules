@@ -6,7 +6,7 @@
 module "mysql_server" {
   source = "./modules/Databases/mysql"
 
-  mysql_server_name            = "testsimformserver"
+  mysql_server_name            = "testabcpqrserver"
   resource_group_name          = module.resource_group.name
   location                     = module.resource_group.location
   administrator_login          = "mysqladmin"

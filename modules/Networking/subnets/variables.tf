@@ -17,3 +17,9 @@ variable "subnet_address_prefix" {
   description = "The address prefix for the subnet"
   type        = string
 }
+
+variable "service_endpoints" {
+  description = "List of service endpoints to be added to the subnet"
+  type        = string
+  default     = null
+}
