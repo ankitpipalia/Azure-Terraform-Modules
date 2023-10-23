@@ -26,6 +26,7 @@ The repository follows the following directory hierarchy structure:
     - [windows-vmss](modules/Compute/windows-vmss): Module for creating Windows Virtual Machine Scale Sets.
 
 - **Containers**:
+    - [aks](modules/Containers/aks): Module for creating AKS clusters.
     - [container-registry](modules/Containers/container-registry): Module for creating container registries.
     - [container-apps](modules/Containers/container-apps): Module for creating container apps.
 
@@ -41,6 +42,7 @@ The repository follows the following directory hierarchy structure:
     - [resource-group](modules/Management/resource-group): Module for creating resource groups.
   
 - **Monitoring**:
+    - [application-insights](modules/Moniter/application-insights): Module for creating application insights.
     - [log-analytics-workspace](modules/Moniter/log-analytics-workspace): Module for creating log analytics workspaces.
     - [diagnostic-settings](modules/Moniter/diagnostic-setting): Module for creating diagnostic settings.
 
@@ -67,6 +69,7 @@ The repository follows the following directory hierarchy structure:
     - [storage-account](modules/Storage/storage-account): Module for creating storage accounts.
   
 - **Web**:
+    - [api-management](modules/Web/api-management): Module for creating API management services.
     - [linux-web-apps](modules/Web/linux-web-apps): Module for creating Linux web apps.
     - [service-plan](modules/Web/service-plan): Module for creating service plans.
     - [static-web-apps](modules/Web/static-web-apps): Module for creating static web apps.
