@@ -1,16 +1,14 @@
-module "application_insights" {
-  source = "registry.terraform.io/T-Systems-MMS/application-insights/azurerm"
-  application_insights = {
-    function_app = {
-      location                   = "westeurope"
-      resource_group_name        = "service-env-rg"
-      application_type           = "Node.JS"
-      internet_ingestion_enabled = true
-      internet_query_enabled     = true
-      retention_in_days          = "90"
-      tags = {
-        service = "service_name"
-      }
-    }
-  }
+module "application_insight" {
+  source = "./modules/application-insights"
+
+  application_insights_name = "test-app-insights"
+  location                  = module.resource_group.location
+  resource_group_name       = module.resource_group.name
+  workspace_id              = module.law.id
+  application_type          = "web"
+
+  tags       = local.tags
+  extra_tags = local.extra_tags
+
+  depends_on = [module.resource_group, module.law]
 }
