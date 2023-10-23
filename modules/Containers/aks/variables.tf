@@ -414,7 +414,6 @@ variable "network_profile" {
     network_mode        = optional(string, null)
     network_policy      = optional(string, null)
     dns_service_ip      = optional(string, null)
-    docker_bridge_cidr  = optional(string, null)
     ebpf_data_plane     = optional(string, null)
     network_plugin_mode = optional(string, null)
     outbound_type       = optional(string, null)
@@ -630,20 +629,11 @@ variable "diagnostic_settings" {
     enabled_log = optional(object({
       category       = optional(string, null)
       category_group = optional(string, null)
-
-      retention_policy = optional(object({
-        enabled = optional(bool, null)
-        days    = optional(number, null)
-      }), null)
     }), null)
 
     metrics = optional(object({
       category = optional(string, null)
       enabled  = optional(bool, null)
-      retention_policy = optional(object({
-        enabled = optional(bool, null)
-        days    = optional(number, null)
-      }), null)
     }), null)
   })
   description = "(Optional) A diagnostic_settings block."

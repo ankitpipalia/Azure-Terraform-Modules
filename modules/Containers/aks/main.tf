@@ -383,7 +383,6 @@ resource "azurerm_kubernetes_cluster" "this" {
       network_mode        = network_profile.value.network_mode
       network_policy      = network_profile.value.network_policy
       dns_service_ip      = network_profile.value.dns_service_ip
-      docker_bridge_cidr  = network_profile.value.docker_bridge_cidr
       ebpf_data_plane     = network_profile.value.ebpf_data_plane
       network_plugin_mode = network_profile.value.network_plugin_mode
       outbound_type       = network_profile.value.outbound_type
@@ -555,11 +554,6 @@ resource "azurerm_monitor_diagnostic_setting" "this" {
     content {
       category       = enabled_log.value.category
       category_group = enabled_log.value.category_group
-
-      retention_policy {
-        enabled = enabled_log.value.retention_policy_enabled
-        days    = enabled_log.value.retention_policy_days
-      }
     }
   }
 
@@ -569,10 +563,6 @@ resource "azurerm_monitor_diagnostic_setting" "this" {
       category = metric.value.category
       enabled  = metric.value.enabled
 
-      retention_policy {
-        enabled = metric.value.retention_policy_enabled
-        days    = metric.value.retention_policy_days
-      }
     }
   }
 
