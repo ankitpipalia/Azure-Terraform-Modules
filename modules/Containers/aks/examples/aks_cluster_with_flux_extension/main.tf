@@ -88,8 +88,8 @@ module "aks_cluster" {
 
   cluster_extentions = [
     {
-        name = "flux",
-        extension_type = "microsoft.flux"
+      name           = "flux",
+      extension_type = "microsoft.flux"
     }
   ]
 }
@@ -194,8 +194,8 @@ module "aks_cluster" {
 
   cluster_extentions = [
     {
-        name = "flux",
-        extension_type = "microsoft.flux"
+      name           = "flux",
+      extension_type = "microsoft.flux"
     }
   ]
 

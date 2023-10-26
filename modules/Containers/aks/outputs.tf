@@ -203,7 +203,7 @@ output "identity_principal_id" {
 }
 
 output "identity_id" {
-  value = azurerm_user_assigned_identity.this[0].id
+  value       = azurerm_user_assigned_identity.this[0].id
   description = "Specifies the id of the managed identity of the AKS cluster."
 }
 
