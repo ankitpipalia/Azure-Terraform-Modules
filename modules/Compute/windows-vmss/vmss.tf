@@ -1,11 +1,11 @@
 resource "azurerm_windows_virtual_machine_scale_set" "vmss" {
-  name                            = var.virtual_machine_scale_set_name
-  resource_group_name             = var.resource_group_name
-  location                        = var.location
-  sku                             = var.vm_sku
-  instances                       = var.instances
-  admin_username                  = var.admin_username
-  admin_password                  = var.admin_password
+  name                = var.virtual_machine_scale_set_name
+  resource_group_name = var.resource_group_name
+  location            = var.location
+  sku                 = var.vm_sku
+  instances           = var.instances
+  admin_username      = var.admin_username
+  admin_password      = var.admin_password
 
   source_image_id = var.source_image_id
 
@@ -41,7 +41,7 @@ resource "azurerm_windows_virtual_machine_scale_set" "vmss" {
           name = "pip"
         }
       }
-      load_balancer_backend_address_pool_ids = var.enable_load_balancer_backend_address_pool_ids ? var.load_balancer_backend_address_pool_ids : null
+      load_balancer_backend_address_pool_ids       = var.enable_load_balancer_backend_address_pool_ids ? var.load_balancer_backend_address_pool_ids : null
       application_gateway_backend_address_pool_ids = var.enable_application_gateway_backend_address_pool_ids ? var.application_gateway_backend_address_pool_ids : null
     }
   }

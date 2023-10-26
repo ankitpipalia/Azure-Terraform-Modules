@@ -88,9 +88,9 @@ module "firewall-policy" {
 module "rule-collection-group" {
   source = "./modules/Networking/firewall-tools/rule-collection-group"
 
-  name = "test-rcg"
+  name               = "test-rcg"
   firewall_policy_id = module.firewall-policy.id
-  priority = 100
+  priority           = 100
 
   network_rule_collections = {
     net-global-blacklist = {

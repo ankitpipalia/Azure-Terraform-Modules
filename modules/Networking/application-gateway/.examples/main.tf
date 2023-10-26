@@ -71,10 +71,10 @@ module "application_gateway" {
   }
 
   gateway_ip_configuration_name = "test-gateway-ip-configuration"
-  subnet_id = module.subnets["appgw"].id
+  subnet_id                     = module.subnets["appgw"].id
 
   frontend_ip_configuration_name = "test-frontend-ip-configuration"
-  public_ip_address_id = module.public_ip_address.id
+  public_ip_address_id           = module.public_ip_address.id
 
   backend_address_pools = [
     {
@@ -86,7 +86,7 @@ module "application_gateway" {
     {
       name                  = "test-http-settings"
       cookie_based_affinity = "Disabled"
-      enable_https = true
+      enable_https          = true
       request_timeout       = 30
     }
   ]

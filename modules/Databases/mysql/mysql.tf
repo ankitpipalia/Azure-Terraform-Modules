@@ -29,13 +29,13 @@ resource "azurerm_mysql_flexible_server" "mysql" {
 }
 
 resource "azurerm_mysql_flexible_database" "database" {
-  name     = var.database_name
+  name                = var.database_name
   resource_group_name = azurerm_mysql_flexible_server.mysql.resource_group_name
-  server_name = azurerm_mysql_flexible_server.mysql.name
-  charset  = var.charset
-  collation = var.collation
+  server_name         = azurerm_mysql_flexible_server.mysql.name
+  charset             = var.charset
+  collation           = var.collation
 
-  depends_on = [ azurerm_mysql_flexible_server.mysql ]
+  depends_on = [azurerm_mysql_flexible_server.mysql]
 }
 
 resource "azurerm_mysql_flexible_server_firewall_rule" "firewall_rule" {

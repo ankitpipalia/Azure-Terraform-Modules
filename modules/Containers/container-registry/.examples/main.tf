@@ -15,15 +15,15 @@ module "azurerm_container_registry" {
   location            = module.resource_group.location
 
   container_registry_config = {
-    name = "xyzabctestregistry"
-    admin_enabled = true
-    sku = "Premium"
+    name                          = "xyzabctestregistry"
+    admin_enabled                 = true
+    sku                           = "Premium"
     public_network_access_enabled = true
-    quarantine_policy_enabled = true
-    zone_redundancy_enabled = true
+    quarantine_policy_enabled     = true
+    zone_redundancy_enabled       = true
   }
 
-  tags                = local.tags
-  extra_tags          = local.extra_tags
+  tags       = local.tags
+  extra_tags = local.extra_tags
 
 }

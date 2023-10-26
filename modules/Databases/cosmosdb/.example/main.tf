@@ -19,7 +19,7 @@ module "virtual_network" {
 }
 
 module "subnets" {
-  source = "./modules/Networking/subnets"
+  source                = "./modules/Networking/subnets"
   for_each              = toset(local.subnets)
   subnet_name           = each.value
   resource_group_name   = module.resource_group.name
@@ -29,31 +29,31 @@ module "subnets" {
 }
 
 module "azurerm_cosmosdb_account" {
-    source = "./moudle/Databases/cosmosdb/"
+  source = "./moudle/Databases/cosmosdb/"
 
-    name = "CosmosDB_Account"
-    location = "eastus"
-    
-    tags = {
-        Environment = "Development"
-        Project = "Test"
-    }
+  name     = "CosmosDB_Account"
+  location = "eastus"
 
-    offer_type = "Standard"
+  tags = {
+    Environment = "Development"
+    Project     = "Test"
+  }
 
-    create_mode =  "Default"
+  offer_type = "Standard"
 
-    kind = "MongoDB"
+  create_mode = "Default"
 
-    public_network_access_enabled = false
+  kind = "MongoDB"
 
-    network_acl_bypass_for_azure_services = true
-  
-    local_authentication_disabled = false
+  public_network_access_enabled = false
 
-    ip_range_filter = ["10.0.0.0/16"]
+  network_acl_bypass_for_azure_services = true
 
-    enable_automatic_failover = true
+  local_authentication_disabled = false
+
+  ip_range_filter = ["10.0.0.0/16"]
+
+  enable_automatic_failover = true
 
   capabilities {
     name = "EnableMongo"
@@ -73,7 +73,7 @@ module "azurerm_cosmosdb_account" {
   }
 
   identity {
-    type         = "SystemAssigned"
+    type = "SystemAssigned"
   }
 
 }

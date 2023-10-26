@@ -91,4 +91,4 @@ variable "force_customer_storage_for_profiler" {
   description = "Should force customer storage for profiler be enabled?"
   type        = bool
   default     = false
-} 
+}
