@@ -62,7 +62,7 @@ module "application_insight" {
 }
 
 module "aks_cluster" {
-  source = "./modules/k8s-cluster"
+  source = "./modules/aks"
 
   resource_group_name = module.resource_group.name
   location            = module.resource_group.location

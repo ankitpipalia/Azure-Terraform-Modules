@@ -90,29 +90,29 @@ variable "extra_tags" {
 
 variable "virtual_hub" {
   description = "A list of virtual_hub blocks as defined below."
-  type        = list(object({
+  type = list(object({
     virtual_hub_id  = string
     public_ip_count = number
   }))
-  default     = []
+  default = []
 }
 
 variable "management_ip_configuration" {
   description = "A list of management_ip_configuration blocks as defined below."
-  type        = list(object({
+  type = list(object({
     name                 = string
     subnet_id            = string
     public_ip_address_id = string
   }))
-  default     = []
+  default = []
 }
 
 variable "ip_configuration" {
   description = "A list of ip_configuration blocks as defined below."
-  type        = list(object({
+  type = list(object({
     name                 = string
     subnet_id            = string
     public_ip_address_id = string
   }))
-  default     = []
+  default = []
 }

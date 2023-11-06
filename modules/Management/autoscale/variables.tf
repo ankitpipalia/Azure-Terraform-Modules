@@ -25,7 +25,7 @@ variable "metric_name" {
 
 variable "metric_namespace" {
   description = "The namespace of the metric trigger"
-  type        = string  
+  type        = string
 }
 
 variable "metric_resource_id" {

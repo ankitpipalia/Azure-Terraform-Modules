@@ -139,17 +139,17 @@ output "ingress_appgw_user_assigned_identity_id" {
 #################################################################
 output "oms_agent_identity_client_id" {
   value       = try(azurerm_kubernetes_cluster.this.oms_agent[0].oms_agent_identity[0].client_id, null)
-  description = "The client ID for the Azure Kubernetes Managed Cluster."
+  description = "The client ID for the OMS Agent."
 }
 
 output "oms_agent_identity_object_id" {
   value       = try(azurerm_kubernetes_cluster.this.oms_agent[0].oms_agent_identity[0].object_id, null)
-  description = "The object ID for the Azure Kubernetes Managed Cluster."
+  description = "The object ID for the OMS Agent."
 }
 
 output "oms_agent_user_assigned_identity_id" {
   value       = try(azurerm_kubernetes_cluster.this.oms_agent[0].oms_agent_identity[0].user_assigned_identity_id, null)
-  description = "The user assigned identity ID for the Azure Kubernetes Managed Cluster."
+  description = "The user assigned identity ID for the OMS Agent."
 }
 
 #################################################################
@@ -203,7 +203,7 @@ output "identity_principal_id" {
 }
 
 output "identity_id" {
-  value = azurerm_user_assigned_identity.this[0].id
+  value       = azurerm_user_assigned_identity.this[0].id
   description = "Specifies the id of the managed identity of the AKS cluster."
 }
 

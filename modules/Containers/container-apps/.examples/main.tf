@@ -10,15 +10,15 @@ module "resource_group" {
 module "container-apps" {
   source = "./modules/Containers/container-apps"
 
-  resource_group_name = module.resource_group.name
-  location            = module.resource_group.location
+  resource_group_name            = module.resource_group.name
+  location                       = module.resource_group.location
   container_app_environment_name = "test-container-apps-env"
-  tags                = local.tags
-  extra_tags          = local.extra_tags
+  tags                           = local.tags
+  extra_tags                     = local.extra_tags
 
   container_apps = {
     test-container-apps = {
-      name = "test-container-apps"
+      name          = "test-container-apps"
       revision_mode = "Single"
 
       template = {
@@ -36,15 +36,15 @@ module "container-apps" {
         ]
       }
       ingress = {
-        target_port = 80
+        target_port                = 80
         allow_insecure_connections = true
-        external_enabled = true
-        transport = "auto"
+        external_enabled           = true
+        transport                  = "auto"
         traffic_weight = {
-          label = "test"
+          label           = "test"
           latest_revision = "true"
           revision_suffix = "test"
-          percentage = 100
+          percentage      = 100
         }
       }
     }

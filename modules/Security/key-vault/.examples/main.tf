@@ -16,10 +16,10 @@ module "key-vault" {
   resource_group_name = module.resource_group.name
   location            = module.resource_group.location
 
-  sku_name                        = "standard"
-  tenant_id = data.azurerm_client_config.current.tenant_id
-  purge_protection_enabled   = false
+  sku_name                 = "standard"
+  tenant_id                = data.azurerm_client_config.current.tenant_id
+  purge_protection_enabled = false
 
-  tags                = local.tags
-  extra_tags          = local.extra_tags
+  tags       = local.tags
+  extra_tags = local.extra_tags
 }

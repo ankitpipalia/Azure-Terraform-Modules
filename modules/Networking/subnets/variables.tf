@@ -20,6 +20,6 @@ variable "subnet_address_prefix" {
 
 variable "service_endpoints" {
   description = "List of service endpoints to be added to the subnet"
-  type        = set(string) 
+  type        = set(string)
   default     = []
 }

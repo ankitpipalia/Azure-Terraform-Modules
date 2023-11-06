@@ -124,7 +124,7 @@ module "vmss" {
   subnet_id = module.subnets["subnet1"].id
 
   enable_load_balancer_backend_address_pool_ids = true
-  load_balancer_backend_address_pool_ids = [module.lb.load_balancer_backend_pool_id]
+  load_balancer_backend_address_pool_ids        = [module.lb.load_balancer_backend_pool_id]
 
   tags       = local.tags
   extra_tags = local.extra_tags

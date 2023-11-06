@@ -1,7 +1,7 @@
 variable "keyvault_name" {
   type        = string
   description = "The name of the Keyvault where the DB credentials are stored"
-  default = null
+  default     = null
 }
 variable "resource_group_name" {
   type        = string
@@ -25,9 +25,9 @@ variable "administrator_login" {
 }
 
 variable "administrator_password" {
-    type        = string
-    description = "The Password associated with the administrator_login for the MySQL Flexible Server. Required when create_mode is Default"
-    sensitive   = true
+  type        = string
+  description = "The Password associated with the administrator_login for the MySQL Flexible Server. Required when create_mode is Default"
+  sensitive   = true
 }
 
 variable "store_db_password_in_keyvault" {

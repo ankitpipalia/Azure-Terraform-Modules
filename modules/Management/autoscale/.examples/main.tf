@@ -133,7 +133,7 @@ module "autoscale_vmss" {
 
   resource_group_name = module.resource_group.name
   location            = module.resource_group.location
-  target_resource_id = module.vmss.vmss_id
+  target_resource_id  = module.vmss.vmss_id
 
   autoscale_setting_name = "test-vmss-autoscale"
   profile_name           = "test-vmss-autoscale-profile"
@@ -142,18 +142,18 @@ module "autoscale_vmss" {
   minimum_capacity = 2
   maximum_capacity = 10
 
-  metric_name      = "Percentage CPU"
-  metric_namespace = "Microsoft.Compute/virtualMachineScaleSets"
+  metric_name        = "Percentage CPU"
+  metric_namespace   = "Microsoft.Compute/virtualMachineScaleSets"
   metric_resource_id = module.vmss.vmss_id
-  time_grain       = "PT1M"
-  statistic        = "Average"
-  time_window      = "PT5M"
-  time_aggregation = "Average"
-  operator         = "GreaterThan"
-  threshold        = 75
+  time_grain         = "PT1M"
+  statistic          = "Average"
+  time_window        = "PT5M"
+  time_aggregation   = "Average"
+  operator           = "GreaterThan"
+  threshold          = 75
 
   scale_direction = "Increase"
   scale_type      = "ChangeCount"
   scale_value     = 1
-  scale_cooldown  = "PT1M" 
+  scale_cooldown  = "PT1M"
 }

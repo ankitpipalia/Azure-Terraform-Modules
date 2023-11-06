@@ -34,16 +34,16 @@ module "subnets" {
 module "pg_db" {
   source = "./modules/Databases/postgresql"
 
-  location             = module.resource_group.location
-  resource_group_name  = module.resource_group.name
+  location            = module.resource_group.location
+  resource_group_name = module.resource_group.name
 
-  postgresql_server_name = "tesadasdst-pg"
-  sku                    = "GP_Gen5_2" # Changed SKU to support vnet access
-  subnet_id = module.subnets["subnet1"].id
+  postgresql_server_name       = "tesadasdst-pg"
+  sku                          = "GP_Gen5_2" # Changed SKU to support vnet access
+  subnet_id                    = module.subnets["subnet1"].id
   postgresql_database_name     = "testxyabzcpg-db"
   administrator_login          = "pgsqladmin"
   administrator_login_password = "P@ssw0rd1234"
 
-  tags                = local.tags
-  extra_tags          = local.extra_tags
+  tags       = local.tags
+  extra_tags = local.extra_tags
 }

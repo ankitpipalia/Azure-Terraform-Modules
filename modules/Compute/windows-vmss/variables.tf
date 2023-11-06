@@ -165,7 +165,7 @@ variable "application_gateway_backend_address_pool_ids" {
   description = "Application gateway backend address pool ids."
   type        = list(string)
 }
-  
+
 variable "enable_application_gateway_backend_address_pool_ids" {
   description = "Enables application gateway backend address pool ids for Scale Set"
   type        = bool

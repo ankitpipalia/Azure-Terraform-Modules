@@ -62,16 +62,16 @@ variable "target_resource_id" {
 
 variable "enabled_log" {
   description = "The enabled logs"
-  type        = list(object({
-    category       = string
-    enabled        = bool
+  type = list(object({
+    category = string
+    enabled  = bool
   }))
 }
 
 variable "metrics" {
   description = "The metrics"
-  type        = list(object({
-    category       = string
-    enabled        = bool
+  type = list(object({
+    category = string
+    enabled  = bool
   }))
 }
