@@ -1,19 +1,14 @@
-output "subnet_name" {
-  description = "Subnet name"
-  value       = azurerm_subnet.subnet.name
+output "subnet_names" {
+  description = "Map of subnet names keyed by subnet name"
+  value       = { for name, subnet in azurerm_subnet.subnets : name => subnet.name }
 }
 
-output "id" {
-  description = "Subnet ID"
-  value       = azurerm_subnet.subnet.id
+output "subnet_ids" {
+  description = "Map of subnet IDs keyed by subnet name"
+  value       = { for name, subnet in azurerm_subnet.subnets : name => subnet.id }
 }
 
-output "subnet_rg" {
-  description = "Subnet resource group"
-  value       = azurerm_subnet.subnet.resource_group_name
-}
-
-output "subnet" {
-  description = "Subnet resource"
-  value       = azurerm_subnet.subnet
+output "subnets" {
+  description = "Map of all subnet resources keyed by subnet name"
+  value       = { for name, subnet in azurerm_subnet.subnets : name => subnet }
 }

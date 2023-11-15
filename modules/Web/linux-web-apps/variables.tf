@@ -4,9 +4,10 @@ variable "active_directory_auth_setttings" {
   default     = {}
 }
 
-variable "name" {
+variable "linux_web_app_name" {
   description = "The name of the function app"
   type        = string
+  default = null
 }
 
 variable "app_settings" {
@@ -144,4 +145,14 @@ variable "web_app_vnet_integration_subnet_id" {
   description = "ID of the subnet to associate with the Function App (VNet integration)"
   type        = string
   default     = null
+}
+
+variable "environment" {
+  description = "environment name of the project"
+  type = string
+}
+
+variable "project" {
+  description = "project name"
+  type = string
 }

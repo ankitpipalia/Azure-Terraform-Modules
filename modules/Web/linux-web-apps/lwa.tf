@@ -1,5 +1,5 @@
 resource "azurerm_linux_web_app" "web_app" {
-  name                       = var.name
+  name                       = coalesce(var.linux_web_app_name, "${var.project}-${var.environment}-as")
   service_plan_id            = var.service_plan_id
   location                   = var.location
   resource_group_name        = var.resource_group_name
@@ -147,16 +147,18 @@ resource "azurerm_linux_web_app" "web_app" {
       dynamic "application_stack" {
         for_each = lookup(var.settings.site_config, "application_stack", {}) != {} ? [1] : []
         content {
-          java_version        = lookup(var.settings.site_config.application_stack, "java_version", null)
-          java_server         = lookup(var.settings.site_config.application_stack, "java_server", null)
-          java_server_version = lookup(var.settings.site_config.application_stack, "java_server_version", null)
-          php_version         = lookup(var.settings.site_config.application_stack, "php_version", null)
-          ruby_version        = lookup(var.settings.site_config.application_stack, "ruby_version", null)
-          dotnet_version      = lookup(var.settings.site_config.application_stack, "dotnet_version", null)
-          node_version        = lookup(var.settings.site_config.application_stack, "node_version", null)
-          python_version      = lookup(var.settings.site_config.application_stack, "python_version", null)
-          docker_image        = lookup(var.settings.site_config.application_stack, "docker_image", null)
-          docker_image_tag    = lookup(var.settings.site_config.application_stack, "docker_image_tag", null)
+          java_version             = lookup(var.settings.site_config.application_stack, "java_version", null)
+          java_server              = lookup(var.settings.site_config.application_stack, "java_server", null)
+          java_server_version      = lookup(var.settings.site_config.application_stack, "java_server_version", null)
+          php_version              = lookup(var.settings.site_config.application_stack, "php_version", null)
+          ruby_version             = lookup(var.settings.site_config.application_stack, "ruby_version", null)
+          dotnet_version           = lookup(var.settings.site_config.application_stack, "dotnet_version", null)
+          node_version             = lookup(var.settings.site_config.application_stack, "node_version", null)
+          python_version           = lookup(var.settings.site_config.application_stack, "python_version", null)
+          docker_image_name        = lookup(var.settings.site_config.application_stack, "docker_image_name", null)
+          docker_registry_url      = lookup(var.settings.site_config.application_stack, "docker_registry_url", null)
+          docker_registry_username = lookup(var.settings.site_config.application_stack, "docker_registry_username", null)
+          docker_registry_password = lookup(var.settings.site_config.application_stack, "docker_registry_password", null)
         }
       }
 
@@ -360,6 +362,12 @@ resource "azurerm_linux_web_app" "web_app" {
       type         = var.identity_type
       identity_ids = length(var.identity_ids) > 0 ? var.identity_ids : []
     }
+  }
+  lifecycle {
+    ignore_changes = [
+      tags,
+      app_settings
+    ]
   }
 }
 

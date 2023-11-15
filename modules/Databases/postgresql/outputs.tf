@@ -13,6 +13,11 @@ output "name" {
   value       = azurerm_postgresql_database.db.name
 }
 
+output "server_name" {
+  value = azurerm_postgresql_server.db.name
+  
+}
+
 output "id" {
   description = "The ID of the deployed database"
   value       = azurerm_postgresql_server.db.id
@@ -28,3 +33,7 @@ output "password" {
   value       = azurerm_postgresql_server.db.administrator_login_password
   sensitive   = true
 }
+
+# output "secret_id" {
+#   value = var.create_key_secret ? azurerm_key_vault_secret.secret[0].id : ""
+# }

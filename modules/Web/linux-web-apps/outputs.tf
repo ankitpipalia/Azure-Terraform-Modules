@@ -11,6 +11,7 @@ output "possible_outbound_ip_addresses" {
 output "site_credential" {
   value       = azurerm_linux_web_app.web_app.site_credential
   description = "The output of any site credentials"
+  sensitive = true
 }
 
 output "web_app_id" {

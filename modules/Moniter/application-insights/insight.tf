@@ -14,6 +14,7 @@ resource "azurerm_application_insights" "application_insights" {
   internet_ingestion_enabled            = var.internet_ingestion_enabled
   internet_query_enabled                = var.internet_query_enabled
   force_customer_storage_for_profiler   = var.force_customer_storage_for_profiler
+
   tags = merge(
     {
       "Environment" = var.tags.environment,
