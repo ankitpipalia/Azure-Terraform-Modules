@@ -1,6 +1,11 @@
 variable "postgresql_server_name" {
   description = "A name which will be pre-pended to the resources created"
   type        = string
+
+  validation {
+    condition     = can(regex("^[0-9a-z][-0-9a-z]{1,61}[0-9a-z]$", var.postgresql_server_name))
+    error_message = "The name can contain only lowercase letters, numbers, and '-', but can't start or end with '-'. And must be at least 3 characters and at most 63 characters."
+  }
 }
 
 variable "location" {
@@ -43,6 +48,7 @@ variable "administrator_login_password" {
   description = "The password of the administration user to create"
   type        = string
   sensitive   = true
+  default     = null
 }
 
 variable "publicly_accessible" {
@@ -88,3 +94,34 @@ variable "extra_tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "key_vault_id" {
+  description = "The id of the key vault."
+  type        = string
+}
+
+variable "create_key_secret" {
+  description = "Whether to create the key vault secret"
+  type        = bool
+  default     = false
+}
+
+variable "use_random_string" {
+  description = "Flag to determine if a random string should be used for the database name and password"
+  type        = bool
+  default     = false
+}
+
+variable "server_administrator_login" {
+  description = "The login name of the server administrator."
+  type        = string
+}
+
+variable "object_id" {
+  description = "The object ID of the Azure AD identity to be set as the PostgreSQL server administrator."
+  type        = string
+}
+
+# variable "key_vault_key_id" {
+#   type = string
+# }

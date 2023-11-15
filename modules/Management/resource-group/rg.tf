@@ -1,5 +1,5 @@
 resource "azurerm_resource_group" "rg" {
-  name     = var.resource_group_name
+  name     = coalesce(var.resource_group_name, "${var.project}-${var.environment}-rg")
   location = var.location
   tags = merge(
     {

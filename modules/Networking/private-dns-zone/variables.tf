@@ -9,14 +9,13 @@ variable "resource_group_name" {
 }
 
 variable "soa_record" {
-  type = object({
+  type        = object({
     email        = string
     expire_time  = optional(number)
     minimum_ttl  = optional(number)
     refresh_time = optional(number)
     retry_time   = optional(number)
     ttl          = optional(number)
-    tags         = optional(map(string))
   })
   default     = null
   description = "A map of SOA record properties."

@@ -1,6 +1,7 @@
-variable "name" {
+variable "service_plan_name" {
   type        = string
   description = "The name of the App Service Plan"
+  default     = null
 }
 
 variable "location" {
@@ -49,4 +50,14 @@ variable "worker_count" {
   type        = number
   default     = null
   description = "Number of workers"
+}
+
+variable "environment" {
+  description = "environment name of the project"
+  type = string
+}
+
+variable "project" {
+  description = "project name"
+  type = string
 }

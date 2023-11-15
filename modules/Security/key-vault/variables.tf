@@ -7,10 +7,6 @@ variable "resource_group_name" {
 variable "key_vault_name" {
   type        = string
   description = "The name of the Key Vault."
-  validation {
-    condition     = can(regex("^[a-z0-9-]{3,24}$", var.key_vault_name))
-    error_message = "The name must be between 3 and 24 characters long and can only contain lowercase letters, numbers and dashes."
-  }
 }
 
 variable "location" {
@@ -52,14 +48,14 @@ variable "enabled_for_template_deployment" {
   default     = false
 }
 
-variable "tenant_id" {
-  type        = string
-  description = "The Azure tenant ID used for authenticating requests to Key Vault. You can use the `azurerm_client_config` data source to retrieve it."
-  validation {
-    condition     = can(regex("^[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$", var.tenant_id))
-    error_message = "The tenant ID must be a valid GUID. Letters must be lowercase."
-  }
-}
+# variable "tenant_id" {
+#   type        = string
+#   description = "The Azure tenant ID used for authenticating requests to Key Vault. You can use the `azurerm_client_config` data source to retrieve it."
+#   validation {
+#     condition     = can(regex("^[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$", var.tenant_id))
+#     error_message = "The tenant ID must be a valid GUID. Letters must be lowercase."
+#   }
+# }
 
 variable "purge_protection_enabled" {
   type        = bool
@@ -124,5 +120,50 @@ DESCRIPTION
 variable "enable_rbac_authorization" {
   type        = bool
   description = "Specifies whether RBAC access is enabled for the Key Vault."
+  default     = false
+}
+
+variable "principal_id" {
+  description = "Principal ID to assign the role to"
+  type        = string
+}
+
+variable "object_id" {
+  description = "Object ID for the access policy"
+  type        = string
+}
+
+variable "key_permissions" {
+  description = "List of key permissions"
+  type        = list(string)
+  default     = []
+}
+
+variable "secret_permissions" {
+  description = "List of secret permissions"
+  type        = list(string)
+  default     = []
+}
+
+variable "certificate_permissions" {
+  description = "List of certificate permissions"
+  type        = list(string)
+  default     = []
+}
+
+variable "role_definition_name" {
+  description = "The name of a built-in Role. Changing this forces a new resource to be created."
+  type = string
+}
+
+variable "role_assignment" {
+  description = "Whether to create the role assignment"
+  type        = bool
+  default     = false
+}
+
+variable "key_vault_access_policy" {
+  description = "Whether to create the key vault access policy"
+  type        = bool
   default     = false
 }

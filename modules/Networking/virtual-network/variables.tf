@@ -6,6 +6,7 @@ variable "address_space" {
 variable "virtual_network_name" {
   description = "The name of the virtual network"
   type        = string
+  default     = null
 }
 
 variable "location" {
@@ -36,4 +37,14 @@ variable "extra_tags" {
   description = "extra tags to be applied to resources (in addition to the tags above)"
   type        = map(string)
   default     = {}
+}
+
+variable "environment" {
+  description = "environment name of the project"
+  type = string
+}
+
+variable "project" {
+  description = "project name"
+  type = string
 }
