@@ -64,14 +64,14 @@ variable "enabled_log" {
   description = "The enabled logs"
   type = list(object({
     category = string
-    enabled  = bool
   }))
+  default = []
 }
 
 variable "metrics" {
   description = "The metrics"
   type = list(object({
     category = string
-    enabled  = bool
   }))
+  default = []
 }
