@@ -1,6 +1,7 @@
 variable "profile_name" {
   description = "The name of the CDN Frontdoor profile"
   type        = string
+  default = "pacs-dev-fd"
 }
 
 variable "resource_group_name" {

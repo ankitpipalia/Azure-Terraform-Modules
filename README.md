@@ -48,7 +48,8 @@ The repository follows the following directory hierarchy structure:
 
 - **Networking**:
     - [application-gateway](modules/Networking/application-gateway): Module for creating application gateways.
-    - [cdn-frontdoor](modules/Networking/frontdoor): Module for creating cdn-frontdoor.
+    - [cdn-frontdoor](modules/Networking/cdn-frontdoor): Module for creating cdn-frontdoor.
+    - [frontdoor-classic](modules/Networking/frontdoor-classic): Module for creating frontdoor-classic.
     - [firewall](modules/Networking/firewall-tools/firewall): Module for creating firewalls.
     - [firewall-policy](modules/Networking/firewall-tools/policy): Module for creating firewall policies.
     - [firewall-rule-collection-group](modules/Networking/firewall-tools/rule-collection-group): Module for creating firewall rule collection groups.
