@@ -1,5 +1,5 @@
 resource "azurerm_linux_web_app" "web_app" {
-  name                       = coalesce(var.linux_web_app_name, "${var.project}-${var.environment}-as")
+  name                       = coalesce(var.linux_web_app_name, "${var.tags.project}-${var.tags.environment}-as")
   service_plan_id            = var.service_plan_id
   location                   = var.location
   resource_group_name        = var.resource_group_name
@@ -8,6 +8,7 @@ resource "azurerm_linux_web_app" "web_app" {
   client_certificate_enabled = var.client_certificate_enabled
   client_certificate_mode    = var.client_certificate_mode
   enabled                    = var.enabled
+  virtual_network_subnet_id  = var.virtual_network_subnet_id
 
   tags = merge(
     {
@@ -366,14 +367,9 @@ resource "azurerm_linux_web_app" "web_app" {
   lifecycle {
     ignore_changes = [
       tags,
-      app_settings
+      app_settings,
+      auth_settings,
+      site_config
     ]
   }
-}
-
-resource "azurerm_app_service_virtual_network_swift_connection" "function_vnet_integration" {
-  count = var.web_app_vnet_integration_enabled ? 1 : 0
-
-  app_service_id = azurerm_linux_web_app.web_app.id
-  subnet_id      = var.web_app_vnet_integration_subnet_id
 }

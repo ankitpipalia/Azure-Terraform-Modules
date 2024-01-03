@@ -1,7 +1,7 @@
 data "azurerm_client_config" "current" {}
 
 resource "azurerm_key_vault" "key-vault" {
-  name                            = var.key_vault_name
+  name                            = coalesce(var.key_vault_name, "${var.tags.project}-${var.tags.environment}-vault")
   resource_group_name             = var.resource_group_name
   sku_name                        = var.sku_name
   location                        = var.location
@@ -43,22 +43,16 @@ resource "azurerm_key_vault" "key-vault" {
   }
 }
 
-resource "azurerm_role_assignment" "ra" {
-  count = var.role_assignment ? 1 : 0
-
-  scope                = azurerm_key_vault.key-vault.id
-  role_definition_name = var.role_definition_name # Replace with the role you want to assign
-  principal_id         = var.principal_id         # Add this variable in your variables.tf
-}
-
 resource "azurerm_key_vault_access_policy" "kvap" {
-  count = var.key_vault_access_policy ? 1 : 0
+  count = var.create_access_policy == true ? 1 : 0
 
   key_vault_id = azurerm_key_vault.key-vault.id
   tenant_id    = data.azurerm_client_config.current.tenant_id
-  object_id    = var.object_id # Add this variable in your variables.tf
+  object_id    = data.azurerm_client_config.current.object_id # Add this variable in your variables.tf
 
   key_permissions         = var.key_permissions # Define these permissions in your variables.tf
   secret_permissions      = var.secret_permissions
   certificate_permissions = var.certificate_permissions
+
+  depends_on = [ azurerm_key_vault.key-vault ]
 }

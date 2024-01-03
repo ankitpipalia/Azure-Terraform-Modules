@@ -32,13 +32,14 @@ The repository follows the following directory hierarchy structure:
 
 - **Databases**:
     - [cosmosdb](modules/Databases/cosmosdb): Module for creating Cosmos DB accounts.
-    - [mssql-database](modules/Databases/mssql-database): Module for creating SQL Server databases.
-    - [mssql-server](modules/Databases/mssql-server): Module for creating SQL Server instances.
+    - [mssql](modules/Databases/mssql): Module for creating SQL Server instances and databases.
     - [mysql](modules/Databases/mysql): Module for creating MySQL databases and Flexible Server.
-    - [postgresql](modules/Databases/postgresql): Module for creating PostgreSQL databases and Flexible Server.
+    - [postgresql-single](modules/Databases/postgresql-single): Module for creating PostgreSQL databases and Single Server.
+    - [postgres-flexi](modules/Databases/postgres-flexi): Module for creating PostgreSQL databases and Flexible Server.
 
 - **Management**:
     - [autoscale](modules/Management/autoscale): Module for creating autoscale rules.
+    - [identity](modules/Management/identity): Module for creating User Assigned Identity.
     - [resource-group](modules/Management/resource-group): Module for creating resource groups.
   
 - **Monitoring**:
@@ -59,8 +60,9 @@ The repository follows the following directory hierarchy structure:
     - [network-security-group](modules/Networking/network-security-group): Module for creating network security groups.
     - [private-dns-zone](modules/Networking/private-dns-zone): Module for creating private DNS zones.
     - [public-ip](modules/Networking/public-ip): Module for creating public IPs.
+    - [private-endpoint](modules/Networking/private-endpoint): Module for creating private-endpoint.
     - [route-table](modules/Networking/route-table): Module for creating route tables.
-    - [subnets](modules/Networking/subnets): Module for creating subnets.
+    - [service-bus](modules/Networking/service-bus): Module for creating service-bus.
     - [virtual-network](modules/Networking/virtual-network): Module for creating virtual networks.
     - [vnet-peering](modules/Networking/vnet-peering): Module for creating VNet peering.
 
@@ -69,6 +71,7 @@ The repository follows the following directory hierarchy structure:
 
 - **Storage**:
     - [storage-account](modules/Storage/storage-account): Module for creating storage accounts.
+    - [redis-cache](modules/Storage/redis-cache): Module for creating redis-cache.
   
 - **Web**:
     - [api-management](modules/Web/api-management): Module for creating API management services.

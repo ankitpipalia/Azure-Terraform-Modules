@@ -39,12 +39,18 @@ variable "extra_tags" {
   default     = {}
 }
 
-variable "environment" {
-  description = "environment name of the project"
-  type = string
-}
-
-variable "project" {
-  description = "project name"
-  type = string
+variable "subnets" {
+  description = "The subnets to create"
+  
+  type = list(object({
+    name           = string
+    address_prefix = string
+    service_endpoints = optional(set(string))
+    
+    delegation = optional(object({
+      name          = string
+      service_name  = string 
+      actions       = list(string)
+    }))
+  }))
 }

@@ -16,7 +16,7 @@ resource "azurerm_postgresql_server" "db" {
   resource_group_name = var.resource_group_name
 
   administrator_login          = var.administrator_login
-  administrator_login_password = var.use_random_string ? var.administrator_login_password : random_password.password[0].result
+  administrator_login_password = var.use_random_string ? random_password.password[0].result : var.administrator_login_password
 
   sku_name   = var.sku
   version    = var.postgresql_version
@@ -29,6 +29,19 @@ resource "azurerm_postgresql_server" "db" {
 
   ssl_enforcement_enabled          = true
   ssl_minimal_tls_version_enforced = "TLS1_2"
+
+  dynamic "threat_detection_policy" {
+    for_each = var.threat_detection_policies
+    content {
+      enabled                    = threat_detection_policy.value.enabled
+      disabled_alerts            = threat_detection_policy.value.disabled_alerts
+      email_account_admins       = threat_detection_policy.value.email_account_admins
+      email_addresses            = threat_detection_policy.value.email_addresses
+      retention_days             = threat_detection_policy.value.retention_days
+      storage_account_access_key = threat_detection_policy.value.storage_account_access_key
+      storage_endpoint           = threat_detection_policy.value.storage_endpoint
+    }
+  }
 
   tags = merge(
     {

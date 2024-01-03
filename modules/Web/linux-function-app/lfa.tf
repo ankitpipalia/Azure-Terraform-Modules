@@ -11,12 +11,12 @@ resource "azurerm_linux_function_app" "function_app" {
   daily_memory_time_quota     = var.daily_memory_time_quota
   enabled                     = var.enabled
   functions_extension_version = var.functions_extension_version
+  virtual_network_subnet_id   = var.virtual_network_subnet_id
 
-  storage_account_name       = var.storage_account_name != null ? var.storage_account_name : null
-  storage_account_access_key = var.storage_account_access_key
+  storage_account_name       = azurerm_storage_account.sa.name
+  storage_account_access_key = azurerm_storage_account.sa.primary_access_key
 
-  storage_key_vault_secret_id   = var.storage_account_name == null ? var.storage_key_vault_secret_id : null
-  storage_uses_managed_identity = var.storage_account_access_key == null ? var.storage_uses_managed_identity : null
+  storage_key_vault_secret_id   = var.storage_key_vault_secret_id
 
   dynamic "site_config" {
     for_each = lookup(var.settings, "site_config", {}) != {} ? [1] : []
@@ -236,16 +236,6 @@ resource "azurerm_linux_function_app" "function_app" {
     }
   }
 
-  lifecycle {
-    ignore_changes = [
-      app_settings.WEBSITE_RUN_FROM_ZIP,
-      app_settings.WEBSITE_RUN_FROM_PACKAGE,
-      app_settings.MACHINEKEY_DecryptionKey,
-      app_settings.WEBSITE_CONTENTAZUREFILECONNECTIONSTRING,
-      app_settings.WEBSITE_CONTENTSHARE
-    ]
-  }
-
   dynamic "backup" {
     for_each = lookup(var.settings, "backup", {}) != {} ? [1] : []
 
@@ -290,11 +280,12 @@ resource "azurerm_linux_function_app" "function_app" {
     },
     var.extra_tags
   )
-}
 
-resource "azurerm_app_service_virtual_network_swift_connection" "function_vnet_integration" {
-  count = var.function_app_vnet_integration_enabled ? 1 : 0
-
-  app_service_id = azurerm_linux_function_app.function_app.id
-  subnet_id      = var.function_app_vnet_integration_subnet_id
+  lifecycle {
+    ignore_changes = [
+      tags,
+      app_settings,
+      auth_settings
+    ]
+  }
 }

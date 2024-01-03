@@ -135,24 +135,9 @@ variable "extra_tags" {
   type        = map(string)
   default     = {}
 }
-variable "web_app_vnet_integration_enabled" {
-  description = "Enable VNET integration with the Function App. `web_app_vnet_integration_subnet_id` is mandatory if enabled"
-  type        = bool
-  default     = false
-}
 
-variable "web_app_vnet_integration_subnet_id" {
+variable "virtual_network_subnet_id" {
   description = "ID of the subnet to associate with the Function App (VNet integration)"
   type        = string
   default     = null
-}
-
-variable "environment" {
-  description = "environment name of the project"
-  type = string
-}
-
-variable "project" {
-  description = "project name"
-  type = string
 }

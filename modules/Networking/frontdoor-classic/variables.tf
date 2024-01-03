@@ -11,11 +11,13 @@ variable "location" {
 variable "frontdoor_name" {
   description = "Specifies the name of the Front Door service. Must be globally unique."
   type = string
+  default = null
 }
 
 variable "friendly_name" {
   description = "A friendly name for the Front Door service."
   type = string
+  default = null
 }
 
 variable "backend_pools_send_receive_timeout_seconds" {
@@ -174,16 +176,6 @@ variable "web_application_firewall_policy" {
   default = null
 }
 
-variable "log_analytics_workspace_name" {
-  description = "The name of log analytics workspace name"
-  type = string
-}
-
-variable "storage_account_name" {
-  description = "The name of the hub storage account to store logs"
-  type = string
-}
-
 variable "fd_diag_logs" {
   description = "Frontdoor Monitoring Category details for Azure Diagnostic setting"
   default     = ["FrontdoorAccessLog", "FrontdoorWebApplicationFirewallLog"]
@@ -213,4 +205,26 @@ variable "backend_pool_settings" {
     backend_pools_send_receive_timeout_seconds = 60
     enforce_backend_pools_certificate_name_check = true
   }]
+}
+
+variable "waf_policy_enabled" {
+  description = "WAF is enable or Disable"
+  type = bool
+  default = true
+}
+
+variable "create_diagnostic_settings" {
+  description = "Map of diagnostic settings configurations"
+  type        = map(object({
+    name                          = string
+    log_analytics_workspace_id    = string
+    log_analytics_destination_type = string
+    enabled_log                   = list(object({
+      category = string
+    }))
+    metrics = list(object({
+      category = string
+    }))
+  }))
+  default     = {}
 }

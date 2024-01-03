@@ -2,10 +2,11 @@
 # Frontdoor Resource Creation - Default is "true"
 #----------------------------------------------------------
 resource "azurerm_frontdoor" "main" {
-  name                  = format("%s", var.frontdoor_name)
+  name                  = coalesce(var.frontdoor_name,  "${var.tags.project}-${var.tags.environment}-fd")
+  friendly_name         = coalesce(var.friendly_name, "${var.tags.environment}-frontdoor")
+
   resource_group_name   = var.resource_group_name
   load_balancer_enabled = true
-  friendly_name         = var.friendly_name
 
   dynamic "backend_pool" {
     for_each = var.backend_pools
@@ -123,7 +124,7 @@ resource "azurerm_frontdoor_firewall_policy" "main" {
   for_each                          = var.web_application_firewall_policy != null ? { for k, v in var.web_application_firewall_policy : k => v if v != null } : {}
   name                              = format("%s", each.value.name)
   resource_group_name               = var.resource_group_name
-  enabled                           = true
+  enabled                           = var.waf_policy_enabled
   mode                              = lookup(each.value, "mode", "Prevention")
   redirect_url                      = each.value["redirect_url"]
   custom_block_response_status_code = each.value["custom_block_response_status_code"]
@@ -211,8 +212,6 @@ resource "azurerm_frontdoor_firewall_policy" "main" {
     },
     var.extra_tags
   )
-
-
 }
 
 #-------------------------------------------------------------------------
@@ -228,5 +227,32 @@ resource "azurerm_frontdoor_custom_https_configuration" "main" {
     azure_key_vault_certificate_vault_id       = try(each.value["custom_https_configuration"]["azure_key_vault_certificate_vault_id"], null)
     azure_key_vault_certificate_secret_name    = try(each.value["custom_https_configuration"]["azure_key_vault_certificate_secret_name"], null)
     azure_key_vault_certificate_secret_version = try(each.value["custom_https_configuration"]["azure_key_vault_certificate_secret_version"], null)
+  }
+}
+
+resource "azurerm_monitor_diagnostic_setting" "diagsetting" {
+  for_each = var.create_diagnostic_settings
+
+  name               = ("${var.tags.project}-${var.tags.environment}-fd-ds")
+  target_resource_id = azurerm_frontdoor.main.id
+
+  log_analytics_workspace_id = each.value.log_analytics_workspace_id
+
+  log_analytics_destination_type = each.value.log_analytics_destination_type
+
+  dynamic "log" {
+    for_each = each.value.enabled_log
+
+    content {
+      category = log.value["category"]
+    } 
+  }
+
+  dynamic "metric" {
+    for_each = each.value.metrics
+
+    content {
+      category = metric.value["category"]
+    }
   }
 }
