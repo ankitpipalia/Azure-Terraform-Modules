@@ -7,18 +7,27 @@ module "resource_group" {
   extra_tags          = local.extra_tags
 }
 
-data "azurerm_client_config" "current" {}
-
 module "key-vault" {
   source = "./modules/Security/key-vault"
 
-  key_vault_name      = "hvdhybbfhb645tfh"
   resource_group_name = module.resource_group.name
   location            = module.resource_group.location
 
   sku_name                 = "standard"
-  tenant_id                = data.azurerm_client_config.current.tenant_id
   purge_protection_enabled = false
+
+  create_access_policy    = true
+  key_permissions         = ["Get", "List", "Set", "Delete", "Recover", "Backup", "Restore", "Purge"]
+  secret_permissions      = ["Get", "List", "Set", "Delete", "Recover", "Backup", "Restore", "Purge"]
+  certificate_permissions = ["Get", "List", "Set", "Delete", "Recover", "Backup", "Restore", "Purge"]
+
+  environment = local.env_vars.locals.environment
+  project     = local.project_vars.locals.project
+
+  network_acls = {
+    bypass         = "AzureServices"
+    default_action = "Allow"
+  }
 
   tags       = local.tags
   extra_tags = local.extra_tags

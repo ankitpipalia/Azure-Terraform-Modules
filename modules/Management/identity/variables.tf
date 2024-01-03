@@ -28,13 +28,3 @@ variable "identity_name" {
   type        = string
   default     = null
 }
-
-variable "environment" {
-  description = "environment name of the project"
-  type        = string
-}
-
-variable "project" {
-  description = "project name"
-  type        = string
-}

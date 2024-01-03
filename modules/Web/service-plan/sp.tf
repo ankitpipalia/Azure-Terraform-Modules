@@ -1,6 +1,6 @@
 resource "azurerm_service_plan" "asp" {
 
-  name                = coalesce(var.service_plan_name, "${var.project}-${var.environment}-asp")
+  name                = coalesce(var.service_plan_name, "${var.tags.project}-${var.tags.environment}-asp")
   location            = var.location
   os_type             = var.os_type
   resource_group_name = var.resource_group_name

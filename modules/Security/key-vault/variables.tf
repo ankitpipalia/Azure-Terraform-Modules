@@ -7,6 +7,7 @@ variable "resource_group_name" {
 variable "key_vault_name" {
   type        = string
   description = "The name of the Key Vault."
+  default = null
 }
 
 variable "location" {
@@ -123,16 +124,6 @@ variable "enable_rbac_authorization" {
   default     = false
 }
 
-variable "principal_id" {
-  description = "Principal ID to assign the role to"
-  type        = string
-}
-
-variable "object_id" {
-  description = "Object ID for the access policy"
-  type        = string
-}
-
 variable "key_permissions" {
   description = "List of key permissions"
   type        = list(string)
@@ -151,19 +142,7 @@ variable "certificate_permissions" {
   default     = []
 }
 
-variable "role_definition_name" {
-  description = "The name of a built-in Role. Changing this forces a new resource to be created."
-  type = string
-}
-
-variable "role_assignment" {
-  description = "Whether to create the role assignment"
-  type        = bool
-  default     = false
-}
-
-variable "key_vault_access_policy" {
-  description = "Whether to create the key vault access policy"
-  type        = bool
-  default     = false
+variable "create_access_policy" {
+  type = bool
+  default = false
 }

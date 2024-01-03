@@ -22,13 +22,3 @@ variable "extra_tags" {
   type        = map(string)
   default     = {}
 }
-
-variable "environment" {
-  description = "environment name of the project"
-  type        = string
-}
-
-variable "project" {
-  description = "project name"
-  type        = string
-}

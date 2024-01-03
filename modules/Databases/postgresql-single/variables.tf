@@ -125,3 +125,17 @@ variable "object_id" {
 # variable "key_vault_key_id" {
 #   type = string
 # }
+
+variable "threat_detection_policies" {
+  description = "Map of threat detection policy configurations"
+  type = map(object({
+    enabled                    = optional(bool, false)
+    disabled_alerts            = optional(list(string), [])
+    email_account_admins       = optional(bool, null)
+    email_addresses            = optional(list(string), [])
+    retention_days             = optional(number, null)
+    storage_account_access_key = optional(string, null)
+    storage_endpoint           = optional(string, null)
+  }))
+  default = {}
+}

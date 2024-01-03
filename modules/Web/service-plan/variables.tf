@@ -51,13 +51,3 @@ variable "worker_count" {
   default     = null
   description = "Number of workers"
 }
-
-variable "environment" {
-  description = "environment name of the project"
-  type = string
-}
-
-variable "project" {
-  description = "project name"
-  type = string
-}
