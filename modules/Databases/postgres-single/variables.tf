@@ -54,7 +54,7 @@ variable "administrator_login_password" {
 variable "publicly_accessible" {
   description = "Whether to make this instance accessible over the internet"
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "additional_ip_allowlist" {
