@@ -1,12 +1,15 @@
 resource "azurerm_storage_account" "sa" {
-  name                      = var.storage_account_name
-  resource_group_name       = var.resource_group_name
-  location                  = var.location
-  account_kind              = var.account_kind
-  account_tier              = var.account_tier
-  account_replication_type  = var.replication_type
-  enable_https_traffic_only = var.enable_https_traffic_only
-  min_tls_version           = var.min_tls_version
+  name                            = var.storage_account_name
+  resource_group_name             = var.resource_group_name
+  location                        = var.location
+  account_kind                    = var.account_kind
+  account_tier                    = var.account_tier
+  account_replication_type        = var.replication_type
+  enable_https_traffic_only       = var.enable_https_traffic_only
+  min_tls_version                 = var.min_tls_version
+  public_network_access_enabled   = var.public_network_access_enabled
+  allow_nested_items_to_be_public = var.allow_nested_items_to_be_public
+  shared_access_key_enabled       = var.shared_access_key_enabled
 
   tags = merge(
     {
@@ -62,8 +65,8 @@ resource "azurerm_storage_account" "sa" {
 
   network_rules {
     default_action             = var.default_network_rule
-    ip_rules                   = values(var.access_list)
-    virtual_network_subnet_ids = values(var.service_endpoints)
+    ip_rules                   = var.ip_rules
+    virtual_network_subnet_ids = var.virtual_network_subnet_ids
     bypass                     = var.traffic_bypass
   }
 }
@@ -75,6 +78,8 @@ resource "azurerm_storage_encryption_scope" "scope" {
   storage_account_id                 = azurerm_storage_account.sa.id
   source                             = coalesce(each.value.source, "Microsoft.Storage")
   infrastructure_encryption_required = coalesce(each.value.enable_infrastructure_encryption, var.infrastructure_encryption_enabled)
+
+  depends_on = [azurerm_storage_account.sa]
 }
 
 resource "azurerm_storage_container" "container" {
@@ -85,4 +90,6 @@ resource "azurerm_storage_container" "container" {
   name                  = each.key
   container_access_type = each.value.container_access_type
   metadata              = each.value.metadata
+
+  depends_on = [azurerm_storage_account.sa]
 }

@@ -477,7 +477,7 @@ variable "open_service_mesh_enabled" {
 variable "private_cluster_enabled" {
   type        = bool
   description = "(Optional) Should private cluster be enabled?"
-  default     = false
+  default     = true
 }
 
 variable "private_dns_zone_id" {
@@ -520,7 +520,7 @@ variable "workload_identity_enabled" {
 variable "role_based_access_control_enabled" {
   type        = bool
   description = "(Optional) Should role based access control be enabled?"
-  default     = false
+  default     = true
 }
 
 variable "run_command_enabled" {

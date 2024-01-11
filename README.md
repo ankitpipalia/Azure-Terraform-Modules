@@ -34,13 +34,14 @@ The repository follows the following directory hierarchy structure:
     - [cosmosdb](modules/Databases/cosmosdb): Module for creating Cosmos DB accounts.
     - [mssql](modules/Databases/mssql): Module for creating SQL Server instances and databases.
     - [mysql](modules/Databases/mysql): Module for creating MySQL databases and Flexible Server.
-    - [postgresql-single](modules/Databases/postgresql-single): Module for creating PostgreSQL databases and Single Server.
+    - [postgres-single](modules/Databases/postgres-single): Module for creating PostgreSQL databases and Single Server.
     - [postgres-flexi](modules/Databases/postgres-flexi): Module for creating PostgreSQL databases and Flexible Server.
 
 - **Management**:
     - [autoscale](modules/Management/autoscale): Module for creating autoscale rules.
     - [identity](modules/Management/identity): Module for creating User Assigned Identity.
     - [resource-group](modules/Management/resource-group): Module for creating resource groups.
+    - [management-lock](modules/Management/management-lock): Module for creating management-lock for azure.
   
 - **Monitoring**:
     - [application-insights](modules/Moniter/application-insights): Module for creating application insights.

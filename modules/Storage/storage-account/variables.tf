@@ -58,16 +58,16 @@ variable "min_tls_version" {
 
 # Note: make sure to include the IP address of the host from where "terraform" command is executed to allow for access to the storage
 # Otherwise, creating container inside the storage or any access attempt will be denied.
-variable "access_list" {
-  description = "Map of CIDRs Storage Account access."
-  type        = map(string)
-  default     = {}
+variable "ip_rules" {
+  description = "List of CIDRs Storage Account access."
+  type        = list(string)
+  default     = []
 }
 
-variable "service_endpoints" {
+variable "virtual_network_subnet_ids" {
   description = "Creates a virtual network rule in the subnet_id (values are virtual network subnet ids)."
-  type        = map(string)
-  default     = {}
+  type        = list(string)
+  default     = []
 }
 
 variable "traffic_bypass" {
@@ -155,12 +155,6 @@ variable "default_network_rule" {
   }
 }
 
-variable "shared_access_key_enabled" {
-  description = "Indicates whether the storage account permits requests to be authorized with the account access key via Shared Key"
-  type        = bool
-  default     = false
-}
-
 variable "blob_versioning_enabled" {
   description = "Controls whether blob object versioning is enabled."
   type        = bool
@@ -171,4 +165,22 @@ variable "container_delete_retention_days" {
   description = "Retention days for deleted container. Valid value is between 1 and 365 (set to 0 to disable)."
   type        = number
   default     = 7
+}
+
+variable "public_network_access_enabled" {
+  type        = bool
+  description = "Whether the public network access is enabled?"
+  default     = true
+}
+
+variable "allow_nested_items_to_be_public" {
+  type        = bool
+  description = "Allow or disallow nested items within this Account to opt into being public."
+  default     = true
+}
+
+variable "shared_access_key_enabled" {
+  description = "Indicates whether the storage account permits requests to be authorized with the account access key via Shared Key. If false, then all requests, including shared access signatures, must be authorized with Azure Active Directory (Azure AD)."
+  type        = bool
+  default     = true
 }
