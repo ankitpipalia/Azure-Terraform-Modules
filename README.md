@@ -32,6 +32,7 @@ The repository follows the following directory hierarchy structure:
 
 - **Databases**:
     - [cosmosdb](modules/Databases/cosmosdb): Module for creating Cosmos DB accounts.
+    - [cosmosdb-postgresql-cluster](modules/Databases/cosmosdb_postgresql_cluster): Module for creating Cosmos DB PostgreSQl Cluster.
     - [mssql](modules/Databases/mssql): Module for creating SQL Server instances and databases.
     - [mysql](modules/Databases/mysql): Module for creating MySQL databases and Flexible Server.
     - [postgres-single](modules/Databases/postgres-single): Module for creating PostgreSQL databases and Single Server.
@@ -78,6 +79,7 @@ The repository follows the following directory hierarchy structure:
     - [api-management](modules/Web/api-management): Module for creating API management services.
     - [linux-web-apps](modules/Web/linux-web-apps): Module for creating Linux web apps.
     - [linux-function-app](modules/Web/linux-function-app): Module for creating Linux function apps.
+    - [window-function-app](modules/Web/window-function-app): Module for creating Window function apps.
     - [service-plan](modules/Web/service-plan): Module for creating service plans.
     - [static-web-apps](modules/Web/static-web-apps): Module for creating static web apps.
 

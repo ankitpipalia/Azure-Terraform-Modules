@@ -73,7 +73,7 @@ variable "virtual_network_subnet_ids" {
 variable "traffic_bypass" {
   description = "Specifies whether traffic is bypassed for Logging/Metrics/AzureServices. Valid options are any combination of Logging, Metrics, AzureServices, or None."
   type        = list(string)
-  default     = ["None"]
+  default     = ["AzureServices"]
 }
 
 variable "blob_delete_retention_days" {

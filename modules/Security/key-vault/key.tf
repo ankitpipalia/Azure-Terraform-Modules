@@ -13,7 +13,6 @@ resource "azurerm_key_vault" "key-vault" {
   tenant_id                       = data.azurerm_client_config.current.tenant_id
   public_network_access_enabled   = var.public_network_access_enabled
   soft_delete_retention_days      = var.soft_delete_retention_days
-
   tags = merge(
     {
       "Environment" = var.tags.environment,
@@ -55,5 +54,5 @@ resource "azurerm_key_vault_access_policy" "kvap" {
   secret_permissions      = var.secret_permissions
   certificate_permissions = var.certificate_permissions
 
-  depends_on = [ azurerm_key_vault.key-vault ]
+  depends_on = [azurerm_key_vault.key-vault]
 }

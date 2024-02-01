@@ -15,7 +15,7 @@ output "name" {
 
 output "server_name" {
   value = azurerm_postgresql_server.db.name
-  
+
 }
 
 output "id" {
@@ -33,7 +33,6 @@ output "password" {
   value       = azurerm_postgresql_server.db.administrator_login_password
   sensitive   = true
 }
-
-# output "secret_id" {
-#   value = var.create_key_secret ? azurerm_key_vault_secret.secret[0].id : ""
-# }
+output "log_config_name" {
+  value = azurerm_postgresql_configuration.log_checkpoints.name
+}

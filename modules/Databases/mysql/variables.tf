@@ -107,3 +107,25 @@ variable "charset" {
   description = "The charset of the database to be created on the MySQL Flexible Server"
   default     = "utf8"
 }
+
+variable "enabled" {
+  type        = bool
+  default     = true
+  description = "Whether to enable the extended auditing policy."
+}
+variable "storage_endpoint" {
+  type        = string
+  default     = null
+  description = "he blob storage endpoint (e.g. https://example.blob.core.windows.net). This blob storage will hold all extended auditing logs."
+}
+
+variable "retention_in_days" {
+  type        = number
+  default     = 0
+  description = " The number of days to retain logs for in the storage account. "
+}
+variable "log_monitoring_enabled" {
+  type        = bool
+  default     = true
+  description = " Enable audit events to Azure Monitor?"
+}

@@ -28,10 +28,31 @@ resource "azurerm_user_assigned_identity" "this" {
 #################################################################
 
 resource "azurerm_kubernetes_cluster" "this" {
-  name                = var.name
-  location            = var.location
-  resource_group_name = var.resource_group_name
+  name                                = var.name
+  location                            = var.location
+  resource_group_name                 = var.resource_group_name
+  custom_ca_trust_certificates_base64 = var.custom_ca_trust_certificates_base64
 
+  network_profile {
+    network_policy      = var.network_policy
+    network_plugin      = var.network_plugin
+    network_mode        = var.network_mode
+    dns_service_ip      = var.dns_service_ip
+    ebpf_data_plane     = var.ebpf_data_plane
+    network_plugin_mode = var.network_plugin_mode
+    outbound_type       = var.outbound_type
+    pod_cidr            = var.pod_cidr
+    pod_cidrs           = var.pod_cidrs
+    service_cidr        = var.service_cidr
+    service_cidrs       = var.service_cidrs
+  }
+
+  oms_agent {
+
+    log_analytics_workspace_id      = var.log_analytics_workspace_id
+    msi_auth_for_monitoring_enabled = var.msi_auth_for_monitoring_enabled
+
+  }
   dynamic "default_node_pool" {
     for_each = [var.default_node_pool]
     content {
@@ -376,56 +397,48 @@ resource "azurerm_kubernetes_cluster" "this" {
     }
   }
 
-  dynamic "network_profile" {
-    for_each = var.network_profile != null ? [var.network_profile] : []
-    content {
-      network_plugin      = network_profile.value.network_plugin
-      network_mode        = network_profile.value.network_mode
-      network_policy      = network_profile.value.network_policy
-      dns_service_ip      = network_profile.value.dns_service_ip
-      ebpf_data_plane     = network_profile.value.ebpf_data_plane
-      network_plugin_mode = network_profile.value.network_plugin_mode
-      outbound_type       = network_profile.value.outbound_type
-      pod_cidr            = network_profile.value.pod_cidr
-      pod_cidrs           = network_profile.value.pod_cidrs
-      service_cidr        = network_profile.value.service_cidr
-      service_cidrs       = network_profile.value.service_cidrs
-      ip_versions         = network_profile.value.ip_versions
-      load_balancer_sku   = network_profile.value.load_balancer_sku
+  # dynamic "network_profile" {
+  #   for_each = var.network_profile != null ? [var.network_profile] : []
+  #   content {
+  #     network_plugin      = network_profile.value.network_plugin
+  #     network_mode        = network_profile.value.network_mode
+  #     network_policy      = network_profile.value.network_policy
+  #     dns_service_ip      = network_profile.value.dns_service_ip
+  #     ebpf_data_plane     = network_profile.value.ebpf_data_plane
+  #     network_plugin_mode = network_profile.value.network_plugin_mode
+  #     outbound_type       = network_profile.value.outbound_type
+  #     pod_cidr            = network_profile.value.pod_cidr
+  #     pod_cidrs           = network_profile.value.pod_cidrs
+  #     service_cidr        = network_profile.value.service_cidr
+  #     service_cidrs       = network_profile.value.service_cidrs
+  #     ip_versions         = network_profile.value.ip_versions
+  #     load_balancer_sku   = network_profile.value.load_balancer_sku
 
-      dynamic "load_balancer_profile" {
-        for_each = network_profile.value.load_balancer_profile != null ? [network_profile.value.load_balancer_profile] : []
-        content {
-          idle_timeout_in_minutes     = load_balancer_profile.value.idle_timeout_in_minutes
-          managed_outbound_ip_count   = load_balancer_profile.value.managed_outbound_ip_count
-          managed_outbound_ipv6_count = load_balancer_profile.value.managed_outbound_ipv6_count
-          outbound_ip_address_ids     = load_balancer_profile.value.outbound_ip_address_ids
-          outbound_ip_prefix_ids      = load_balancer_profile.value.outbound_ip_prefix_ids
-          outbound_ports_allocated    = load_balancer_profile.value.outbound_ports_allocated
-        }
-      }
+  #     dynamic "load_balancer_profile" {
+  #       for_each = network_profile.value.load_balancer_profile != null ? [network_profile.value.load_balancer_profile] : []
+  #       content {
+  #         idle_timeout_in_minutes     = load_balancer_profile.value.idle_timeout_in_minutes
+  #         managed_outbound_ip_count   = load_balancer_profile.value.managed_outbound_ip_count
+  #         managed_outbound_ipv6_count = load_balancer_profile.value.managed_outbound_ipv6_count
+  #         outbound_ip_address_ids     = load_balancer_profile.value.outbound_ip_address_ids
+  #         outbound_ip_prefix_ids      = load_balancer_profile.value.outbound_ip_prefix_ids
+  #         outbound_ports_allocated    = load_balancer_profile.value.outbound_ports_allocated
+  #       }
+  #     }
 
-      dynamic "nat_gateway_profile" {
-        for_each = network_profile.value.nat_gateway_profile != null ? [network_profile.value.nat_gateway_profile] : []
-        content {
-          idle_timeout_in_minutes   = nat_gateway_profile.value.idle_timeout_in_minutes
-          managed_outbound_ip_count = nat_gateway_profile.value.managed_outbound_ip_count
-        }
-      }
-    }
-  }
+  #     dynamic "nat_gateway_profile" {
+  #       for_each = network_profile.value.nat_gateway_profile != null ? [network_profile.value.nat_gateway_profile] : []
+  #       content {
+  #         idle_timeout_in_minutes   = nat_gateway_profile.value.idle_timeout_in_minutes
+  #         managed_outbound_ip_count = nat_gateway_profile.value.managed_outbound_ip_count
+  #       }
+  #     }
+  #   }
+  # }
 
-  node_os_channel_upgrade = var.node_os_channel_upgrade
-  node_resource_group     = var.node_resource_group
-  oidc_issuer_enabled     = var.oidc_issuer_enabled
-
-  dynamic "oms_agent" {
-    for_each = var.oms_agent != null ? [var.oms_agent] : []
-    content {
-      log_analytics_workspace_id = oms_agent.value.log_analytics_workspace_id
-    }
-  }
-
+  node_os_channel_upgrade             = var.node_os_channel_upgrade
+  node_resource_group                 = var.node_resource_group
+  oidc_issuer_enabled                 = var.oidc_issuer_enabled
   open_service_mesh_enabled           = var.open_service_mesh_enabled
   private_cluster_enabled             = var.private_cluster_enabled
   private_dns_zone_id                 = var.private_dns_zone_id

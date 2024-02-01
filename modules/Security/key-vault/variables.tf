@@ -7,7 +7,7 @@ variable "resource_group_name" {
 variable "key_vault_name" {
   type        = string
   description = "The name of the Key Vault."
-  default = null
+  default     = null
 }
 
 variable "location" {
@@ -30,7 +30,15 @@ variable "public_network_access_enabled" {
   description = "Specifies whether public access is permitted."
   default     = true
 }
+variable "soft_delete_retention_days" {
+  type        = number
+  description = "The number of days that items should be retained for once soft-deleted. This value can be between 7 and 90 (the default) days."
+  validation {
+    condition     = var.soft_delete_retention_days >= 7 && var.soft_delete_retention_days <= 90
+    error_message = "soft_delete_retention_days must be between 7 and 90 days."
+  }
 
+}
 variable "enabled_for_disk_encryption" {
   type        = bool
   description = "Specifies whether Azure Disk Encryption is permitted to retrieve secrets from the vault and unwrap keys."
@@ -143,7 +151,7 @@ variable "certificate_permissions" {
 }
 
 variable "create_access_policy" {
-  type = bool
+  type    = bool
   default = false
 }
 

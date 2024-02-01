@@ -15,14 +15,31 @@ variable "location" {
 
 variable "administrator_login" {
   type        = string
+  default     = null
   description = "The administrator login name for the server"
 }
 
 variable "administrator_login_password" {
   type        = string
+  sensitive   = true
   description = "The password associated with the admin_username"
 }
+variable "transparent_data_encryption_key_vault_key_id" {
+  type        = string
+  default     = null
+  description = "The fully versioned Key Vault Key"
+}
+variable "outbound_network_restriction_enabled" {
+  type        = bool
+  default     = false
+  description = "Whether outbound network traffic is restricted for this server. "
+}
+variable "primary_user_assigned_identity_id" {
+  type        = string
+  default     = null
+  description = "Specifies the primary user managed identity id."
 
+}
 variable "azure_ad_admin_login" {
   type        = string
   description = "The login username of the Azure AD Administrator of this SQL Server."
@@ -44,11 +61,25 @@ variable "server_version" {
   description = "Server version"
   default     = "12.0"
 }
+variable "identity_ids" {
+  type        = list(string)
+  default     = null
+  description = " Specifies a list of User Assigned Managed Identity IDs to be assigned to this SQL Server."
+}
 
 variable "connection_policy" {
   type        = string
   description = "The connection policy the server will use: [Default|Proxy|Redirect]"
   default     = "Default"
+}
+variable "tenant_id" {
+  type        = string
+  default     = null
+  description = "The tenant id of the Azure AD Administrator of this SQL Server."
+}
+variable "azuread_authentication_only" {
+  type        = bool
+  description = "Specifies whether only AD Users and administrators "
 }
 
 variable "minimum_tls_version" {
@@ -256,4 +287,29 @@ variable "extra_tags" {
   description = "extra tags to be applied to resources (in addition to the tags above)"
   type        = map(string)
   default     = {}
+}
+variable "extended_auditing_storage_endpoint" {
+  description = "The storage endpoint for extended auditing logs"
+  type        = string
+}
+
+variable "extended_auditing_storage_account_access_key" {
+  description = "The storage account access key for extended auditing logs"
+  type        = string
+}
+
+variable "extended_auditing_retention_days" {
+  description = "The number of days to retain extended auditing logs"
+  type        = number
+}
+
+variable "extended_auditing_audit_actions" {
+  description = "The list of actions to be audited for extended auditing"
+  type        = list(string)
+}
+
+variable "storage_account_access_key_is_secondary" {
+  type        = bool
+  default     = false
+  description = "Specifies whether the provided access key is for the secondary storage account key. Set this to true if using the secondary key; otherwise, leave it as false."
 }

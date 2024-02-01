@@ -4,6 +4,4 @@ COPY . /src
 USER root
 RUN chown -R tfsec /src
 USER tfsec
-
-
-ENTRYPOINT [ "tfsec", "/src" ]
+ENTRYPOINT tfsec /src --format text

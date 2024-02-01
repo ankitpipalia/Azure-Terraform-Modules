@@ -50,7 +50,7 @@ resource "azurerm_cosmosdb_account" "cosmo_account" {
     content {
       consistency_level       = consistency_policy.value.consistency_level
       max_interval_in_seconds = consistency_policy.value.consistency_level == "BoundedStaleness" ? lookup(consistency_policy.value, "max_interval_in_seconds", 5) : null
-      maxmax_staleness_prefix = consistency_policy.value.consistency_level == "BoundedStaleness" ? lookup(consistency_policy.value, "max_staleness_prefix", 100) : null
+      max_staleness_prefix    = consistency_policy.value.consistency_level == "BoundedStaleness" ? lookup(consistency_policy.value, "max_staleness_prefix", 100) : null
     }
   }
 

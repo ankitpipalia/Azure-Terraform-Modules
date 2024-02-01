@@ -49,6 +49,84 @@ variable "kubernetes_version" {
   description = "(Required) The Kubernetes version to use for this Kubernetes Cluster."
   default     = null
 }
+variable "custom_ca_trust_certificates_base64" {
+  type        = list(string)
+  description = " A list of up to 10 base64 encoded CAs that will be added to the trust store on nodes with the custom_ca_trust_enabled feature enabled."
+}
+
+variable "network_policy" {
+  type        = string
+  description = "The network policy to be used in the AKS cluster, e.g., 'calico'."
+}
+
+variable "network_plugin" {
+  type        = string
+  default     = "azure"
+  description = "The network plugin to be used in the AKS cluster."
+}
+
+variable "network_mode" {
+  type        = string
+  default     = "transparent"
+  description = "The network mode to be used in the AKS cluster."
+}
+
+variable "dns_service_ip" {
+  type        = string
+  default     = null
+  description = "The IP address assigned to the DNS service in the AKS cluster."
+}
+
+variable "ebpf_data_plane" {
+  type        = string
+  default     = "cilium"
+  description = "The eBPF data plane mode for the AKS cluster."
+}
+
+variable "network_plugin_mode" {
+  type        = string
+  default     = "overlay"
+  description = "The network plugin mode to be used in the AKS cluster."
+}
+
+variable "outbound_type" {
+  type        = string
+  default     = "loadBalancer"
+  description = "The outbound traffic type for the AKS cluster."
+}
+
+variable "pod_cidr" {
+  type        = string
+  default     = null
+  description = "The CIDR block for pod IP addresses in the AKS cluster."
+}
+
+variable "pod_cidrs" {
+  type        = list(string)
+  default     = null
+  description = "A list of CIDR blocks for pod IP addresses in the AKS cluster."
+}
+
+variable "service_cidr" {
+  type        = string
+  default     = null
+  description = "The CIDR block for service IP addresses in the AKS cluster."
+}
+
+variable "service_cidrs" {
+  type        = list(string)
+  default     = null
+  description = "A list of CIDR blocks for service IP addresses in the AKS cluster."
+}
+variable "log_analytics_workspace_id" {
+  type = string
+  description = "value"
+}
+variable "msi_auth_for_monitoring_enabled" {
+  type = bool
+  default = true
+  description = "value"
+}
 
 variable "default_node_pool" {
   type = object({
@@ -408,40 +486,6 @@ variable "monitor_metrics" {
   default     = null
 }
 
-variable "network_profile" {
-  type = object({
-    network_plugin      = string
-    network_mode        = optional(string, null)
-    network_policy      = optional(string, null)
-    dns_service_ip      = optional(string, null)
-    ebpf_data_plane     = optional(string, null)
-    network_plugin_mode = optional(string, null)
-    outbound_type       = optional(string, null)
-    pod_cidr            = optional(string, null)
-    pod_cidrs           = optional(list(string), null)
-    service_cidr        = optional(string, null)
-    service_cidrs       = optional(list(string), null)
-    ip_versions         = optional(list(string), null)
-    load_balancer_sku   = optional(string, null)
-
-    load_balancer_profile = optional(object({
-      idle_timeout_in_minutes     = optional(number, null)
-      managed_outbound_ip_count   = optional(number, null)
-      managed_outbound_ipv6_count = optional(number, null)
-      outbound_ip_address_ids     = optional(list(string), null)
-      outbound_ip_prefix_ids      = optional(list(string), null)
-      outbound_ports_allocated    = optional(number, null)
-    }), null)
-
-    nat_gateway_profile = optional(object({
-      idle_timeout_in_minutes   = optional(number, null)
-      managed_outbound_ip_count = optional(number, null)
-    }), null)
-  })
-  description = "(Optional) A network_profile block."
-  default     = null
-}
-
 variable "node_os_channel_upgrade" {
   type        = string
   description = "(Optional) The node OS channel upgrade to use for the Kubernetes Cluster."
@@ -458,14 +502,6 @@ variable "oidc_issuer_enabled" {
   type        = bool
   description = "(Optional) Should OIDC issuer be enabled?"
   default     = false
-}
-
-variable "oms_agent" {
-  type = object({
-    log_analytics_workspace_id = string
-  })
-  description = "(Optional) A oms_agent block."
-  default     = null
 }
 
 variable "open_service_mesh_enabled" {

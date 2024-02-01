@@ -17,7 +17,7 @@ resource "azurerm_postgresql_server" "db" {
 
   administrator_login          = var.administrator_login
   administrator_login_password = var.use_random_string ? random_password.password[0].result : var.administrator_login_password
-
+  
   sku_name   = var.sku
   version    = var.postgresql_version
   storage_mb = var.max_allocated_storage_mb
@@ -51,6 +51,25 @@ resource "azurerm_postgresql_server" "db" {
     var.extra_tags
   )
 }
+resource "azurerm_postgresql_configuration" "log_checkpoints" {
+  name                = "log_checkpoints"
+  resource_group_name = var.resource_group_name
+  server_name         = azurerm_postgresql_server.db.name
+  value               = var.postgresql_value
+}
+
+resource "azurerm_postgresql_configuration" "log_connections" {
+  name                = "log_connections"
+  resource_group_name = var.resource_group_name
+  server_name         = azurerm_postgresql_server.db.name
+  value               = var.postgresql_value
+}
+resource "azurerm_postgresql_configuration" "example" {
+  name                = "connection_throttling"
+  resource_group_name = var.resource_group_name
+  server_name         = azurerm_postgresql_server.db.name
+  value               = var.postgresql_value
+}
 
 resource "azurerm_postgresql_database" "db" {
   name                = var.postgresql_database_name
@@ -80,7 +99,7 @@ resource "azurerm_postgresql_firewall_rule" "custom_rules" {
 
 # resource "azurerm_key_vault_secret" "secret" {
 #   count = var.create_key_secret ? 1 : 0
-  
+
 #   name         = "${var.postgresql_server_name}-secret"
 #   value        = var.use_random_string ? random_password.password[0].result : var.administrator_login_password
 #   key_vault_id = var.key_vault_id

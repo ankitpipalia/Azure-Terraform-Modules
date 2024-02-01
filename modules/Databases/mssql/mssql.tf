@@ -1,13 +1,16 @@
 resource "azurerm_mssql_server" "mssql_server" {
-  name                          = var.mssql_server_name
-  resource_group_name           = var.resource_group_name
-  location                      = var.location
-  version                       = var.server_version
-  administrator_login           = var.administrator_login
-  administrator_login_password  = var.administrator_login_password
-  minimum_tls_version           = var.minimum_tls_version
-  public_network_access_enabled = var.public_network_access_enabled
-  connection_policy             = var.connection_policy
+  name                                         = var.mssql_server_name
+  resource_group_name                          = var.resource_group_name
+  location                                     = var.location
+  version                                      = var.server_version
+  administrator_login                          = var.administrator_login
+  administrator_login_password                 = var.administrator_login_password
+  minimum_tls_version                          = var.minimum_tls_version
+  public_network_access_enabled                = var.public_network_access_enabled
+  connection_policy                            = var.connection_policy
+  transparent_data_encryption_key_vault_key_id = var.transparent_data_encryption_key_vault_key_id
+  outbound_network_restriction_enabled         = var.outbound_network_restriction_enabled
+  primary_user_assigned_identity_id            = var.primary_user_assigned_identity_id
 
   tags = merge(
     {
@@ -17,6 +20,7 @@ resource "azurerm_mssql_server" "mssql_server" {
     var.extra_tags
   )
 
+
   lifecycle {
     ignore_changes = [
       administrator_login,
@@ -25,13 +29,23 @@ resource "azurerm_mssql_server" "mssql_server" {
   }
 
   identity {
-    type = "SystemAssigned"
+    type         = "SystemAssigned"
+    identity_ids = var.identity_ids
   }
 
   azuread_administrator {
-    login_username = var.azure_ad_admin_login
-    object_id      = var.azure_ad_admin_object_id
+    login_username              = var.azure_ad_admin_login
+    object_id                   = var.azure_ad_admin_object_id
+    tenant_id                   = var.tenant_id
+    azuread_authentication_only = var.azuread_authentication_only
   }
+}
+
+resource "azurerm_mssql_server_extended_auditing_policy" "mssql_server" {
+  server_id                               = azurerm_mssql_server.mssql_server.id
+  storage_endpoint                        = var.extended_auditing_storage_endpoint
+  storage_account_access_key              = var.extended_auditing_storage_account_access_key
+  storage_account_access_key_is_secondary = var.storage_account_access_key_is_secondary
 }
 
 resource "azurerm_key_vault_access_policy" "tde_policy" {

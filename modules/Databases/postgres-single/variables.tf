@@ -72,7 +72,7 @@ variable "max_allocated_storage_mb" {
 variable "auto_grow_enabled" {
   description = "Whether the disk space should automatically expand"
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "backup_retention_days" {
@@ -138,4 +138,14 @@ variable "threat_detection_policies" {
     storage_endpoint           = optional(string, null)
   }))
   default = {}
+}
+
+variable "log_config_name" {
+  type        = string
+  description = " Specifies the name of the PostgreSQL Configuration, which needs to be a valid PostgreSQL configuration name."
+}
+variable "postgresql_value" {
+  type        = string
+  default     = "on"
+  description = "Always on"
 }
